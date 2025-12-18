@@ -36,9 +36,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // CORS configuration - allow GitHub Pages origin
+// GitHub Pages URLs can vary (with/without www, case differences, etc.)
 const allowedOrigins = [
   'https://fishtacobidun.github.io',
+  'https://FishTacoBidun.github.io',
   'http://localhost:5500',
+  'http://127.0.0.1:5500',
   'http://localhost:3000'
 ];
 
@@ -46,21 +49,30 @@ app.use(cors({
   origin: function (origin, callback) {
     //allow requests with no origin (like mobile apps or curl requests)
     if (!origin) return callback(null, true);
-    //check if origin matches any allowed origin (case-insensitive)
-    const originLower = origin.toLowerCase();
+    
+    //normalize origin for comparison (remove trailing slash, lowercase)
+    const normalizedOrigin = origin.toLowerCase().replace(/\/$/, '');
+    
+    //check if origin matches any allowed origin
     const isAllowed = allowedOrigins.some(allowed => {
-      const allowedLower = allowed.toLowerCase();
-      return originLower === allowedLower || originLower.startsWith(allowedLower + '/');
+      const normalizedAllowed = allowed.toLowerCase().replace(/\/$/, '');
+      //exact match or starts with (for subpaths like /Sprung-Block)
+      return normalizedOrigin === normalizedAllowed || 
+             normalizedOrigin.startsWith(normalizedAllowed + '/');
     });
+    
     if (isAllowed) {
-      callback(null, true);
+      //return the exact origin that was sent (required for credentials)
+      callback(null, origin);
     } else {
-      //in production, you might want to restrict this
-      callback(null, true); // Allow all for now, but log it
+      //log unlisted origins but allow them for now (for debugging)
       console.log(`[CORS] Request from unlisted origin: ${origin}`);
+      callback(null, origin); // Allow all for now, return exact origin
     }
   },
-  credentials: true
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 //session configuration
@@ -90,15 +102,16 @@ const ERROR_UNAUTHORIZED = { Error: "Unauthorized" };
 
 //middleware to check if user is authenticated
 function requireAuth(req, res, next) {
-  console.log(`[AUTH] Checking auth for ${req.path}, session ID: ${req.sessionID}, userId: ${req.session.userId}`);
+  console.log(`[AUTH] Checking auth for ${req.path}`);
+  console.log(`[AUTH] Origin: ${req.get('origin')}`);
+  console.log(`[AUTH] Session ID: ${req.sessionID}`);
+  console.log(`[AUTH] Session userId: ${req.session.userId}`);
+  console.log(`[AUTH] Cookies received: ${JSON.stringify(req.cookies)}`);
   
   if (!req.session.userId) {
     console.error('[AUTH] Unauthorized request - no session userId:', req.path);
-    console.error('[AUTH] Session object:', {
-      id: req.sessionID,
-      userId: req.session.userId,
-      cookie: req.session.cookie
-    });
+    console.error('[AUTH] Full session object:', JSON.stringify(req.session, null, 2));
+    console.error('[AUTH] Request headers:', JSON.stringify(req.headers, null, 2));
     return res.status(401).json(ERROR_UNAUTHORIZED);
   }
   console.log(`[AUTH] Authenticated request from user ${req.session.userId} to ${req.path}`);
@@ -110,6 +123,9 @@ function requireAuth(req, res, next) {
 //POST - REGISTER
 app.post('/api/users/register', asyncHandler(async (req, res) => {
   const { username, password } = req.body;
+
+  console.log(`[REGISTER] Attempt from origin: ${req.get('origin')}`);
+  console.log(`[REGISTER] Cookies received: ${JSON.stringify(req.cookies)}`);
 
   if (!username || !password) {
     return res.status(400).json({ message: "Username and password are required" });
@@ -128,6 +144,12 @@ app.post('/api/users/register', asyncHandler(async (req, res) => {
 
   const user = await createUser(username, password);
   req.session.userId = user._id.toString();
+  console.log(`[REGISTER] Session created - ID: ${req.sessionID}, userId: ${req.session.userId}`);
+  console.log(`[REGISTER] Cookie will be set with:`, {
+    secure: req.session.cookie.secure,
+    sameSite: req.session.cookie.sameSite,
+    httpOnly: req.session.cookie.httpOnly
+  });
 
   res.status(201).json({
     message: "Account created successfully",
@@ -139,6 +161,9 @@ app.post('/api/users/register', asyncHandler(async (req, res) => {
 //POST - LOGIN
 app.post('/api/users/login', asyncHandler(async (req, res) => {
   const { username, password } = req.body;
+
+  console.log(`[LOGIN] Attempt from origin: ${req.get('origin')}`);
+  console.log(`[LOGIN] Cookies received: ${JSON.stringify(req.cookies)}`);
 
   if (!username || !password) {
     return res.status(400).json({ message: "Username and password are required" });
@@ -155,6 +180,12 @@ app.post('/api/users/login', asyncHandler(async (req, res) => {
   }
 
   req.session.userId = user._id.toString();
+  console.log(`[LOGIN] Session created - ID: ${req.sessionID}, userId: ${req.session.userId}`);
+  console.log(`[LOGIN] Cookie will be set with:`, {
+    secure: req.session.cookie.secure,
+    sameSite: req.session.cookie.sameSite,
+    httpOnly: req.session.cookie.httpOnly
+  });
 
   res.status(200).json({
     message: "Login successful",
