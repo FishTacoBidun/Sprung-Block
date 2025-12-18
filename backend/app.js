@@ -62,7 +62,7 @@ const allowedOrigins = [
 ];
 
 app.use(cors({
-origin: 'https://fishtacobidun.github.io/', //whatever your frontend port is
+  origin: 'https://fishtacobidun.github.io/Sprung-Block', //whatever your frontend port is
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
@@ -355,3 +355,4 @@ app.listen(PORT, async () => {
     process.exit(1);
   }
 });
+
