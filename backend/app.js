@@ -4,7 +4,6 @@ import asyncHandler from 'express-async-handler';
 import cors from 'cors';
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
-import cookieParser from 'cookie-parser';
 
 //import models
 import {
@@ -33,7 +32,6 @@ const PORT = process.env.PORT || 3000;
 const app = express();
 
 //middleware
-app.use(cookieParser()); // Parse cookies from requests
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -64,30 +62,7 @@ const allowedOrigins = [
 ];
 
 app.use(cors({
-  origin: function (origin, callback) {
-    //allow requests with no origin (like mobile apps or curl requests)
-    if (!origin) return callback(null, true);
-    
-    //normalize origin for comparison (remove trailing slash, lowercase)
-    const normalizedOrigin = origin.toLowerCase().replace(/\/$/, '');
-    
-    //check if origin matches any allowed origin
-    const isAllowed = allowedOrigins.some(allowed => {
-      const normalizedAllowed = allowed.toLowerCase().replace(/\/$/, '');
-      //exact match or starts with (for subpaths like /Sprung-Block)
-      return normalizedOrigin === normalizedAllowed || 
-             normalizedOrigin.startsWith(normalizedAllowed + '/');
-    });
-    
-    if (isAllowed) {
-      //return the exact origin that was sent (required for credentials)
-      callback(null, origin);
-    } else {
-      //log unlisted origins but allow them for now (for debugging)
-      console.log(`[CORS] Request from unlisted origin: ${origin}`);
-      callback(null, origin); // Allow all for now, return exact origin
-    }
-  },
+origin: 'https://fishtacobidun.github.io/', //whatever your frontend port is
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
@@ -109,8 +84,7 @@ app.use(session({
     secure: process.env.NODE_ENV === 'production', //true in production with HTTPS
     httpOnly: true,
     sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', //'none' for cross-site in production
-    path: '/',
-    domain: undefined // Don't set domain - let browser use default (allows cross-site)
+    path: '/'
   }
 }));
 
@@ -163,25 +137,11 @@ app.post('/api/users/register', asyncHandler(async (req, res) => {
 
   const user = await createUser(username, password);
   req.session.userId = user._id.toString();
-  
-  // Save session and then send response
-  await new Promise((resolve, reject) => {
-    req.session.save((err) => {
-      if (err) {
-        console.error('[REGISTER] Error saving session:', err);
-        return reject(err);
-      }
-      console.log(`[REGISTER] Session saved - ID: ${req.sessionID}, userId: ${req.session.userId}`);
-      resolve();
-    });
-  });
-
-  console.log(`[REGISTER] Cookie settings:`, {
+  console.log(`[REGISTER] Session created - ID: ${req.sessionID}, userId: ${req.session.userId}`);
+  console.log(`[REGISTER] Cookie will be set with:`, {
     secure: req.session.cookie.secure,
     sameSite: req.session.cookie.sameSite,
-    httpOnly: req.session.cookie.httpOnly,
-    domain: req.session.cookie.domain,
-    path: req.session.cookie.path
+    httpOnly: req.session.cookie.httpOnly
   });
 
   res.status(201).json({
@@ -213,25 +173,11 @@ app.post('/api/users/login', asyncHandler(async (req, res) => {
   }
 
   req.session.userId = user._id.toString();
-  
-  // Save session and then send response
-  await new Promise((resolve, reject) => {
-    req.session.save((err) => {
-      if (err) {
-        console.error('[LOGIN] Error saving session:', err);
-        return reject(err);
-      }
-      console.log(`[LOGIN] Session saved - ID: ${req.sessionID}, userId: ${req.session.userId}`);
-      resolve();
-    });
-  });
-
-  console.log(`[LOGIN] Cookie settings:`, {
+  console.log(`[LOGIN] Session created - ID: ${req.sessionID}, userId: ${req.session.userId}`);
+  console.log(`[LOGIN] Cookie will be set with:`, {
     secure: req.session.cookie.secure,
     sameSite: req.session.cookie.sameSite,
-    httpOnly: req.session.cookie.httpOnly,
-    domain: req.session.cookie.domain,
-    path: req.session.cookie.path
+    httpOnly: req.session.cookie.httpOnly
   });
 
   res.status(200).json({
