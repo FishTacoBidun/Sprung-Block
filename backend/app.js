@@ -4,6 +4,7 @@ import asyncHandler from 'express-async-handler';
 import cors from 'cors';
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
+import cookieParser from 'cookie-parser';
 
 //import models
 import {
@@ -32,8 +33,25 @@ const PORT = process.env.PORT || 3000;
 const app = express();
 
 //middleware
+app.use(cookieParser()); // Parse cookies from requests
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Add middleware to log response headers for debugging
+app.use((req, res, next) => {
+  const originalSend = res.send;
+  res.send = function(data) {
+    if (req.path.includes('/api/users/login') || req.path.includes('/api/users/register')) {
+      console.log(`[RESPONSE] ${req.method} ${req.path} - Headers:`, {
+        'Set-Cookie': res.get('Set-Cookie'),
+        'Access-Control-Allow-Origin': res.get('Access-Control-Allow-Origin'),
+        'Access-Control-Allow-Credentials': res.get('Access-Control-Allow-Credentials')
+      });
+    }
+    return originalSend.call(this, data);
+  };
+  next();
+});
 
 // CORS configuration - allow GitHub Pages origin
 // GitHub Pages URLs can vary (with/without www, case differences, etc.)
@@ -91,7 +109,8 @@ app.use(session({
     secure: process.env.NODE_ENV === 'production', //true in production with HTTPS
     httpOnly: true,
     sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', //'none' for cross-site in production
-    path: '/'
+    path: '/',
+    domain: undefined // Don't set domain - let browser use default (allows cross-site)
   }
 }));
 
@@ -144,11 +163,25 @@ app.post('/api/users/register', asyncHandler(async (req, res) => {
 
   const user = await createUser(username, password);
   req.session.userId = user._id.toString();
-  console.log(`[REGISTER] Session created - ID: ${req.sessionID}, userId: ${req.session.userId}`);
-  console.log(`[REGISTER] Cookie will be set with:`, {
+  
+  // Save session and then send response
+  await new Promise((resolve, reject) => {
+    req.session.save((err) => {
+      if (err) {
+        console.error('[REGISTER] Error saving session:', err);
+        return reject(err);
+      }
+      console.log(`[REGISTER] Session saved - ID: ${req.sessionID}, userId: ${req.session.userId}`);
+      resolve();
+    });
+  });
+
+  console.log(`[REGISTER] Cookie settings:`, {
     secure: req.session.cookie.secure,
     sameSite: req.session.cookie.sameSite,
-    httpOnly: req.session.cookie.httpOnly
+    httpOnly: req.session.cookie.httpOnly,
+    domain: req.session.cookie.domain,
+    path: req.session.cookie.path
   });
 
   res.status(201).json({
@@ -180,11 +213,25 @@ app.post('/api/users/login', asyncHandler(async (req, res) => {
   }
 
   req.session.userId = user._id.toString();
-  console.log(`[LOGIN] Session created - ID: ${req.sessionID}, userId: ${req.session.userId}`);
-  console.log(`[LOGIN] Cookie will be set with:`, {
+  
+  // Save session and then send response
+  await new Promise((resolve, reject) => {
+    req.session.save((err) => {
+      if (err) {
+        console.error('[LOGIN] Error saving session:', err);
+        return reject(err);
+      }
+      console.log(`[LOGIN] Session saved - ID: ${req.sessionID}, userId: ${req.session.userId}`);
+      resolve();
+    });
+  });
+
+  console.log(`[LOGIN] Cookie settings:`, {
     secure: req.session.cookie.secure,
     sameSite: req.session.cookie.sameSite,
-    httpOnly: req.session.cookie.httpOnly
+    httpOnly: req.session.cookie.httpOnly,
+    domain: req.session.cookie.domain,
+    path: req.session.cookie.path
   });
 
   res.status(200).json({
@@ -361,6 +408,4 @@ app.listen(PORT, async () => {
     console.error("Failed to start server:", error);
     process.exit(1);
   }
-
 });
-
