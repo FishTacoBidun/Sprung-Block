@@ -17,9 +17,9 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 //API configuration
-const API_BASE_URL = 'http://localhost:3000/api';
-const BADGE_API_BASE_URL = 'http://localhost:3002/api';
-const SHARE_API_BASE_URL = 'http://localhost:3003/api';
+const API_BASE_URL = 'https://sprung-block.onrender.com/api';
+const BADGE_API_BASE_URL = 'https://sprung-block.onrender.com/api';
+const SHARE_API_BASE_URL = 'https://sprung-block.onrender.com/api';
 let currentLevelNum = null; //track current level
 let loadedLevelScript = null; //track loaded level script for cleanup
 let isGameRunning = false; //track if game loop is running
@@ -308,7 +308,7 @@ async function showLevelComplete() {
   levelCompleteTime.textContent = `Time: ${formattedTime}`;
   
   //store completion data for sharing (only for levels 1-3, not tutorial level 0)
-  if (currentLevelNum > 0 && currentLevelNum <= 3) {
+  if (currentLevelNum >= 0 && currentLevelNum <= 13) {
     lastCompletionData = {
       levelNum: currentLevelNum,
       time: formattedTime,

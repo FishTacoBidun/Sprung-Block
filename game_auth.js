@@ -1,5 +1,5 @@
 //game authentication handler - manages guest vs authenticated mode
-const USER_API_BASE_URL = 'http://localhost:3004/api';
+const USER_API_BASE_URL = 'https://sprung-block.onrender.com/api';
 
 //get user mode and info from sessionStorage
 const userMode = sessionStorage.getItem('userMode'); //'guest' or 'authenticated'
@@ -60,14 +60,9 @@ if (!window.isAuthenticated) {
 
 // ============================================================================
 // TESTING MODE: UNLOCK ALL LEVELS IN GUEST MODE
-// ============================================================================
-// Uncomment the code below to unlock all levels in guest mode for testing.
-// This is useful when testing levels without having to complete all previous
-// levels first. Remember to comment it back out before deploying!
-// ============================================================================
 /*
 if (!window.isAuthenticated) {
-  // Unlock all levels (1 through 13, or update to match your TOTAL_LEVELS)
+  //unlock all levels (1 through 13, or update to match your TOTAL_LEVELS)
   const allLevels = [];
   for (let i = 1; i <= 13; i++) {
     allLevels.push(i);

@@ -1,5 +1,5 @@
 //authentication client-side logic
-const API_BASE_URL = 'http://localhost:3004/api';
+const API_BASE_URL = 'https://sprung-block.onrender.com/api';
 
 //simple menu sound system for index.html
 let menuSoundVolume = 5; //50% default (0-10 scale)

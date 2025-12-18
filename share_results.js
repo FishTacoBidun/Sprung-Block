@@ -1,4 +1,4 @@
-const SHARE_API_BASE_URL = 'http://localhost:3003/api';
+const SHARE_API_BASE_URL = 'https://sprung-block.onrender.com/api';
 
 //get shareId from URL parameters
 const urlParams = new URLSearchParams(window.location.search);
