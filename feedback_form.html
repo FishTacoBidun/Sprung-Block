@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sprung Block - Feedback Form</title>
+    <link rel="stylesheet" href="feedback.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cabin+Sketch:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="textures/pumpkin_text.png">
+</head>
+<body>
+    <form id="feedbackForm" action="http://localhost:3001/api/feedback" method="POST">
+        <a href="game.html" class="form-close-button">✕</a>
+        <h1>Submit Feedback</h1>
+
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+
+        <div class="form-group">
+            <label for="category">Feedback Category:</label>
+            <select id="category" name="category" required>
+                <option value="">Select a category...</option>
+                <option value="bug report">Bug Report</option>
+                <option value="feedback">Feedback</option>
+                <option value="other">Other</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="message">Your Feedback:</label>
+            <textarea id="message" name="message" rows="5" required></textarea>
+        </div>
+
+        <div class="form-buttons">
+            <button type="submit">Submit Feedback</button>
+        </div>
+    </form>
+
+    <!--thank you page-->
+    <div id="thankYouPage" style="display: none;">
+        <div class="thank-you-container">
+            <div class="thank-you-box">
+                <p class="thank-you-message">Thank you for taking the time to submit feedback, it is appreciated!</p>
+            </div>
+            <button id="returnToGameButton" class="return-to-game-button">Return to Game</button>
+        </div>
+    </div>
+    <script>
+        //menu sound system
+        let menuSoundVolume = 5;
+        const menuHoverSound = new Audio('sounds/hover_sound.mp3');
+        const menuClickSound = new Audio('sounds/click_sound.mp3');
+        menuHoverSound.volume = menuSoundVolume / 10;
+        menuClickSound.volume = menuSoundVolume / 10;
+        
+        function playMenuHover() {
+            menuHoverSound.currentTime = 0;
+            menuHoverSound.volume = menuSoundVolume / 10;
+            menuHoverSound.play().catch(() => {});
+        }
+        
+        function playMenuClick() {
+            menuClickSound.currentTime = 0;
+            menuClickSound.volume = menuSoundVolume / 10;
+            menuClickSound.play().catch(() => {});
+        }
+        
+        //add sounds to buttons
+        const closeButton = document.querySelector('.form-close-button');
+        const submitButton = document.querySelector('button[type="submit"]');
+        
+        if (closeButton) {
+            closeButton.addEventListener('mouseenter', playMenuHover);
+            closeButton.addEventListener('click', playMenuClick);
+        }
+        if (submitButton) {
+            submitButton.addEventListener('mouseenter', playMenuHover);
+            submitButton.addEventListener('click', playMenuClick);
+        }
+
+        //handle form submission
+        const feedbackForm = document.getElementById('feedbackForm');
+        const thankYouPage = document.getElementById('thankYouPage');
+        const returnToGameButton = document.getElementById('returnToGameButton');
+
+        feedbackForm.addEventListener('submit', async (e) => {
+            e.preventDefault(); //prevent default form submission
+            
+            const formData = new FormData(feedbackForm);
+            const data = {
+                name: formData.get('name'),
+                email: formData.get('email'),
+                category: formData.get('category'),
+                message: formData.get('message')
+            };
+
+            try {
+                const response = await fetch('http://localhost:3001/api/feedback', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    //hide form and show thank you page
+                    feedbackForm.style.display = 'none';
+                    thankYouPage.style.display = 'flex';
+                } else {
+                    alert('Failed to submit feedback. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error submitting feedback:', error);
+                alert('Failed to submit feedback. Please try again.');
+            }
+        });
+
+        //return to game button
+        if (returnToGameButton) {
+            returnToGameButton.addEventListener('mouseenter', playMenuHover);
+            returnToGameButton.addEventListener('click', () => {
+                playMenuClick();
+                window.location.href = 'game.html';
+            });
+        }
+    </script>
+</body>
+</html>

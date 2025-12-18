@@ -1,0 +1,107 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Cabin Sketch", sans-serif;
+  background-image: url('images/cave_background.png');
+  background-size: auto 100%;
+  background-position: center center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-color: #1e1e1e;
+  color: white;
+  min-height: 100vh;
+}
+
+body > * {
+  max-width: 100%;
+  text-align: center;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h1 {
+  font-family: "Cabin Sketch", sans-serif;
+  font-size: 60px;
+  font-weight: 700;
+  color: white;
+  margin: 40px 0 20px;
+  text-align: center;
+  width: 100%;
+  max-width: 800px;
+}
+
+h2 {
+  font-family: "Cabin Sketch", sans-serif;
+  font-size: 44px;
+  font-weight: 700;
+  color: #d3d3d3;
+  margin: 0;
+  padding: 15px 0 0 20px;
+}
+
+.credit-box {
+  background-image: url('images/long_TB.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: transparent;
+  width: 600px;
+  min-height: 300px;
+  padding: 0px 60px 0px 60px;
+  margin: 20px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.credit-box h2 {
+  margin-bottom: 10px;
+}
+
+.credit-box p,
+.credit-box a {
+  font-family: "Cabin Sketch", sans-serif;
+  font-size: 40px;
+  color: #d3d3d3;
+  margin: 5px 0;
+  display: block;
+}
+
+.credit-box a:hover {
+  color: white;
+  text-decoration: underline;
+}
+
+.return-button {
+  margin: 20px auto 40px;
+  padding: 15px 40px;
+  background-color: #666;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  font-family: "Cabin Sketch", sans-serif;
+  font-size: 40px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.1s;
+  text-decoration: none;
+  display: block;
+  flex-shrink: 0;
+}
+
+.return-button:hover {
+  background-color: #777;
+  transform: scale(1.05);
+}
+

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sprung Block ᯓ🎃</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cabin+Sketch:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="textures/pumpkin_text.png">
+</head>
+<body>
+  <div id="levelSelectMenu">
+    <img id="gameLogo" src="images/sprung_block_logo_back.png" alt="Sprung Block Logo" />
+    <div id="settingsButton" class="settings-button">⚙️</div>
+    <div id="badgeButton" class="badge-button">🏆</div>
+    <h1>Sprung Block</h1>
+    <div class="button-container-wrapper">
+      <button class="level-nav-arrow left" id="levelNavLeft">‹</button>
+      <div class="button-container" id="levelButtonContainer">
+        <!--level buttons will be dynamically generated-->
+      </div>
+      <button class="level-nav-arrow right" id="levelNavRight">›</button>
+    </div>
+    <div id="feedbackPage">
+      <p>Please send feedback or bug reports to <a href="mailto:wolfie.essink@gmail.com">wolfie.essink@gmail.com</a> or fill out <a href="feedback_form.html">this form</a></p>
+    </div>
+  </div>
+  
+  <!--settings menu-->
+  <div id="settingsOverlay">
+    <div id="settingsMenu">
+      <div class="settings-close-button" id="settingsClose">✕</div>
+      <div class="volume-control">
+        <label>Game Sounds</label>
+        <div class="volume-bar">
+          <button class="volume-control-button" id="musicMinus">-</button>
+          <div class="volume-square filled" data-index="0"></div>
+          <div class="volume-square filled" data-index="1"></div>
+          <div class="volume-square filled" data-index="2"></div>
+          <div class="volume-square filled" data-index="3"></div>
+          <div class="volume-square filled" data-index="4"></div>
+          <div class="volume-square empty" data-index="5"></div>
+          <div class="volume-square empty" data-index="6"></div>
+          <div class="volume-square empty" data-index="7"></div>
+          <div class="volume-square empty" data-index="8"></div>
+          <div class="volume-square empty" data-index="9"></div>
+          <button class="volume-control-button" id="musicPlus">+</button>
+        </div>
+      </div>
+      <div class="volume-control">
+        <label>Menu Sounds</label>
+        <div class="volume-bar">
+          <button class="volume-control-button" id="soundMinus">-</button>
+          <div class="volume-square filled" data-index="0"></div>
+          <div class="volume-square filled" data-index="1"></div>
+          <div class="volume-square filled" data-index="2"></div>
+          <div class="volume-square filled" data-index="3"></div>
+          <div class="volume-square filled" data-index="4"></div>
+          <div class="volume-square empty" data-index="5"></div>
+          <div class="volume-square empty" data-index="6"></div>
+          <div class="volume-square empty" data-index="7"></div>
+          <div class="volume-square empty" data-index="8"></div>
+          <div class="volume-square empty" data-index="9"></div>
+          <button class="volume-control-button" id="soundPlus">+</button>
+        </div>
+      </div>
+      <button class="settings-option" id="tutorialSettings">Play Tutorial</button>
+      <button class="settings-option" id="creditSettings">Credits</button>
+      <button class="settings-option" id="exitSettings">Exit Game</button>
+    </div>
+  </div>
+  <canvas id="gameCanvas" style="display: none;"></canvas>
+  <div id="levelTimer" style="display: none;"></div>
+  <div id="pauseButton" style="display: none;">Pause</div>
+  <div id="pauseOverlay" style="display: none;">
+    <div id="pauseMenu">
+      <div class="pause-option" id="resumeOption">Resume Level</div>
+      <div class="pause-volume-control">
+        <label>Game Sounds</label>
+        <div class="pause-volume-bar">
+          <button class="pause-volume-control-button" id="pauseMusicMinus">-</button>
+          <div class="pause-volume-square filled" data-index="0"></div>
+          <div class="pause-volume-square filled" data-index="1"></div>
+          <div class="pause-volume-square filled" data-index="2"></div>
+          <div class="pause-volume-square filled" data-index="3"></div>
+          <div class="pause-volume-square filled" data-index="4"></div>
+          <div class="pause-volume-square empty" data-index="5"></div>
+          <div class="pause-volume-square empty" data-index="6"></div>
+          <div class="pause-volume-square empty" data-index="7"></div>
+          <div class="pause-volume-square empty" data-index="8"></div>
+          <div class="pause-volume-square empty" data-index="9"></div>
+          <button class="pause-volume-control-button" id="pauseMusicPlus">+</button>
+        </div>
+      </div>
+      <div class="pause-volume-control">
+        <label>Menu Sounds</label>
+        <div class="pause-volume-bar">
+          <button class="pause-volume-control-button" id="pauseSoundMinus">-</button>
+          <div class="pause-volume-square filled" data-index="0"></div>
+          <div class="pause-volume-square filled" data-index="1"></div>
+          <div class="pause-volume-square filled" data-index="2"></div>
+          <div class="pause-volume-square filled" data-index="3"></div>
+          <div class="pause-volume-square filled" data-index="4"></div>
+          <div class="pause-volume-square empty" data-index="5"></div>
+          <div class="pause-volume-square empty" data-index="6"></div>
+          <div class="pause-volume-square empty" data-index="7"></div>
+          <div class="pause-volume-square empty" data-index="8"></div>
+          <div class="pause-volume-square empty" data-index="9"></div>
+          <button class="pause-volume-control-button" id="pauseSoundPlus">+</button>
+        </div>
+      </div>
+      <div class="pause-option" id="restartOption">Restart Level</div>
+      <div class="pause-option" id="exitOption">Exit to Main Menu</div>
+    </div>
+  </div>
+  <div id="levelCompleteOverlay" style="display: none;">
+    <div id="levelCompleteMenu">
+      <h2 id="levelCompleteTitle">Level Complete!</h2>
+      <div id="levelCompleteTime">Time: 0:00</div>
+      <div class="level-complete-buttons">
+        <div class="level-complete-option" id="nextLevelOption">Next Level</div>
+        <div class="level-complete-option" id="mainMenuOption">Main Menu</div>
+      </div>
+      <div class="level-complete-option" id="shareResultsOption" style="display: none;">Share Results</div>
+    </div>
+  </div>
+  <div id="badgeOverlay" style="display: none;">
+    <div id="badgePage">
+      <div id="badgeExitButton" class="badge-exit-button">✕</div>
+      <h2 id="badgePageTitle">Badges</h2>
+      <div class="badge-container-wrapper">
+        <button class="badge-nav-arrow left" id="badgeNavLeft">‹</button>
+        <div id="badgeGrid" class="badge-grid">
+          <!--badges will be dynamically generated here-->
+        </div>
+        <button class="badge-nav-arrow right" id="badgeNavRight">›</button>
+      </div>
+    </div>
+  </div>
+  <script src="game_auth.js"></script>
+  <script src="character.js"></script>
+</body>
+</html>

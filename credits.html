@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sprung Block - Credits</title>
+  <link rel="stylesheet" href="credits.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cabin+Sketch:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="textures/pumpkin_text.png">
+</head>
+<body>
+  <h1>Gameplay & Mechanics</h1>
+    <div class="credit-box">
+      <h2>Controls</h2>
+      <p>Wolfie Essink W/ Cursor & Vibe Coding</p>
+    </div>
+
+    <div class="credit-box">
+      <h2>Physics</h2>
+      <p>Wolfie Essink W/ Cursor & Vibe Coding</p>
+    </div>
+
+    <div class="credit-box">
+      <h2>Objects & Obstacles</h2>
+      <p>Wolfie Essink W/ Cursor & Vibe Coding</p>
+    </div>
+
+    <div class="credit-box">
+      <h2>Level Design</h2>
+      <p>Wolfie Essink</p>
+    </div>
+
+    <div class="credit-box">
+      <h2>Animations</h2>
+      <p>Wolfie Essink W/ Cursor & Vibe Coding</p>
+    </div>
+
+    <div class="credit-box">
+      <h2>Texture Mapping</h2>
+      <p>Wolfie Essink W/ Cursor & Vibe Coding</p>
+    </div>
+
+  <h1>Graphics & Textures</h1>
+    <div class="credit-box">
+      <h2>Images</h2>
+      <p>Wolfie Essink W/ GIMP</p>
+    </div>
+
+    <div class="credit-box">
+      <h2>Textures</h2>
+      <p>Wolfie Essink W/ GIMP</p>
+    </div>
+
+  <h1>Sounds</h1>
+    <div class="credit-box">
+      <h2>Enemy Death Sound Effect</h2>
+      <a href="https://pixabay.com/users/creatorshome-49707711">CreatorsHome</a>
+    </div>
+
+    <div class="credit-box">
+      <h2>Hit Sound Effect</h2>
+      <a href="https://calamitymod.wiki.gg/wiki/The_Sponge">Terraria Calamity Mod</a>
+    </div>
+
+    <div class="credit-box">
+      <h2>Jump Sound Effect</h2>
+      <a href="https://pixabay.com/users/lumora_studios-39090352">Lumora Studios</a>
+    </div>
+
+    <div class="credit-box">
+      <h2>Level Beat Sound Effect</h2>
+      <a href="https://www.youtube.com/watch?v=ZVfO2iltWhQ">Kronix355</a>
+      <a href="https://pixabay.com/users/jesuschristisgod-44370300/">JesusChristIsGod</a>
+    </div>
+
+    <div class="credit-box">
+      <h2>Pause Sound Effect</h2>
+      <a href="https://sounds.spriters-resource.com/pc_computer/plantsvszombies/asset/394987/">Plants VS Zombies</a>
+    </div>
+
+    <div class="credit-box">
+      <h2>Death Sound Effect</h2>
+      <a href="https://pixabay.com/sound-effects/classic-game-action-negative-18-224576/">Floraphonic</a>
+    </div>
+
+    <div class="credit-box">
+      <h2>Button Hover Sound Effect</h2>
+      <a href="https://pixabay.com/sound-effects/ui-sounds-pack-3-7-359721/">Pixabay</a>
+    </div>
+
+    <div class="credit-box">
+      <h2>Button Click Sound Effect</h2>
+      <a href="https://pixabay.com/sound-effects/minimal-pop-click-ui-3-198303/">Floraphonic</a>
+    </div>
+
+  <a href="game.html" class="return-button">Return To Game</a>
+  <script>
+    //menu sound system
+    let menuSoundVolume = 5;
+    const menuHoverSound = new Audio('sounds/hover_sound.mp3');
+    const menuClickSound = new Audio('sounds/click_sound.mp3');
+    menuHoverSound.volume = menuSoundVolume / 10;
+    menuClickSound.volume = menuSoundVolume / 10;
+    
+    function playMenuHover() {
+      menuHoverSound.currentTime = 0;
+      menuHoverSound.volume = menuSoundVolume / 10;
+      menuHoverSound.play().catch(() => {});
+    }
+    
+    function playMenuClick() {
+      menuClickSound.currentTime = 0;
+      menuClickSound.volume = menuSoundVolume / 10;
+      menuClickSound.play().catch(() => {});
+    }
+    
+    //add sounds to return button
+    const returnButton = document.querySelector('.return-button');
+    if (returnButton) {
+      returnButton.addEventListener('mouseenter', playMenuHover);
+      returnButton.addEventListener('click', playMenuClick);
+    }
+  </script>
+</body>
+</html>
