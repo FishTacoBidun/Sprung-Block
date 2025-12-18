@@ -64,7 +64,8 @@ const allowedOrigins = [
 app.use(cors({
   origin: 'https://fishtacobidun.github.io', //whatever your frontend port is
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 //session configuration
@@ -354,6 +355,7 @@ app.listen(PORT, async () => {
     process.exit(1);
   }
 });
+
 
 
 
