@@ -46,30 +46,7 @@ const allowedOrigins = [
 ];
 
 app.use(cors({
-  origin: function (origin, callback) {
-    //allow requests with no origin (like mobile apps or curl requests)
-    if (!origin) return callback(null, true);
-    
-    //normalize origin for comparison (remove trailing slash, lowercase)
-    const normalizedOrigin = origin.toLowerCase().replace(/\/$/, '');
-    
-    //check if origin matches any allowed origin
-    const isAllowed = allowedOrigins.some(allowed => {
-      const normalizedAllowed = allowed.toLowerCase().replace(/\/$/, '');
-      //exact match or starts with (for subpaths like /Sprung-Block)
-      return normalizedOrigin === normalizedAllowed || 
-             normalizedOrigin.startsWith(normalizedAllowed + '/');
-    });
-    
-    if (isAllowed) {
-      //return the exact origin that was sent (required for credentials)
-      callback(null, origin);
-    } else {
-      //log unlisted origins but allow them for now (for debugging)
-      console.log(`[CORS] Request from unlisted origin: ${origin}`);
-      callback(null, origin); // Allow all for now, return exact origin
-    }
-  },
+  origin: 'http://fishtacobidun.github.io', //whatever your frontend port is
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
@@ -361,4 +338,5 @@ app.listen(PORT, async () => {
     console.error("Failed to start server:", error);
     process.exit(1);
   }
+
 });
