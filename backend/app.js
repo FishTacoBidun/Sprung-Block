@@ -4,6 +4,7 @@ import asyncHandler from 'express-async-handler';
 import cors from 'cors';
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
+import cookieParser from 'cookie-parser';
 
 //import models
 import {
@@ -359,3 +360,4 @@ app.listen(PORT, async () => {
     process.exit(1);
   }
 });
+
