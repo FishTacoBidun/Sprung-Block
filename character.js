@@ -34,6 +34,11 @@ let isDying = false; //track if death animation is playing
 let deathAnimationStart = null; //track when death animation started
 let defeatedEnemies = new Map(); //track defeated enemies and their respawn timers {enemyIndex: respawnTime}
 
+//delta time tracking for frame-rate independent movement
+let lastFrameTime = performance.now();
+const TARGET_FPS = 60;
+const FRAME_TIME = 1000 / TARGET_FPS; //milliseconds per frame at target FPS
+
 //health system
 let playerHealth = 3; //3
 let lastHealthCheckTime = 0; //0
@@ -254,6 +259,8 @@ function pauseGame() {
     pauseOverlay.style.display = "flex";
     //track when we paused to subtract paused time
     lastPauseTime = Date.now();
+    //reset frame time to prevent large delta when unpausing
+    lastFrameTime = performance.now();
     playGameSound('pause');
   }
 }
@@ -269,6 +276,8 @@ function resumeGame() {
       levelStartTime += pausedDuration; //shift start time forward by paused duration
       lastPauseTime = null;
     }
+    //reset frame time to prevent large delta when resuming
+    lastFrameTime = performance.now();
   }
 }
 
@@ -384,10 +393,12 @@ function restartLevel() {
   playerHealth = 3;
   lastDamageTime = 0;
   invulnerableUntil = 0;
-  //reset timer on restart
-  if (levelStartTime !== null) {
-    levelStartTime = Date.now();
-  }
+    //reset timer on restart
+    if (levelStartTime !== null) {
+      levelStartTime = Date.now();
+    }
+    //reset frame time to prevent large delta on restart
+    lastFrameTime = performance.now();
   
   //reset enemies and spikes
   if (initialEnemies) {
@@ -445,7 +456,7 @@ function returnToMenu() {
 }
 
 //game logic
-function update() 
+function update(dt = 1.0) 
 {
   //handle death animation - check this first to prevent any movement/damage
   if (isDying) {
@@ -472,6 +483,8 @@ function update()
       if (levelStartTime !== null) {
         levelStartTime = Date.now();
       }
+      //reset frame time to prevent large delta on respawn
+      lastFrameTime = performance.now();
       //reset enemies and spikes (but keep defeated enemies tracking)
       if (initialEnemies) {
         enemies.length = 0;
@@ -564,10 +577,11 @@ function update()
     playGameSound('jump');
   }
 
-  //gravity
-  player.velocityY += player.gravity;
-  player.x += player.velocityX;
-  player.y += player.velocityY;
+  //gravity (multiply by dt for frame-rate independence)
+  player.velocityY += player.gravity * dt;
+  //movement (multiply by dt for frame-rate independence)
+  player.x += player.velocityX * dt;
+  player.y += player.velocityY * dt;
 
   //check enemy collisions before surface collisions (so landing on enemies works correctly) - skip if dying
   let enemyKilled = false;
@@ -925,7 +939,7 @@ function draw() {
     //draw tutorial text
     if (typeof tutorialTexts !== 'undefined' && Array.isArray(tutorialTexts)) {
       for (const textObj of tutorialTexts) {
-        ctx.font = textObj.fontSize || "20px Arial";
+        ctx.font = textObj.fontSize || "14px Arial";
         ctx.fillStyle = textObj.color || "white";
         ctx.textAlign = textObj.align || "center";
         ctx.strokeStyle = textObj.strokeColor || "black";
@@ -1083,7 +1097,7 @@ function draw() {
     else if (playerHealth === 0 && textures.health0) healthTexture = textures.health0;
     
     if (healthTexture) {
-      ctx.drawImage(healthTexture, 20, 20, 333, 120);
+      ctx.drawImage(healthTexture, 20, 20, 333, 120); //333 120 or 250 90
     } else {
       //fallback to text
       ctx.fillStyle = "white";
@@ -1120,11 +1134,19 @@ let animationFrameId = null;
 function gameLoop() {
   if (!isGameRunning) return;
   
+  //calculate delta time (normalized to 60fps)
+  const currentTime = performance.now();
+  const deltaTime = (currentTime - lastFrameTime) / FRAME_TIME;
+  lastFrameTime = currentTime;
+  
+  //clamp delta time to prevent large jumps (e.g., when tab regains focus)
+  const dt = Math.min(deltaTime, 2.0); //cap at 2x speed to prevent huge jumps
+  
   if (!isPaused && !isDying) {
-    update();
+    update(dt);
   } else if (isDying) {
     //only update death animation, don't update game logic
-    update();
+    update(dt);
   }
   draw();
   animationFrameId = requestAnimationFrame(gameLoop);
@@ -1210,6 +1232,8 @@ function loadLevel(levelNumber) {
     lastDamageTime = 0;
     //set flag and start game loop after level is loaded
     isGameRunning = true;
+    //reset frame time when starting game loop
+    lastFrameTime = performance.now();
     gameLoop();
   };
   loadedLevelScript = script; //track this script for cleanup
@@ -1730,7 +1754,7 @@ async function shareResults() {
     const data = await response.json();
     const shareId = data.shareId;
     
-    //create the share URL - use origin and append share_results.html directly
+    //create the share URL - use origin and append /Sprung-Block/share_results.html
     const shareUrl = `${window.location.origin}/Sprung-Block/share_results.html?id=${shareId}`;
     
     //copy to clipboard
