@@ -32,8 +32,12 @@ const PORT = process.env.PORT || 3000;
 const app = express();
 
 //middleware
+app.set('trust proxy', 1);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use(cookieParser());
 
 // Add middleware to log response headers for debugging
 app.use((req, res, next) => {
@@ -355,7 +359,3 @@ app.listen(PORT, async () => {
     process.exit(1);
   }
 });
-
-
-
-
