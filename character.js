@@ -1731,7 +1731,7 @@ async function shareResults() {
     const shareId = data.shareId;
     
     //create the share URL - use origin and append share_results.html directly
-    const shareUrl = `${window.location.origin}/share_results.html?id=${shareId}`;
+    const shareUrl = `${window.location.origin}/Sprung-Block/share_results.html?id=${shareId}`;
     
     //copy to clipboard
     try {
