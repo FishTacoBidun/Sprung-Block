@@ -38,9 +38,10 @@ app.set('trust proxy', 1);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+//cookie parser (IMPORTANT)
 app.use(cookieParser());
 
-// Add middleware to log response headers for debugging
+//add middleware to log response headers for debugging
 app.use((req, res, next) => {
   const originalSend = res.send;
   res.send = function(data) {
@@ -56,16 +57,7 @@ app.use((req, res, next) => {
   next();
 });
 
-// CORS configuration - allow GitHub Pages origin
-// GitHub Pages URLs can vary (with/without www, case differences, etc.)
-const allowedOrigins = [
-  'https://fishtacobidun.github.io',
-  'https://FishTacoBidun.github.io',
-  'http://localhost:5500',
-  'http://127.0.0.1:5500',
-  'http://localhost:3000'
-];
-
+//CORS configuration - allow GitHub Pages origin
 app.use(cors({
   origin: 'https://fishtacobidun.github.io', //whatever your frontend port is
   credentials: true,
@@ -360,4 +352,3 @@ app.listen(PORT, async () => {
     process.exit(1);
   }
 });
-
