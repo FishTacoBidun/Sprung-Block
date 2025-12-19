@@ -883,18 +883,18 @@ body {
   transform: scale(1.05);
 }
 
-/*viewport adjustments for screens smaller than 1550px*/
-@media (max-width: 1549px) {
+/*small PC viewport*/
+@media (max-width: 1549px) or (max-height: 899px) {
   #levelSelectMenu #gameLogo {
-    width: 950px;
-    top: 7vh;
+    width: 900px;
+    top: 5vh;
   }
   
   .button-container {
     grid-template-columns: repeat(3, 350px);
     grid-template-rows: repeat(2, 175px);
     gap: 30px;
-    margin-bottom: 20px;
+    margin-bottom: 0px;
   }
   
   .level-button {
@@ -923,7 +923,10 @@ body {
     top: auto;
     transform: none;
     grid-row: 2;
-    margin-bottom: 20px;
+    margin-bottom: 50px;
+    width: 70px;
+    height: 70px;
+    font-size: 60px;
   }
   
   .button-container-wrapper {
@@ -965,5 +968,209 @@ body {
   
   .level-nav-arrow:disabled:hover {
     transform: none;
+  }
+
+  .settings-button {
+    width: 80px;
+    height: 80px;
+    font-size: 50px;
+  }
+
+  .badge-button {
+    width: 80px;
+    height: 80px;
+    font-size: 50px;
+  }
+  
+  #badgePage {
+    width: 650px;
+    min-height: 650px;
+    padding: 60px 40px 40px;
+  }
+
+  .badge-exit-button {
+    top: 45px;
+    left: 25px;
+  }
+  
+  #badgePageTitle {
+    font-size: 50px;
+    margin: 0;
+  }
+  
+  .badge-container-wrapper {
+    width: 100%;
+    gap: 0px;
+    padding: 0px;
+  }
+  
+  .badge-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    gap: 12px;
+    width: 100%;
+    max-width: 550px;
+    min-height: 580px;
+  }
+  
+  .badge-nav-arrow {
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+  }
+
+  #badgeNavRight {
+    margin-left:20px;
+  }
+
+  #badgeNavLeft {
+    margin-right:20px;
+  }
+  
+  .badge-item {
+    min-height: 70px;
+  }
+  
+  .badge-emoji {
+    font-size: 50px;
+    margin-bottom: 2px;
+    user-select: none;
+  }
+  
+  .badge-text {
+    font-size: 16px;
+    line-height: 1.2;
+  }
+}
+
+/*laptop viewport*/
+@media (max-width: 1199px) or (max-height: 799px) {
+  #levelSelectMenu #gameLogo {
+    width: 780px;
+    top: 3vh;
+  }
+  
+  .button-container {
+    grid-template-columns: repeat(3, 300px);
+    grid-template-rows: repeat(2, 150px);
+    gap: 10px;
+    margin-bottom: 0px;
+  }
+  
+  .level-button {
+    width: 300px;
+    height: 150px;
+    font-size: 90px;
+  }
+
+  .button-container-wrapper {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+    gap: 30px;
+    justify-items: center;
+  }
+  
+  .button-container {
+    grid-row: 1;
+    grid-column: 1 / -1;
+  }
+  
+  .level-nav-arrow {
+    position: relative;
+    left: auto;
+    right: auto;
+    top: auto;
+    transform: none;
+    grid-row: 2;
+    margin-bottom: 60px;
+    width: 60px;
+    height: 60px;
+    font-size: 50px;
+  }
+
+  .level-nav-arrow.left {
+    margin-right: 370px;
+  }
+  
+  .level-nav-arrow.right {
+    margin-left: 370px;
+  }
+  
+  .settings-button {
+    width: 60px;
+    height: 60px;
+    font-size: 40px;
+  }
+
+  .badge-button {
+    width: 60px;
+    height: 60px;
+    font-size: 40px;
+  }
+
+  #badgePage {
+    width: 550px;
+    min-height: 550px;
+  }
+
+  .badge-exit-button {
+    top: 40px;
+    left: 25px;
+  }
+  
+  #badgePageTitle {
+    font-size: 40px;
+    margin-top: 0px;
+  }
+  
+  .badge-container-wrapper {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    gap: 0px;
+    margin-top: 80px;
+  }
+  
+  .badge-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(4, 0.2fr);
+    gap: 6px;
+    width: 100%;
+  }
+  
+  .badge-nav-arrow {
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+    margin-bottom:120px;
+  }
+
+  #badgeNavRight {
+    margin-left:50px;
+  }
+
+  #badgeNavLeft {
+    margin-right:50px;
+  }
+  
+  .badge-item {
+    max-height: 100px;
+    margin-bottom:1px;
+  }
+  
+  .badge-emoji {
+    font-size: 40px;
+    margin-bottom: 1px;
+    user-select: none;
+  }
+  
+  .badge-text {
+    font-size: 14px;
+    line-height: 1.1;
   }
 }
