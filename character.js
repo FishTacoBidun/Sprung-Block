@@ -91,7 +91,7 @@ const player =
 let wasOnSurface = false;
 
 //controls
-const keys = { a: false, d: false, space: false };
+const keys = { a: false, d: false, space: false, w: false };
 
 //left, right, and jump
 document.addEventListener("keydown", (e) => 
@@ -99,6 +99,7 @@ document.addEventListener("keydown", (e) =>
   if (e.code === "KeyA") keys.a = true;
   if (e.code === "KeyD") keys.d = true;
   if (e.code === "Space") keys.space = true;
+  if (e.code === "KeyW") keys.w = true;
 });
 
 document.addEventListener("keyup", (e) => 
@@ -106,6 +107,7 @@ document.addEventListener("keyup", (e) =>
   if (e.code === "KeyA") keys.a = false;
   if (e.code === "KeyD") keys.d = false;
   if (e.code === "Space") keys.space = false;
+  if (e.code === "KeyW") keys.w = false;
 });
 
 //handle window resizing
@@ -161,6 +163,7 @@ async function loadAllTextures() {
     textures.dirt = await loadTexture('dirt', 'textures/dirt_text.png');
     textures.wood = await loadTexture('wood', 'textures/wood_text.png');
     textures.glow = await loadTexture('glow', 'textures/glow_text.png');
+    textures.darkGlow = await loadTexture('darkGlow', 'textures/dark_glow_text.png');
     textures.background = await loadTexture('background', 'textures/cave_text.png');
     textures.health3 = await loadTexture('health3', 'textures/3health_text.png');
     textures.health2 = await loadTexture('health2', 'textures/2health_text.png');
@@ -570,7 +573,8 @@ function update(dt = 1.0)
   else player.velocityX = 0;
 
   //jumping - only play sound if player was on a surface (successful jump)
-  if (keys.space && !player.jumping && wasOnSurface) 
+  //allow both space and w key for jumping
+  if ((keys.space || keys.w) && !player.jumping && wasOnSurface) 
   {
     player.velocityY = player.jumpForce;
     player.jumping = true;
@@ -622,8 +626,8 @@ function update(dt = 1.0)
         if (wasAbove && isBelowTop && fallingDown) {
           //player landed on top = kill enemy and bounce
           player.y = enemy.y - player.height;
-          //if holding space, give full jump boost, otherwise small bounce
-          if (keys.space) {
+          //if holding space or w, give full jump boost, otherwise small bounce
+          if (keys.space || keys.w) {
             player.velocityY = player.jumpForce; //full jump boost
           } else {
             player.velocityY = -12; //small bounce
@@ -1052,11 +1056,15 @@ function draw() {
   }
   
   //draw player glow first (behind player but above other objects)
-  if (texturesLoaded && textures.glow) {
+  //use dark glow on level 13, regular glow otherwise
+  const glowTexture = (currentLevelNum === 13 && texturesLoaded && textures.darkGlow) 
+    ? textures.darkGlow 
+    : textures.glow;
+  if (texturesLoaded && glowTexture) {
     const glowSize = 1200;
     const glowX = player.x + player.width / 2 - glowSize / 2;
     const glowY = player.y + player.height / 2 - glowSize / 2;
-    ctx.drawImage(textures.glow, glowX, glowY, glowSize, glowSize);
+    ctx.drawImage(glowTexture, glowX, glowY, glowSize, glowSize);
   }
 
   //draw player with texture
@@ -1097,7 +1105,10 @@ function draw() {
     else if (playerHealth === 0 && textures.health0) healthTexture = textures.health0;
     
     if (healthTexture) {
-      ctx.drawImage(healthTexture, 20, 20, 333, 120); //333 120 or 250 90
+      //use smaller health texture on smaller viewports
+      const healthWidth = (window.innerWidth < 1200 || window.innerHeight < 800) ? 250 : 333;
+      const healthHeight = (window.innerWidth < 1200 || window.innerHeight < 800) ? 90 : 120;
+      ctx.drawImage(healthTexture, 20, 20, healthWidth, healthHeight);
     } else {
       //fallback to text
       ctx.fillStyle = "white";

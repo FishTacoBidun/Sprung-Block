@@ -46,12 +46,12 @@ var tutorialTexts = [
   { //controls
     x: 120,
     y: 380,
-    text: "Use A, D, and SPACE to move and jump",
+    text: "Use A, D, and W or SPACE to move and jump",
     fontSize: "14px Arial",
     color: "white",
     align: "center",
     strokeColor: "orange",
-    strokeWidth: 2
+    strokeWidth: 1
   },
   { //pass through platforms
     x: 610,
@@ -61,7 +61,7 @@ var tutorialTexts = [
     color: "white",
     align: "center",
     strokeColor: "brown",
-    strokeWidth: 2
+    strokeWidth: 1
   },
   {
     x: 610,
@@ -71,7 +71,7 @@ var tutorialTexts = [
     color: "white",
     align: "center",
     strokeColor: "brown",
-    strokeWidth: 2
+    strokeWidth: 1
   },
   { //solid platforms
     x: 830,
@@ -81,7 +81,7 @@ var tutorialTexts = [
     color: "white",
     align: "center",
     strokeColor: "gray",
-    strokeWidth: 2
+    strokeWidth: 1
   },
   { //solid platforms
     x: 830,
@@ -91,7 +91,7 @@ var tutorialTexts = [
     color: "white",
     align: "center",
     strokeColor: "gray",
-    strokeWidth: 2
+    strokeWidth: 1
   },
   { //spikes
     x: 1345,
@@ -101,7 +101,7 @@ var tutorialTexts = [
     color: "white",
     align: "center",
     strokeColor: "red",
-    strokeWidth: 2
+    strokeWidth: 1
   },
   { //health (below spikes)
     x: 1345,
@@ -111,7 +111,7 @@ var tutorialTexts = [
     color: "white",
     align: "center",
     strokeColor: "red",
-    strokeWidth: 2
+    strokeWidth: 1
   },
   { //enemies
     x: 1720,
@@ -121,7 +121,7 @@ var tutorialTexts = [
     color: "white",
     align: "center",
     strokeColor: "black",
-    strokeWidth: 2
+    strokeWidth: 1
   },
   { 
     x: 1720,
@@ -131,7 +131,7 @@ var tutorialTexts = [
     color: "white",
     align: "center",
     strokeColor: "black",
-    strokeWidth: 2
+    strokeWidth: 1
   },
   {
     x: 1720,
@@ -141,7 +141,7 @@ var tutorialTexts = [
     color: "white",
     align: "center",
     strokeColor: "black",
-    strokeWidth: 2
+    strokeWidth: 1
   },
   {
     x: 1720,
@@ -151,7 +151,7 @@ var tutorialTexts = [
     color: "white",
     align: "center",
     strokeColor: "black",
-    strokeWidth: 2
+    strokeWidth: 1
   },
   { //the void
     x: 2295,
@@ -161,7 +161,7 @@ var tutorialTexts = [
     color: "white",
     align: "center",
     strokeColor: "tan",
-    strokeWidth: 2
+    strokeWidth: 1
   },
   {
     x: 2295,
@@ -171,7 +171,7 @@ var tutorialTexts = [
     color: "white",
     align: "center",
     strokeColor: "tan",
-    strokeWidth: 2
+    strokeWidth: 1
   },
   { //goal
     x: 2750,
@@ -181,7 +181,7 @@ var tutorialTexts = [
     color: "white",
     align: "center",
     strokeColor: "blue",
-    strokeWidth: 0.5
+    strokeWidth: 1
   }
 ];
 

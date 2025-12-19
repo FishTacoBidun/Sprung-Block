@@ -32,7 +32,7 @@ h1 {
   font-size: 60px;
   font-weight: 700;
   color: white;
-  margin: 40px 0 20px;
+  margin: 40px 0px 20px;
   text-align: center;
   width: 100%;
   max-width: 800px;
@@ -44,7 +44,7 @@ h2 {
   font-weight: 700;
   color: #d3d3d3;
   margin: 0;
-  padding: 15px 0 0 20px;
+  padding: 15px;
 }
 
 .credit-box {
