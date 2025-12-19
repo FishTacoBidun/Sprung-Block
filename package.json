@@ -7,12 +7,12 @@
   "scripts": {
     "start": "node backend/app.js",
     "dev": "nodemon backend/app.js",
-    "user": "node user_controller.mjs",
-    "user-dev": "nodemon user_controller.mjs",
-    "feedback": "node feedback_controller.mjs",
-    "share": "node share_controller.mjs",
-    "share-dev": "nodemon share_controller.mjs",
-    "feedback-dev": "nodemon feedback_controller.mjs"
+    "user": "node backend/user_controller.mjs",
+    "user-dev": "nodemon backend/user_controller.mjs",
+    "feedback": "node backend/feedback_controller.mjs",
+    "share": "node backend/share_controller.mjs",
+    "share-dev": "nodemon backend/share_controller.mjs",
+    "feedback-dev": "nodemon backend/feedback_controller.mjs"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",

@@ -390,3 +390,293 @@ body {
 #createAccountForm .error-message.show {
   display: block;
 }
+
+/*small PC viewport*/
+@media (max-width: 1549px) or (max-height: 899px) {
+  #gameLogo {
+    width: 1100px;
+  }
+  
+  #gameLogo.animate {
+    top: 10vh;
+  }
+  
+  .auth-options {
+    gap: 15px;
+    margin-top: 100px;
+  }
+  
+  .auth-button {
+    height: 175px;
+    width: 350px;
+    font-size: 40px;
+  }
+  
+  .auth-button.guest {
+    gap: 3px;
+  }
+  
+  .guest-subtitle {
+    font-size: 18px;
+    margin-top: 5px;
+  }
+  
+  #signInForm {
+    top: 9vh;
+    width: 650px;
+    min-height: 650px;
+    padding: 0px 40px 40px;
+  }
+  
+  #signInForm .form-close-button {
+    top: 20px;
+    left: 20px;
+  }
+  
+  #signInForm h2 {
+    font-size: 70px;
+    margin-bottom: 26px;
+  }
+  
+  #signInForm .form-group {
+    margin-bottom: 30px;
+  }
+  
+  #signInForm .form-group label {
+    margin-bottom: 8px;
+    font-size: 30px;
+  }
+  
+  #signInForm .form-group input {
+    width: 100%;
+    width: 400px;
+    padding: 6px 6px 6px 6px;
+    font-size: 36px;
+  }
+  
+  #signInForm .form-buttons {
+    margin-top: 0px;
+    bottom: 50px;
+    left: 0;
+    right: 0;
+  }
+  
+  #signInForm .form-buttons button[type="submit"] {
+    padding: 12px 40px;
+    font-size: 36px;
+    border-radius: 20px;
+  }
+  
+  #signInForm .error-message {
+    font-size: 30px;
+    margin-top: 10px;
+    bottom: 150px;
+    left: 0;
+    right: 0;
+    min-height: 20px;
+  }
+  
+  #createAccountForm {
+    top: 6vh;
+    left: 50%;
+    width: 700px;
+    min-height: 700px;
+    padding: 0px 0px 40px;
+  }
+  
+  #createAccountForm .form-close-button {
+    top: 20px;
+    left: 20px;
+  }
+  
+  #createAccountForm h2 {
+    font-size: 66px;
+    margin-bottom: 26px;
+  }
+  
+  #createAccountForm .form-group {
+    margin-bottom: 26px;
+  }
+  
+  #createAccountForm .form-group label {
+    margin-bottom: 6px;
+    font-size: 28px;
+  }
+  
+  #createAccountForm .form-group input {
+    width: 100%;
+    padding: 6px 6px 6px 6px;
+    font-size: 30px;
+  }
+  
+  #createAccountForm .password-requirements {
+    font-size: 15px;
+    margin-top: 5px;
+  }
+  
+  #createAccountForm .form-buttons {
+    margin-top: 0px;
+    width: 100%;
+    bottom: 36px;
+    left: 0;
+    right: 0;
+  }
+  
+  #createAccountForm .form-buttons button[type="submit"] {
+    padding: 10px 36px;
+    font-size: 34px;
+    border-radius: 20px;
+  }
+  
+  #createAccountForm .error-message {
+    font-size: 26px;
+    margin-top: 0px;
+    bottom: 120px;
+  }
+}
+
+/*laptop viewport*/
+@media (max-width: 1199px) or (max-height: 799px) {
+  #gameLogo {
+    width: 1000px;
+  }
+  
+  #gameLogo.animate {
+    top: 10vh;
+  }
+  
+  .auth-options {
+    gap: 10px;
+    margin-top: 100px;
+  }
+  
+  .auth-button {
+    height: 160px;
+    width: 320px;
+    font-size: 36px;
+  }
+  
+  .auth-button.guest {
+    gap: 2px;
+  }
+  
+  .guest-subtitle {
+    font-size: 16px;
+    margin-top: 5px;
+  }
+  
+  #signInForm {
+    top: 7vh;
+    width: 600px;
+    min-height: 600px;
+    padding: 0px 40px 40px;
+  }
+  
+  #signInForm .form-close-button {
+    top: 20px;
+    left: 20px;
+  }
+  
+  #signInForm h2 {
+    font-size: 60px;
+    margin-bottom: 26px;
+  }
+  
+  #signInForm .form-group {
+    margin-bottom: 24px;
+  }
+  
+  #signInForm .form-group label {
+    margin-bottom: 8px;
+    font-size: 26px;
+  }
+  
+  #signInForm .form-group input {
+    width: 100%;
+    width: 400px;
+    padding: 6px 6px 6px 6px;
+    font-size: 30px;
+  }
+  
+  #signInForm .form-buttons {
+    margin-top: 0px;
+    bottom: 50px;
+    left: 0;
+    right: 0;
+  }
+  
+  #signInForm .form-buttons button[type="submit"] {
+    padding: 12px 40px;
+    font-size: 30px;
+    border-radius: 20px;
+  }
+  
+  #signInForm .error-message {
+    font-size: 30px;
+    bottom: 130px;
+    left: 0;
+    right: 0;
+    min-height: 20px;
+  }
+  
+  #createAccountForm {
+    top: 4vh;
+    left: 50%;
+    width: 650px;
+    min-height: 650px;
+    padding: 0px 0px 40px;
+  }
+  
+  #createAccountForm .form-close-button {
+    top: 20px;
+    left: 20px;
+  }
+  
+  #createAccountForm h2 {
+    font-size: 56px;
+    margin-bottom: 22px;
+  }
+  
+  #createAccountForm .form-group {
+    margin-bottom: 24px;
+  }
+  
+  #createAccountForm .form-group label {
+    margin-bottom: 8px;
+    font-size: 26px;
+  }
+  
+  #createAccountForm .form-group input {
+    width: 100%;
+    padding: 6px 6px 6px 6px;
+    font-size: 30px;
+    border-radius: 5px;
+  }
+  
+  #createAccountForm .password-requirements {
+    font-size: 13px;
+    margin-top: 5px;
+  }
+  
+  #createAccountForm .form-buttons {
+    margin-top: 0px;
+    width: 100%;
+    bottom: 36px;
+    left: 0;
+    right: 0;
+  }
+  
+  #createAccountForm .form-buttons button[type="submit"] {
+    padding: 10px 35px;
+    font-size: 32px;
+    border-radius: 20px;
+  }
+  
+  #createAccountForm .error-message {
+    font-size: 24px;
+    bottom: 110px;
+    left: 0;
+    right: 0;
+    min-height: 20px;
+  }
+}

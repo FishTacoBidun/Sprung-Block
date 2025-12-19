@@ -213,6 +213,7 @@ var spikes = [
 
 //signs array (cosmetic objects)
 var signs = [
+  { x: 2440, y: groundY - 780, width: 60, height: 80, color: "brown", type: "down" },
   { x: 4400, y: groundY - 80, width: 60, height: 80, color: "brown", type: "up" },
   { x: 6045, y: groundY - 1780, width: 60, height: 80, color: "brown", type: "right" },
   { x: 6700, y: groundY - 680, width: 60, height: 80, color: "brown", type: "up" },

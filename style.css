@@ -1104,6 +1104,44 @@ body {
     font-size: 40px;
   }
 
+  #settingsMenu {
+    width: 500px;
+    min-height: 500px;
+    padding: 130px 40px 40px;
+    gap: 30px;
+  }
+  
+  .settings-close-button {
+    top: 65px;
+    left: 20px;
+  }
+  
+  .volume-control label {
+    font-size: 35px;
+  }
+  
+  .volume-bar {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  
+  .volume-square {
+    width: 30px;
+    height: 30px;
+  }
+  
+  .volume-control-button {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .settings-option {
+    padding: 10px 30px;
+    font-size: 30px;
+    max-width: 400px;
+  }
+
   .badge-button {
     width: 60px;
     height: 60px;
@@ -1172,5 +1210,23 @@ body {
   .badge-text {
     font-size: 14px;
     line-height: 1.1;
+  }
+
+  #levelTimer {
+    font-size: 35px;
+  }
+  
+  #pauseButton {
+    font-size: 30px;
+    padding: 15px 30px;
+  }
+
+  #pauseMenu {
+    gap: 10px;
+  }
+  
+  .pause-option {
+    font-size: 28px;
+    padding: 15px 30px;
   }
 }
