@@ -343,16 +343,19 @@ async function showLevelComplete() {
   
   //check and unlock badges (only for levels 1-3, not tutorial level 0)
   //do this asynchronously after stopping the game loop to reduce lag
+  //add a small delay to ensure level unlock has completed
   if (currentLevelNum > 0 && currentLevelNum <= 3) {
-    //unlock badges in the background without blocking
-    checkAndUnlockBadges(currentLevelNum, finalTime, playerHealth).then(() => {
-      //refresh badge display after unlocking badges
-      if (typeof displayBadges === 'function') {
-        displayBadges();
-      }
-    }).catch(err => {
-      console.error('Error unlocking badges:', err);
-    });
+    //wait a bit for level unlock to complete, then unlock badges
+    setTimeout(() => {
+      checkAndUnlockBadges(currentLevelNum, finalTime, playerHealth).then(() => {
+        //refresh badge display after unlocking badges
+        if (typeof displayBadges === 'function') {
+          displayBadges();
+        }
+      }).catch(err => {
+        console.error('Error unlocking badges:', err);
+      });
+    }, 200); //200ms delay to avoid race conditions
   }
   
   //show overlay after stopping game loop
@@ -514,12 +517,18 @@ function update(dt = 1.0)
     console.log(`Level ${currentLevelNum} completed!`);
     //only unlock next level if not tutorial (level 0)
     if (currentLevelNum > 0) {
-      // Unlock next level asynchronously (don't await to avoid blocking)
-      unlockNextLevel(currentLevelNum).catch(err => {
+      // Unlock next level and wait for it to complete before showing level complete
+      // This ensures level unlock finishes before badge unlocks start
+      unlockNextLevel(currentLevelNum).then(() => {
+        showLevelComplete();
+      }).catch(err => {
         console.error('Error unlocking next level:', err);
+        // Still show level complete even if unlock fails
+        showLevelComplete();
       });
+    } else {
+      showLevelComplete();
     }
-    showLevelComplete();
     return;
   }
   

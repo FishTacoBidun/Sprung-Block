@@ -60,8 +60,8 @@ if (!window.isAuthenticated) {
 
 // ============================================================================
 // TESTING MODE: UNLOCK ALL LEVELS IN GUEST MODE
-/*
-if (!window.isAuthenticated) {
+
+/*if (!window.isAuthenticated) {
   //unlock all levels (1 through 13, or update to match your TOTAL_LEVELS)
   const allLevels = [];
   for (let i = 1; i <= 13; i++) {
@@ -69,8 +69,8 @@ if (!window.isAuthenticated) {
   }
   setGuestLevels(allLevels);
   console.log('TESTING MODE: All levels unlocked in guest mode');
-}
-*/
+}*/
+
 // ============================================================================
 
 //enhanced unlock next level function
@@ -118,12 +118,15 @@ async function unlockNextLevelEnhanced(levelNum) {
   //note: refreshLevelButtonsEnhanced() will be called by character.js after unlockNextLevel returns
 }
 
-//enhanced unlock badge function
-async function unlockBadgeEnhanced(badgeId) {
+//enhanced unlock badge function with retry logic
+async function unlockBadgeEnhanced(badgeId, retryCount = 0) {
+  const MAX_RETRIES = 3;
+  const RETRY_DELAY = 500; //500ms delay between retries
+  
   if (window.isAuthenticated) {
     //authenticated: save to user database
     try {
-      console.log(`[CLIENT] Attempting to unlock badge ${badgeId} for authenticated user`);
+      console.log(`[CLIENT] Attempting to unlock badge ${badgeId} for authenticated user${retryCount > 0 ? ` (retry ${retryCount}/${MAX_RETRIES})` : ''}`);
       const response = await fetch(`${USER_API_BASE_URL}/users/me/badges/${badgeId}`, {
         method: 'PUT',
         headers: {
@@ -139,14 +142,34 @@ async function unlockBadgeEnhanced(badgeId) {
         console.log(`[CLIENT] Badge ${badgeId} unlocked for user!`, data);
         return true;
       } else {
-        const errorData = await response.json().catch(() => ({}));
-        console.error(`[CLIENT] Failed to unlock badge ${badgeId} for user: ${response.status}`, errorData);
-        //try to get response text for more details
+        //if server error (500-599) and we haven't exceeded retries, retry
+        if (response.status >= 500 && response.status < 600 && retryCount < MAX_RETRIES) {
+          console.log(`[CLIENT] Server error ${response.status} for badge ${badgeId}, retrying in ${RETRY_DELAY}ms...`);
+          //consume response body before retrying to avoid issues
+          await response.text().catch(() => '');
+          await new Promise(resolve => setTimeout(resolve, RETRY_DELAY));
+          return unlockBadgeEnhanced(badgeId, retryCount + 1);
+        }
+        
+        //try to get error details (can only read response body once)
         const errorText = await response.text().catch(() => '');
-        console.error(`[CLIENT] Error response text:`, errorText);
+        let errorData = {};
+        try {
+          errorData = JSON.parse(errorText);
+        } catch {
+          errorData = { message: errorText || 'Unknown error' };
+        }
+        console.error(`[CLIENT] Failed to unlock badge ${badgeId} for user: ${response.status}`, errorData);
         return false;
       }
     } catch (error) {
+      //if network error and we haven't exceeded retries, retry
+      if (retryCount < MAX_RETRIES) {
+        console.log(`[CLIENT] Network error unlocking badge ${badgeId}, retrying in ${RETRY_DELAY}ms...`);
+        await new Promise(resolve => setTimeout(resolve, RETRY_DELAY));
+        return unlockBadgeEnhanced(badgeId, retryCount + 1);
+      }
+      
       console.error(`[CLIENT] Error unlocking badge ${badgeId} for user:`, error);
       console.error(`[CLIENT] Error details:`, error.message, error.stack);
       return false;
