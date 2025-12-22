@@ -101,17 +101,17 @@ var surfaces = [
   { x: 6860, y: groundY - 935, width: 100, height: 15, color: "brown", type: "platform" },
   
   //nearly perfect jumps
-  { x: 7300, y: groundY - 130, width: 100, height: 15, color: "brown", type: "platform" },
+  { x: 7308, y: groundY - 130, width: 100, height: 15, color: "brown", type: "platform" },
   { x: 7665, y: groundY - 180, width: 100, height: 15, color: "brown", type: "platform" },
-  { x: 8030, y: groundY - 230, width: 100, height: 15, color: "brown", type: "platform" },
-  { x: 8422, y: groundY - 230, width: 100, height: 15, color: "brown", type: "platform" },
-  { x: 8814, y: groundY - 230, width: 100, height: 15, color: "brown", type: "platform" },
+  { x: 8022, y: groundY - 230, width: 100, height: 15, color: "brown", type: "platform" },
+  { x: 8406, y: groundY - 230, width: 100, height: 15, color: "brown", type: "platform" },
+  { x: 8794, y: groundY - 230, width: 100, height: 15, color: "brown", type: "platform" },
 
   //wall after nearly perfect jumps
-  { x: 9206, y: groundY - 230, width: 100, height: 230, color: "gray", type: "solid" },
+  { x: 9168, y: groundY - 230, width: 132, height: 230, color: "gray", type: "solid" },
 
   //the perfect jump
-  { x: 9595, y: groundY - 232, width: 100, height: 15, color: "brown", type: "platform" },
+  { x: 9587, y: groundY - 232, width: 108, height: 15, color: "brown", type: "platform" },
 
   //goal wall
   { x: 9900, y: groundY - 230, width: 300, height: 115, color: "gray", type: "solid" },

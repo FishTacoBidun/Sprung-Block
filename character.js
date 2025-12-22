@@ -76,8 +76,8 @@ const player =
 {
   x: START_X,
   y: START_Y,
-  width: 40,
-  height: 40,
+  width: 33,
+  height: 37,
   color: "red",
   velocityX: 0,
   velocityY: 0,
@@ -87,7 +87,7 @@ const player =
   jumpForce: -15,
 };
 
- //track if player was on surface for jump sound
+//track if player was on surface for jump sound
 let wasOnSurface = false;
 
 //controls
@@ -556,9 +556,9 @@ function update(dt = 1.0)
             playGameSound('death');
             console.log("Death animation started");
           } else {
-            //grant 1s invulnerability after non-fatal hit
+            //grant 1.2s invulnerability after non-fatal hit
             lastDamageTime = currentTime; //legacy, can be removed later
-            invulnerableUntil = currentTime + 1000;
+            invulnerableUntil = currentTime + 1200;
             playGameSound('hit'); //play hit sound for non-fatal damage
           }
         }
@@ -1084,7 +1084,15 @@ function draw() {
   
   ctx.globalAlpha = playerAlpha;
   if (texturesLoaded && textures.player) {
-    ctx.drawImage(textures.player, player.x, player.y, player.width, player.height);
+    //for testing
+    //ctx.fillStyle = player.color;
+    //ctx.fillRect(player.x, player.y, player.width, player.height);
+
+    //draw player texture at fixed 40x40, bottom-aligned and horizontally centered on the player hitbox
+    const TEX_SIZE = 40;
+    const texX = player.x + (player.width - TEX_SIZE) / 2;
+    const texY = (player.y + (player.height - TEX_SIZE)) + 1;
+    ctx.drawImage(textures.player, texX, texY, TEX_SIZE, TEX_SIZE);
   } else {
     ctx.fillStyle = player.color;
     ctx.fillRect(player.x, player.y, player.width, player.height);
@@ -1840,7 +1848,7 @@ const BADGE_CONFIG = {
   34: { emoji: "?", description: "Coming Soon" },  //coming soon
   35: { emoji: "?", description: "Coming Soon" },  //coming soon
   36: { emoji: "?", description: "Coming Soon" },  //coming soon
-  37: { emoji: "?", description: "Coming Soon" },  //coming soon
+  37: { emoji: "💀", description: "Beat Level 13" },  //beat level 13
 };
 
 //fetch all badges from API (uses enhanced function from game_auth.js)

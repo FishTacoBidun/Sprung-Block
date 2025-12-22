@@ -7,8 +7,9 @@ var groundY = BASE_HEIGHT - 50;
 var surfaces = [
   //GROUND
   { x: -120, y: groundY, width: 720, height: 1000, color: "green", type: "ground" },
-  { x: 1380, y: groundY, width: 1040, height: 1000, color: "green", type: "ground" },
+  { x: 1375, y: groundY, width: 1045, height: 1000, color: "green", type: "ground" },
   { x: 3620, y: groundY, width: 1300, height: 1000, color: "green", type: "ground" },
+  { x: 6500, y: groundY, width: 250, height: 1000, color: "green", type: "ground" },
 
   //PLATFORMS
   //cave
@@ -78,7 +79,7 @@ var surfaces = [
 
   //after pillar solid area
   { x: 6400, y: groundY - 1700, width: 350, height: 1000, color: "gray", type: "solid" },
-  { x: 6500, y: groundY - 600, width: 250, height: 1050, color: "gray", type: "solid" },
+  { x: 6500, y: groundY - 600, width: 250, height: 600, color: "gray", type: "solid" },
 
   //platforms after fake out 
   { x: 6750, y: groundY - 715, width: 215, height: 15, color: "brown", type: "platform" },
