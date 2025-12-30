@@ -25,7 +25,7 @@ app.use(express.json());
 
 //CORS configuration - allow credentials
 app.use(cors({
-  origin: 'http://FishTacoBidun.github.io', //whatever your frontend port is
+  origin: 'https://fishtacobidun.github.io', //whatever your frontend port is
   credentials: true
 }));
 
