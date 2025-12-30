@@ -60,7 +60,7 @@ if (!window.isAuthenticated) {
 
 // ============================================================================
 // TESTING MODE: UNLOCK ALL LEVELS IN GUEST MODE
-
+/*
 if (!window.isAuthenticated) {
   //unlock all levels (1 through 13, or update to match your TOTAL_LEVELS)
   const allLevels = [];
@@ -70,7 +70,7 @@ if (!window.isAuthenticated) {
   setGuestLevels(allLevels);
   console.log('TESTING MODE: All levels unlocked in guest mode');
 }
-
+*/
 // ============================================================================
 
 //enhanced unlock next level function
@@ -429,3 +429,4 @@ if (window.isAuthenticated) {
   console.log('Guest mode - progress stored in sessionStorage (isolated per session)');
 
 }
+
