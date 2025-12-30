@@ -1350,7 +1350,7 @@ function loadLevel(levelNumber) {
 
 const LEVELS_PER_PAGE = 6;
 const TOTAL_LEVELS = 13; //change this to add more levels (must match highest level{number}.js file)
-let currentLevelPage = 1;
+let currentLevelPage = 0;
 const levelButtonContainer = document.getElementById("levelButtonContainer");
 const levelNavLeft = document.getElementById("levelNavLeft");
 const levelNavRight = document.getElementById("levelNavRight");
