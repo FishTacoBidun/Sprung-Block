@@ -61,7 +61,7 @@ if (!window.isAuthenticated) {
 // ============================================================================
 // TESTING MODE: UNLOCK ALL LEVELS IN GUEST MODE
 
-/*if (!window.isAuthenticated) {
+if (!window.isAuthenticated) {
   //unlock all levels (1 through 13, or update to match your TOTAL_LEVELS)
   const allLevels = [];
   for (let i = 1; i <= 13; i++) {
@@ -69,7 +69,7 @@ if (!window.isAuthenticated) {
   }
   setGuestLevels(allLevels);
   console.log('TESTING MODE: All levels unlocked in guest mode');
-}*/
+}
 
 // ============================================================================
 
@@ -262,43 +262,46 @@ async function fetchBadgesEnhanced() {
   //wait for BADGE_CONFIG to be available (defined in character.js)
   //if it's not available yet, we'll create a minimal version
   const badgeConfig = window.BADGE_CONFIG || {
-    1: { emoji: "🥇", description: "Complete Level 1" },  //level 1 Complete
-    2: { emoji: "⏱️", description: "Complete Level 1 In Under 0:15" },  //level 1 Under 0:15
-    3: { emoji: "❤️", description: "Complete Level 1 With 3/3 Health" },  //level 1 With 3/3 Health
-    4: { emoji: "🥈", description: "Complete Level 2" },  //level 2 Complete
-    5: { emoji: "⌛", description: "Complete Level 2 In Under 1:00" },  //level 2 Under 1:00
-    6: { emoji: "💖", description: "Complete Level 2 With 3/3 Health" },  //level 2 With 3/3 Health
-    7: { emoji: "🥉", description: "Complete Level 3" },  //level 3 Complete
-    8: { emoji: "🕔", description: "Complete Level 3 In Under 2:00" },  //level 3 Under 2:00
-    9: { emoji: "❤️‍🔥", description: "Complete Level 3 With 3/3 Health" },  //level 3 With 3/3 Health
-    10: { emoji: "🏅", description: "Complete All Levels" }, //complete all levels
-    11: { emoji: "🕰️", description: "Complete All Level Time Challenges" }, //complete all level time challenges
-    12: { emoji: "💛", description: "Complete All Level Health Challenges" },  //complete all health time challenges
-    13: { emoji: "?", description: "Coming Soon" },  //coming soon
-    14: { emoji: "?", description: "Coming Soon" },  //coming soon
-    15: { emoji: "?", description: "Coming Soon" },  //coming soon
-    16: { emoji: "?", description: "Coming Soon" },  //coming soon
-    17: { emoji: "?", description: "Coming Soon" },  //coming soon
-    18: { emoji: "?", description: "Coming Soon" },  //coming soon
-    19: { emoji: "?", description: "Coming Soon" },  //coming soon
-    20: { emoji: "?", description: "Coming Soon" },  //coming soon
-    21: { emoji: "?", description: "Coming Soon" },  //coming soon
-    22: { emoji: "?", description: "Coming Soon" },  //coming soon
-    23: { emoji: "?", description: "Coming Soon" },  //coming soon
-    24: { emoji: "?", description: "Coming Soon" },  //coming soon
-    25: { emoji: "?", description: "Coming Soon" },  //coming soon
-    26: { emoji: "?", description: "Coming Soon" },  //coming soon
-    27: { emoji: "?", description: "Coming Soon" },  //coming soon
-    28: { emoji: "?", description: "Coming Soon" },  //coming soon
-    29: { emoji: "?", description: "Coming Soon" },  //coming soon
-    30: { emoji: "?", description: "Coming Soon" },  //coming soon
-    31: { emoji: "?", description: "Coming Soon" },  //coming soon
-    32: { emoji: "?", description: "Coming Soon" },  //coming soon
-    33: { emoji: "?", description: "Coming Soon" },  //coming soon
-    34: { emoji: "?", description: "Coming Soon" },  //coming soon
-    35: { emoji: "?", description: "Coming Soon" },  //coming soon
-    36: { emoji: "?", description: "Coming Soon" },  //coming soon
-    37: { emoji: "?", description: "Coming Soon" },  //coming soon
+    1: { emoji: "🥉", description: "Complete Level 1" },  //easy badges
+    2: { emoji: "⏱️", description: "Complete Level 1 In Under 0:10" },
+    3: { emoji: "❤️", description: "Complete Level 1 With 3/3 Health" }, 
+    4: { emoji: "🥉", description: "Complete Level 2" }, 
+    5: { emoji: "⏱️", description: "Complete Level 2 In Under 0:15" },
+    6: { emoji: "❤️", description: "Complete Level 2 With 3/3 Health" },
+    7: { emoji: "🥉", description: "Complete Level 3" },
+    8: { emoji: "⏱️", description: "Complete Level 3 In Under 0:10" }, 
+    9: { emoji: "❤️", description: "Complete Level 3 With 3/3 Health" },
+    10: { emoji: "🥉", description: "Complete Level 4" },
+    11: { emoji: "⏱️", description: "Complete Level 4 In Under " },
+    12: { emoji: "❤️", description: "Complete Level 4 With 3/3 Health" },
+    13: { emoji: "🥈", description: "Complete Level 5" },  //medium badges
+    14: { emoji: "⌛", description: "Complete Level 5 In Under " },
+    15: { emoji: "💖", description: "Complete Level 5 With 3/3 Health" },
+    16: { emoji: "🥈", description: "Complete Level 6" },
+    17: { emoji: "⌛", description: "Complete Level 6 In Under " },
+    18: { emoji: "💖", description: "Complete Level 6 With 3/3 Health" },
+    19: { emoji: "🥈", description: "Complete Level 7" },
+    20: { emoji: "⌛", description: "Complete Level 7 In Under " },
+    21: { emoji: "💖", description: "Complete Level 7 With 3/3 Health" },
+    22: { emoji: "🥈", description: "Complete Level 8" },
+    23: { emoji: "⌛", description: "Complete Level 8 In Under 1:30" },
+    24: { emoji: "💖", description: "Complete Level 8 With 3/3 Health" },
+    25: { emoji: "🥇", description: "Complete Level 9" }, //hard badges
+    26: { emoji: "🕔", description: "Complete Level 9 In Under " },
+    27: { emoji: "❤️‍🔥", description: "Complete Level 9 With 3/3 Health" },
+    28: { emoji: "🥇", description: "Complete Level 10" },
+    29: { emoji: "🕔", description: "Complete Level 10 In Under " },
+    30: { emoji: "❤️‍🔥", description: "Complete Level 10 With 3/3 Health" },
+    31: { emoji: "🥇", description: "Complete Level 11" }, 
+    32: { emoji: "🕔", description: "Complete Level 11 In Under " },
+    33: { emoji: "❤️‍🔥", description: "Complete Level 11 With 3/3 Health" },
+    34: { emoji: "🥇", description: "Complete Level 12" },
+    35: { emoji: "🕔", description: "Complete Level 12 In Under 2:15" },
+    36: { emoji: "❤️‍🔥", description: "Complete Level 12 With 3/3 Health" },
+    37: { emoji: "🏅", description: "Complete All Levels" }, //completion badges
+    38: { emoji: "🕰️", description: "Complete All Level Time Challenges" },
+    39: { emoji: "💛", description: "Complete All Level Health Challenges" },
+    40: { emoji: "💀", description: "Beat Level 13" },  //impossible badge
   };
   
   if (window.isAuthenticated) {
@@ -318,7 +321,7 @@ async function fetchBadgesEnhanced() {
         //map to badge objects - format matches what displayBadges() expects
         //displayBadges() uses badge.badgeId and BADGE_CONFIG, so we just need badgeId and unlocked
         const badges = [];
-        for (let i = 1; i <= 12; i++) {
+        for (let i = 1; i <= 40; i++) {
           badges.push({
             badgeId: i,
             unlocked: unlockedBadgeIds.includes(i)
@@ -333,7 +336,7 @@ async function fetchBadgesEnhanced() {
       console.error('Error fetching user badges:', error);
       //return all badges as locked
       const badges = [];
-      for (let i = 1; i <= 12; i++) {
+      for (let i = 1; i <= 40; i++) {
         badges.push({
           badgeId: i,
           unlocked: false
@@ -347,7 +350,7 @@ async function fetchBadgesEnhanced() {
     
     //map to badge objects - format matches what displayBadges() expects
     const badges = [];
-    for (let i = 1; i <= 12; i++) {
+    for (let i = 1; i <= 40; i++) {
       badges.push({
         badgeId: i,
         unlocked: unlockedBadgeIds.includes(i)

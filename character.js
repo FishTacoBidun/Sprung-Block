@@ -76,19 +76,81 @@ const player =
 {
   x: START_X,
   y: START_Y,
-  width: 33,
-  height: 37,
+  width: 32, //32
+  height: 35, //35
   color: "red",
   velocityX: 0,
   velocityY: 0,
-  speed: 7,
+  speed: 7, //7
   jumping: false,
-  gravity: 0.8,
-  jumpForce: -15,
+  gravity: 0.8, //0.8
+  jumpForce: -15, //-15
 };
 
 //track if player was on surface for jump sound
 let wasOnSurface = false;
+
+//spike collision detection
+function generateSpikeHitboxes(spike) {
+  const NUM_RECTANGLES = 10;
+  const RECT_HEIGHT = 3; //each rectangle is 3 pixels tall
+  const hitboxes = [];
+  
+  //triangle definition: top point at center-top, base at bottom
+  const triTopX = spike.x + spike.width / 2;
+  const triTopY = spike.y;
+  const triBottomY = spike.y + spike.height;
+  
+  //generate each rectangle
+  for (let i = 0; i < NUM_RECTANGLES; i++) {
+    //calculate y position of this rectangle (top edge)
+    const rectY = spike.y + (i * RECT_HEIGHT);
+    
+    //calculate how far down we are (0 at top, 1 at bottom)
+    const progress = (rectY + RECT_HEIGHT / 2 - triTopY) / (triBottomY - triTopY);
+    
+    //calculate width = baseWidth * progress
+    const rectWidth = spike.width * progress * (0.75 + (i * 0.02));
+    
+    //center the rectangle horizontally
+    const rectX = triTopX - rectWidth / 2;
+    
+    //only add rectangle if it has meaningful width (skip very small top rectangles)
+    if (rectWidth > 3) {
+      hitboxes.push({
+        x: rectX,
+        y: rectY,
+        width: rectWidth,
+        height: RECT_HEIGHT
+      });
+    }
+  }
+  
+  return hitboxes;
+}
+
+//Check if player rectangle intersects with any of the spike's hitbox rectangles
+//Parameters: player object and array of hitbox rectangles
+//Returns: true if collision detected, false otherwise
+function playerIntersectsSpikeHitboxes(player, hitboxes) {
+  //Quick AABB check first - check if player overlaps spike's bounding box
+  //This is a fast rejection test
+  const playerRight = player.x + player.width;
+  const playerBottom = player.y + player.height;
+  
+  //Check each hitbox rectangle
+  for (const hitbox of hitboxes) {
+    //Standard AABB collision check
+    if (player.x < hitbox.x + hitbox.width &&
+        playerRight > hitbox.x &&
+        player.y < hitbox.y + hitbox.height &&
+        playerBottom > hitbox.y) {
+      return true; //Collision detected
+    }
+  }
+  
+  return false; //No collision
+}
 
 //controls
 const keys = { a: false, d: false, space: false, w: false };
@@ -170,6 +232,7 @@ async function loadAllTextures() {
     textures.health1 = await loadTexture('health1', 'textures/1health_text.png');
     textures.health0 = await loadTexture('health0', 'textures/0health_text.png');
     textures.signRight = await loadTexture('signRight', 'textures/right_sign_text.png');
+    textures.signLeft = await loadTexture('signLeft', 'textures/left_sign_text.png');
     textures.signUp = await loadTexture('signUp', 'textures/up_sign_text.png');
     textures.signDown = await loadTexture('signDown', 'textures/down_sign_text.png');
     
@@ -344,7 +407,7 @@ async function showLevelComplete() {
   //check and unlock badges (only for levels 1-3, not tutorial level 0)
   //do this asynchronously after stopping the game loop to reduce lag
   //add a small delay to ensure level unlock has completed
-  if (currentLevelNum > 0 && currentLevelNum <= 3) {
+  if (currentLevelNum > 0 && currentLevelNum <= 13) {
     //wait a bit for level unlock to complete, then unlock badges
     setTimeout(() => {
       checkAndUnlockBadges(currentLevelNum, finalTime, playerHealth).then(() => {
@@ -703,12 +766,15 @@ function update(dt = 1.0)
   //check spike collisions (before surface collisions) - skip if dying
   if (typeof spikes !== 'undefined' && spikes && !isDying) {
     for (const spike of spikes) {
-      //check if player intersects with spike
-      if (player.x < spike.x + spike.width &&
-          player.x + player.width > spike.x &&
-          player.y < spike.y + spike.height &&
-          player.y + player.height > spike.y) {
-        //take damage from any side
+      //Generate the 10 composite hitbox rectangles for this spike
+      const spikeHitboxes = generateSpikeHitboxes(spike);
+      
+      //Check if player intersects with any of the spike's hitbox rectangles
+      if (playerIntersectsSpikeHitboxes(
+        { x: player.x, y: player.y, width: player.width, height: player.height },
+        spikeHitboxes
+      )) {
+        //Player hit spike - take damage (respect invulnerability period)
         const currentTime = Date.now();
         if (currentTime >= invulnerableUntil) {
           HealthSystem.writeDamage(1);
@@ -974,6 +1040,7 @@ function draw() {
     for (const sign of signs) {
       let texture = null;
       if (sign.type === "right" && textures.signRight) texture = textures.signRight;
+      else if (sign.type === "left" && textures.signLeft) texture = textures.signLeft;
       else if (sign.type === "up" && textures.signUp) texture = textures.signUp;
       else if (sign.type === "down" && textures.signDown) texture = textures.signDown;
       
@@ -1039,6 +1106,19 @@ function draw() {
         ctx.closePath();
         ctx.fill();
       }
+      
+      //spike hitbox visualization (for testing)
+      /*
+      const spikeHitboxes = generateSpikeHitboxes(spike);
+      ctx.save();
+      ctx.fillStyle = "rgb(255, 0, 0)"; //semi-transparent red fill
+      for (const hitbox of spikeHitboxes) {
+        ctx.fillRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
+        ctx.fillRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
+      }
+      ctx.restore();
+      */
+      
     }
   }
 
@@ -1093,7 +1173,7 @@ function draw() {
   
   ctx.globalAlpha = playerAlpha;
   if (texturesLoaded && textures.player) {
-    //for testing
+    //show player hitbox (for testing)
     //ctx.fillStyle = player.color;
     //ctx.fillRect(player.x, player.y, player.width, player.height);
 
@@ -1270,7 +1350,7 @@ function loadLevel(levelNumber) {
 
 const LEVELS_PER_PAGE = 6;
 const TOTAL_LEVELS = 13; //change this to add more levels (must match highest level{number}.js file)
-let currentLevelPage = 0;
+let currentLevelPage = 1;
 const levelButtonContainer = document.getElementById("levelButtonContainer");
 const levelNavLeft = document.getElementById("levelNavLeft");
 const levelNavRight = document.getElementById("levelNavRight");
@@ -1821,43 +1901,46 @@ if (shareResultsOption) {
 }
 
 const BADGE_CONFIG = {
-  1: { emoji: "🥇", description: "Complete Level 1" },  //level 1 Complete
-  2: { emoji: "⏱️", description: "Complete Level 1 In Under 0:15" },  //level 1 Under 0:15
-  3: { emoji: "❤️", description: "Complete Level 1 With 3/3 Health" },  //level 1 With 3/3 Health
-  4: { emoji: "🥈", description: "Complete Level 2" },  //level 2 Complete
-  5: { emoji: "⌛", description: "Complete Level 2 In Under 1:00" },  //level 2 Under 1:00
-  6: { emoji: "💖", description: "Complete Level 2 With 3/3 Health" },  //level 2 With 3/3 Health
-  7: { emoji: "🥉", description: "Complete Level 3" },  //level 3 Complete
-  8: { emoji: "🕔", description: "Complete Level 3 In Under 2:00" },  //level 3 Under 2:00
-  9: { emoji: "❤️‍🔥", description: "Complete Level 3 With 3/3 Health" },  //level 3 With 3/3 Health
-  10: { emoji: "🏅", description: "Complete All Levels" }, //complete all levels
-  11: { emoji: "🕰️", description: "Complete All Level Time Challenges" }, //complete all level time challenges
-  12: { emoji: "💛", description: "Complete All Level Health Challenges" },  //complete all health time challenges
-  13: { emoji: "?", description: "Coming Soon" },  //coming soon
-  14: { emoji: "?", description: "Coming Soon" },  //coming soon
-  15: { emoji: "?", description: "Coming Soon" },  //coming soon
-  16: { emoji: "?", description: "Coming Soon" },  //coming soon
-  17: { emoji: "?", description: "Coming Soon" },  //coming soon
-  18: { emoji: "?", description: "Coming Soon" },  //coming soon
-  19: { emoji: "?", description: "Coming Soon" },  //coming soon
-  20: { emoji: "?", description: "Coming Soon" },  //coming soon
-  21: { emoji: "?", description: "Coming Soon" },  //coming soon
-  22: { emoji: "?", description: "Coming Soon" },  //coming soon
-  23: { emoji: "?", description: "Coming Soon" },  //coming soon
-  24: { emoji: "?", description: "Coming Soon" },  //coming soon
-  25: { emoji: "?", description: "Coming Soon" },  //coming soon
-  26: { emoji: "?", description: "Coming Soon" },  //coming soon
-  27: { emoji: "?", description: "Coming Soon" },  //coming soon
-  28: { emoji: "?", description: "Coming Soon" },  //coming soon
-  29: { emoji: "?", description: "Coming Soon" },  //coming soon
-  30: { emoji: "?", description: "Coming Soon" },  //coming soon
-  31: { emoji: "?", description: "Coming Soon" },  //coming soon
-  32: { emoji: "?", description: "Coming Soon" },  //coming soon
-  33: { emoji: "?", description: "Coming Soon" },  //coming soon
-  34: { emoji: "?", description: "Coming Soon" },  //coming soon
-  35: { emoji: "?", description: "Coming Soon" },  //coming soon
-  36: { emoji: "?", description: "Coming Soon" },  //coming soon
-  37: { emoji: "💀", description: "Beat Level 13" },  //beat level 13
+  1: { emoji: "🥉", description: "Complete Level 1" },  //easy badges
+  2: { emoji: "⏱️", description: "Complete Level 1 In Under 0:06" },
+  3: { emoji: "❤️", description: "Complete Level 1 With 3/3 Health" }, 
+  4: { emoji: "🥉", description: "Complete Level 2" }, 
+  5: { emoji: "⏱️", description: "Complete Level 2 In Under 0:11" },
+  6: { emoji: "❤️", description: "Complete Level 2 With 3/3 Health" },
+  7: { emoji: "🥉", description: "Complete Level 3" },
+  8: { emoji: "⏱️", description: "Complete Level 3 In Under 0:10" }, 
+  9: { emoji: "❤️", description: "Complete Level 3 With 3/3 Health" },
+  10: { emoji: "🥉", description: "Complete Level 4" },
+  11: { emoji: "⏱️", description: "Complete Level 4 In Under 0:20" },
+  12: { emoji: "❤️", description: "Complete Level 4 With 3/3 Health" },
+  13: { emoji: "🥈", description: "Complete Level 5" },  //medium badges
+  14: { emoji: "⌛", description: "Complete Level 5 In Under 0:30" },
+  15: { emoji: "💖", description: "Complete Level 5 With 3/3 Health" },
+  16: { emoji: "🥈", description: "Complete Level 6" },
+  17: { emoji: "⌛", description: "Complete Level 6 In Under 0:30" },
+  18: { emoji: "💖", description: "Complete Level 6 With 3/3 Health" },
+  19: { emoji: "🥈", description: "Complete Level 7" },
+  20: { emoji: "⌛", description: "Complete Level 7 In Under 0:40" },
+  21: { emoji: "💖", description: "Complete Level 7 With 3/3 Health" },
+  22: { emoji: "🥈", description: "Complete Level 8" },
+  23: { emoji: "⌛", description: "Complete Level 8 In Under 0:45" },
+  24: { emoji: "💖", description: "Complete Level 8 With 3/3 Health" },
+  25: { emoji: "🥇", description: "Complete Level 9" }, //hard badges
+  26: { emoji: "🕔", description: "Complete Level 9 In Under 1:15" },
+  27: { emoji: "❤️‍🔥", description: "Complete Level 9 With 3/3 Health" },
+  28: { emoji: "🥇", description: "Complete Level 10" },
+  29: { emoji: "🕔", description: "Complete Level 10 In Under 1:50" },
+  30: { emoji: "❤️‍🔥", description: "Complete Level 10 With 3/3 Health" },
+  31: { emoji: "🥇", description: "Complete Level 11" }, 
+  32: { emoji: "🕔", description: "Complete Level 11 In Under 1:30" },
+  33: { emoji: "❤️‍🔥", description: "Complete Level 11 With 3/3 Health" },
+  34: { emoji: "🥇", description: "Complete Level 12" },
+  35: { emoji: "🕔", description: "Complete Level 12 In Under " },
+  36: { emoji: "❤️‍🔥", description: "Complete Level 12 With 3/3 Health" },
+  37: { emoji: "🏅", description: "Complete All Levels" }, //completion badges
+  38: { emoji: "🕰️", description: "Complete All Level Time Challenges" },
+  39: { emoji: "💛", description: "Complete All Level Health Challenges" },
+  40: { emoji: "💀", description: "Beat Level 13" },  //impossible badge
 };
 
 //fetch all badges from API (uses enhanced function from game_auth.js)
@@ -2037,44 +2120,127 @@ async function checkAndUnlockBadges(levelNum, completionTime, completionHealth) 
   
   //level-specific badges
   if (levelNum === 1) {
-    //Badge 1: 1evel 1 complete
     await unlockBadge(1);
     
-    //Badge 2: level 1 complete under 0:15 (15 seconds)
-    if (timeInSeconds <= 15) {
+    if (timeInSeconds < 6) {
       await unlockBadge(2);
     }
     
-    //Badge 3: level 1 complete with 3/3 health
     if (completionHealth === 3) {
       await unlockBadge(3);
     }
   } else if (levelNum === 2) {
-    //Badge 4: 1evel 2 complete
     await unlockBadge(4);
     
-    //Badge 5: level 2 complete under 1:00 (60 seconds)
-    if (timeInSeconds <= 60) {
+    if (timeInSeconds < 11) {
       await unlockBadge(5);
     }
     
-    //Badge 6: level 2 complete with 3/3 health
     if (completionHealth === 3) {
       await unlockBadge(6);
     }
   } else if (levelNum === 3) {
-    //Badge 7: 1evel 3 complete
     await unlockBadge(7);
     
-    //Badge 8: level 3 complete under 2:00 (120 seconds)
-    if (timeInSeconds <= 120) {
+    if (timeInSeconds < 10) {
       await unlockBadge(8);
     }
     
-    //Badge 9: level 3 complete with 3/3 health
     if (completionHealth === 3) {
       await unlockBadge(9);
     }
+  } else if (levelNum === 4) {
+    await unlockBadge(10);
+    
+    if (timeInSeconds < 20) {
+      await unlockBadge(11);
+    }
+    
+    if (completionHealth === 3) {
+      await unlockBadge(12);
+    }
+  } else if (levelNum === 5) {
+    await unlockBadge(13);
+    
+    if (timeInSeconds < 30) {
+      await unlockBadge(14);
+    }
+    
+    if (completionHealth === 3) {
+      await unlockBadge(15);
+    }
+  } else if (levelNum === 6) {
+    await unlockBadge(16);
+    
+    if (timeInSeconds < 30) {
+      await unlockBadge(17);
+    }
+    
+    if (completionHealth === 3) {
+      await unlockBadge(18);
+    }
+  } else if (levelNum === 7) {
+    await unlockBadge(19);
+    
+    if (timeInSeconds < 40) {
+      await unlockBadge(20);
+    }
+    
+    if (completionHealth === 3) {
+      await unlockBadge(21);
+    }
+  } else if (levelNum === 8) {
+    await unlockBadge(22);
+    
+    if (timeInSeconds < 45) {
+      await unlockBadge(23);
+    }
+    
+    if (completionHealth === 3) {
+      await unlockBadge(24);
+    }
+  } else if (levelNum === 9) {
+    await unlockBadge(25);
+    
+    if (timeInSeconds < 75) {
+      await unlockBadge(26);
+    }
+    
+    if (completionHealth === 3) {
+      await unlockBadge(27);
+    }
+  } else if (levelNum === 10) {
+    await unlockBadge(28);
+    
+    if (timeInSeconds < 110) {
+      await unlockBadge(29);
+    }
+    
+    if (completionHealth === 3) {
+      await unlockBadge(30);
+    }
+  } else if (levelNum === 11) {
+    await unlockBadge(31);
+    
+    if (timeInSeconds < 90) {
+      await unlockBadge(32);
+    }
+    
+    if (completionHealth === 3) {
+      await unlockBadge(33);
+    }
+  } else if (levelNum === 12) {
+    await unlockBadge(34);
+    
+    if (timeInSeconds < 10000) {
+      await unlockBadge(35);
+    }
+    
+    if (completionHealth === 3) {
+      await unlockBadge(36);
+    }
+  } else if (levelNum === 13) {
+    await unlockBadge(40);
   }
   
   //check composite badges (need to fetch current badge status)
@@ -2084,18 +2250,18 @@ async function checkAndUnlockBadges(levelNum, completionTime, completionHealth) 
   const badgeMap = {};
   badges.forEach(b => badgeMap[b.badgeId] = b);
   
-  //Badge 10: complete all levels (badges 1, 4, 7)
-  if (badgeMap[1]?.unlocked && badgeMap[4]?.unlocked && badgeMap[7]?.unlocked) {
-    await unlockBadge(10);
+  //all levels
+  if (badgeMap[1]?.unlocked && badgeMap[4]?.unlocked && badgeMap[7]?.unlocked && badgeMap[10]?.unlocked && badgeMap[13]?.unlocked && badgeMap[16]?.unlocked && badgeMap[19]?.unlocked && badgeMap[22]?.unlocked && badgeMap[25]?.unlocked && badgeMap[28]?.unlocked && badgeMap[31]?.unlocked && badgeMap[34]?.unlocked) {
+    await unlockBadge(37);
   }
   
-  //Badge 11: complete all level time challenges (badges 2, 5, 8)
-  if (badgeMap[2]?.unlocked && badgeMap[5]?.unlocked && badgeMap[8]?.unlocked) {
-    await unlockBadge(11);
+  //all time challenges
+  if (badgeMap[2]?.unlocked && badgeMap[5]?.unlocked && badgeMap[8]?.unlocked && badgeMap[11]?.unlocked && badgeMap[14]?.unlocked && badgeMap[17]?.unlocked && badgeMap[20]?.unlocked && badgeMap[23]?.unlocked && badgeMap[26]?.unlocked && badgeMap[29]?.unlocked && badgeMap[32]?.unlocked && badgeMap[35]?.unlocked) {
+    await unlockBadge(38);
   }
   
-  //Badge 12: complete all level health challenges (badges 3, 6, 9)
-  if (badgeMap[3]?.unlocked && badgeMap[6]?.unlocked && badgeMap[9]?.unlocked) {
-    await unlockBadge(12);
+  //all health challenges
+  if (badgeMap[3]?.unlocked && badgeMap[6]?.unlocked && badgeMap[9]?.unlocked && badgeMap[12]?.unlocked && badgeMap[15]?.unlocked && badgeMap[18]?.unlocked && badgeMap[21]?.unlocked && badgeMap[24]?.unlocked && badgeMap[27]?.unlocked && badgeMap[30]?.unlocked && badgeMap[33]?.unlocked && badgeMap[36]?.unlocked) {
+    await unlockBadge(39);
   }
 }

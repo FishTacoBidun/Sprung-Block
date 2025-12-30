@@ -6,33 +6,20 @@ var groundY = BASE_HEIGHT - 50;
 //surfaces array
 var surfaces = [
   //GROUND
-  { x: -100, y: groundY, width: 420, height: 1000, color: "green", type: "ground" },
-  { x: 490, y: groundY, width: 410, height: 1000, color: "green", type: "ground" },
-  { x: 1600, y: groundY, width: 1700, height: 1000, color: "green", type: "ground" },
-  { x: 4180, y: 360, width: 550, height: 1360, color: "green", type: "ground" },
+  { x: -120, y: groundY, width: 1000, height: 1000, color: "green", type: "ground" },
+  { x: 1960, y: groundY, width: 700, height: 1000, color: "green", type: "ground" },
 
   //PLATFORMS
-  //two starter jumps
-  { x: 1050, y: groundY, width: 125, height: 15, color: "brown", type: "platform" },
-  { x: 1325, y: groundY, width: 125, height: 15, color: "brown", type: "platform" },
-
-  //big wall
-  { x: 2500, y: groundY - 550, width: 200, height: 550, color: "gray", type: "solid" },
-
-  //to get over wall
-  { x: 2125, y: 320, width: 120, height: 15, color: "brown", type: "platform" },
-  { x: 2250, y: 190, width: 120, height: 15, color: "brown", type: "platform" },
-  { x: 2000, y: 90, width: 120, height: 15, color: "brown", type: "platform" },
-  { x: 2250, y: -10, width: 120, height: 15, color: "brown", type: "platform" },
-
-  //to get over gap
-  { x: 3400, y: 360, width: 600, height: 15, color: "brown", type: "platform" },
+  //clear gap
+  { x: 1000, y: groundY - 50, width: 150, height: 15, color: "brown", type: "platform" },
+  { x: 1270, y: groundY - 100, width: 300, height: 15, color: "brown", type: "platform" },
+  { x: 1690, y: groundY - 50, width: 150, height: 15, color: "brown", type: "platform" },
 ];
 
 //goal object
 var goal = {
-  x: 4425,
-  y: 300,
+  x: 2500,
+  y: groundY - 60,
   width: 50,
   height: 50,
   color: "yellow"
@@ -40,46 +27,39 @@ var goal = {
 
 //enemies array (orange cubes)
 var enemies = [
-  //on ground
-  { x: 1820, y: groundY - 70, width: 40, height: 60, color: "orange" },
-
-  //on platform
-  { x: 3670, y: 290, width: 40, height: 60, color: "orange" },
+  //middle of gap
+  { x: 1400, y: groundY - 170, width: 40, height: 60, color: "orange" },
 ];
 
 //spikes array (gray triangles)
 var spikes = [
-  //below wall
-  { x: 2700, y: groundY - 30, width: 30, height: 30, color: "gray" },
-  { x: 2730, y: groundY - 30, width: 30, height: 30, color: "gray" },
-  { x: 2760, y: groundY - 30, width: 30, height: 30, color: "gray" },
+  //before gap
+  { x: 480, y: groundY - 30, width: 30, height: 30, color: "gray" },
+  { x: 510, y: groundY - 30, width: 30, height: 30, color: "gray" },
+  { x: 540, y: groundY - 30, width: 30, height: 30, color: "gray" },
 
-  //on platform
-  { x: 3500, y: 330, width: 30, height: 30, color: "gray" },
-  { x: 3530, y: 330, width: 30, height: 30, color: "gray" },
-
-  { x: 3840, y: 330, width: 30, height: 30, color: "gray" },
-  { x: 3870, y: 330, width: 30, height: 30, color: "gray" },
+  //after gap
+  { x: 2190, y: groundY - 30, width: 30, height: 30, color: "gray" },
+  { x: 2220, y: groundY - 30, width: 30, height: 30, color: "gray" },
+  { x: 2250, y: groundY - 30, width: 30, height: 30, color: "gray" },
 ];
 
 //signs array (cosmetic objects)
 var signs = [
   { x: 200, y: groundY - 80, width: 60, height: 80, color: "brown", type: "right" },
-  { x: 2155, y: groundY - 80, width: 60, height: 80, color: "brown", type: "up" },
-  { x: 2570, y: groundY - 630, width: 60, height: 80, color: "brown", type: "right" },
 ];
 
 var tutorialTexts = [
-  { //clear text
-    x: 0,
-    y: 0,
+  { //controls
+    x: 120,
+    y: 380,
     text: "",
     fontSize: "14px Arial",
     color: "white",
     align: "center",
-    strokeColor: "white",
+    strokeColor: "red",
     strokeWidth: 2
-  }
+  },
 ];
 
 var currentLevel = 1;
