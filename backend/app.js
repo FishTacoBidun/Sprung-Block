@@ -221,7 +221,7 @@ app.put('/api/users/me/levels/:levelId', requireAuth, asyncHandler(async (req, r
   
   console.log(`[UNLOCK LEVEL] User ${req.session.userId} attempting to unlock level ${levelId}`);
   
-  if (isNaN(levelId) || levelId < 1 || levelId > 3) {
+  if (isNaN(levelId) || levelId < 1 || levelId > 13) {
     console.error(`[UNLOCK LEVEL] Invalid levelId: ${levelId}`);
     return res.status(400).json(ERROR_INVALID_REQ);
   }
@@ -247,7 +247,7 @@ app.put('/api/users/me/badges/:badgeId', requireAuth, asyncHandler(async (req, r
   
   console.log(`[UNLOCK BADGE] User ${req.session.userId} attempting to unlock badge ${badgeId}`);
   
-  if (isNaN(badgeId) || badgeId < 1 || badgeId > 37) {
+  if (isNaN(badgeId) || badgeId < 1 || badgeId > 40) {
     console.error(`[UNLOCK BADGE] Invalid badgeId: ${badgeId}`);
     return res.status(400).json(ERROR_INVALID_REQ);
   }
