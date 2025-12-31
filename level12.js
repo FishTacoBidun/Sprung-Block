@@ -6,18 +6,99 @@ var groundY = BASE_HEIGHT - 50;
 //surfaces array
 var surfaces = [
   //GROUND
-  { x: -120, y: groundY, width: 2200, height: 1000, color: "green", type: "ground" },
-  { x: 2500, y: groundY, width: 500, height: 1000, color: "green", type: "ground" },
+  { x: -120, y: groundY, width: 3920, height: 1000, color: "green", type: "ground" },
 
   //PLATFORMS
-  { x: 550, y: 320, width: 120, height: 15, color: "brown", type: "platform" },
-  { x: 770, y: 300, width: 120, height: 150, color: "gray", type: "solid" },
-  { x: 2200, y: 400, width: 185, height: 15, color: "brown", type: "platform" },
+  //spike pillars
+  { x: 300, y: groundY - 90, width: 30, height: 90, color: "gray", type: "solid" },
+  { x: 375, y: groundY - 90, width: 30, height: 90, color: "gray", type: "solid" },
+  { x: 450, y: groundY - 90, width: 30, height: 90, color: "gray", type: "solid" },
+  { x: 525, y: groundY - 90, width: 30, height: 90, color: "gray", type: "solid" },
+  { x: 600, y: groundY - 90, width: 30, height: 90, color: "gray", type: "solid" },
+  { x: 675, y: groundY - 90, width: 30, height: 90, color: "gray", type: "solid" },
+  { x: 750, y: groundY - 90, width: 30, height: 90, color: "gray", type: "solid" },
+  { x: 825, y: groundY - 90, width: 30, height: 90, color: "gray", type: "solid" },
+
+  //SPIKE MOUNTAIN
+  { x: 1200, y: groundY - 125, width: 1670, height: 125, color: "gray", type: "solid" },
+  { x: 1310, y: groundY - 250, width: 1450, height: 126, color: "gray", type: "solid" },
+  { x: 1420, y: groundY - 375, width: 1230, height: 126, color: "gray", type: "solid" },
+  { x: 1530, y: groundY - 500, width: 1010, height: 126, color: "gray", type: "solid" },
+  { x: 1640, y: groundY - 625, width: 790, height: 126, color: "gray", type: "solid" },
+  { x: 1750, y: groundY - 750, width: 570, height: 126, color: "gray", type: "solid" },
+  { x: 1860, y: groundY - 875, width: 350, height: 126, color: "gray", type: "solid" },
+  { x: 1970, y: groundY - 1000, width: 130, height: 126, color: "gray", type: "solid" },
+
+  //timed jump base
+  { x: 3500, y: groundY - 115, width: 200, height: 115, color: "gray", type: "solid" },
+
+  //timed jump small caves
+  { x: 3534, y: groundY - 300, width: 132, height: 20, color: "gray", type: "solid" },
+  { x: 3585, y: groundY - 195, width: 30, height: 15, color: "gray", type: "solid" },
+  { x: 3500, y: groundY - 300, width: 35, height: 120, color: "gray", type: "solid" },
+  { x: 3665, y: groundY - 300, width: 35, height: 120, color: "gray", type: "solid" },
+
+  { x: 3534, y: groundY - 485, width: 132, height: 20, color: "gray", type: "solid" },
+  { x: 3585, y: groundY - 380, width: 30, height: 15, color: "gray", type: "solid" },
+  { x: 3500, y: groundY - 485, width: 35, height: 120, color: "gray", type: "solid" },
+  { x: 3665, y: groundY - 485, width: 35, height: 120, color: "gray", type: "solid" },
+
+  { x: 3534, y: groundY - 670, width: 132, height: 20, color: "gray", type: "solid" },
+  { x: 3585, y: groundY - 565, width: 30, height: 15, color: "gray", type: "solid" },
+  { x: 3500, y: groundY - 670, width: 35, height: 120, color: "gray", type: "solid" },
+  { x: 3665, y: groundY - 670, width: 35, height: 120, color: "gray", type: "solid" },
+
+  { x: 3534, y: groundY - 855, width: 132, height: 20, color: "gray", type: "solid" },
+  { x: 3585, y: groundY - 750, width: 30, height: 15, color: "gray", type: "solid" },
+  { x: 3500, y: groundY - 855, width: 35, height: 120, color: "gray", type: "solid" },
+  { x: 3665, y: groundY - 855, width: 35, height: 120, color: "gray", type: "solid" },
+
+  { x: 3534, y: groundY - 1040, width: 132, height: 20, color: "gray", type: "solid" },
+  { x: 3585, y: groundY - 935, width: 30, height: 15, color: "gray", type: "solid" },
+  { x: 3500, y: groundY - 1040, width: 35, height: 120, color: "gray", type: "solid" },
+  { x: 3665, y: groundY - 1040, width: 35, height: 120, color: "gray", type: "solid" },
+
+  { x: 3534, y: groundY - 1225, width: 132, height: 20, color: "gray", type: "solid" },
+  { x: 3585, y: groundY - 1120, width: 30, height: 15, color: "gray", type: "solid" },
+  { x: 3500, y: groundY - 1225, width: 35, height: 120, color: "gray", type: "solid" },
+  { x: 3665, y: groundY - 1225, width: 35, height: 120, color: "gray", type: "solid" },
+
+  { x: 3534, y: groundY - 1410, width: 132, height: 20, color: "gray", type: "solid" },
+  { x: 3585, y: groundY - 1305, width: 30, height: 15, color: "gray", type: "solid" },
+  { x: 3500, y: groundY - 1410, width: 35, height: 120, color: "gray", type: "solid" },
+  { x: 3665, y: groundY - 1410, width: 35, height: 120, color: "gray", type: "solid" },
+
+  { x: 3534, y: groundY - 1595, width: 132, height: 20, color: "gray", type: "solid" },
+  { x: 3585, y: groundY - 1490, width: 30, height: 15, color: "gray", type: "solid" },
+  { x: 3500, y: groundY - 1595, width: 35, height: 120, color: "gray", type: "solid" },
+  { x: 3665, y: groundY - 1595, width: 35, height: 120, color: "gray", type: "solid" },
+
+  { x: 3534, y: groundY - 1780, width: 132, height: 20, color: "gray", type: "solid" },
+  { x: 3585, y: groundY - 1675, width: 30, height: 15, color: "gray", type: "solid" },
+  { x: 3500, y: groundY - 1780, width: 35, height: 120, color: "gray", type: "solid" },
+  { x: 3665, y: groundY - 1780, width: 35, height: 120, color: "gray", type: "solid" },
+
+  { x: 3534, y: groundY - 1965, width: 132, height: 20, color: "gray", type: "solid" },
+  { x: 3585, y: groundY - 1860, width: 30, height: 15, color: "gray", type: "solid" },
+  { x: 3500, y: groundY - 1965, width: 35, height: 120, color: "gray", type: "solid" },
+  { x: 3665, y: groundY - 1965, width: 35, height: 120, color: "gray", type: "solid" },
+
+  //timed jump left and right platforms
+  { x: 3700, y: groundY - 245, width: 100, height: 15, color: "brown", type: "platform" },
+  { x: 3400, y: groundY - 430, width: 100, height: 15, color: "brown", type: "platform" },
+  { x: 3700, y: groundY - 615, width: 100, height: 15, color: "brown", type: "platform" },
+  { x: 3400, y: groundY - 800, width: 100, height: 15, color: "brown", type: "platform" },
+  { x: 3700, y: groundY - 985, width: 100, height: 15, color: "brown", type: "platform" },
+  { x: 3400, y: groundY - 1170, width: 100, height: 15, color: "brown", type: "platform" },
+  { x: 3700, y: groundY - 1355, width: 100, height: 15, color: "brown", type: "platform" },
+  { x: 3400, y: groundY - 1540, width: 100, height: 15, color: "brown", type: "platform" },
+  { x: 3700, y: groundY - 1725, width: 100, height: 15, color: "brown", type: "platform" },
+  { x: 3400, y: groundY - 1910, width: 100, height: 15, color: "brown", type: "platform" },
 ];
 
 //goal object
 var goal = {
-  x: 2725,
+  x: 10000,
   y: groundY - 60,
   width: 50,
   height: 50,
@@ -26,27 +107,159 @@ var goal = {
 
 //enemies array (orange cubes)
 var enemies = [
-  { x: 1700, y: groundY - 70, width: 40, height: 60, color: "orange" },
+  //timed jumps
+  { x: 3660, y: groundY - 175, width: 40, height: 60, color: "orange" },
+  { x: 3500, y: groundY - 360, width: 40, height: 60, color: "orange" },
+  { x: 3660, y: groundY - 545, width: 40, height: 60, color: "orange" },
+  { x: 3500, y: groundY - 730, width: 40, height: 60, color: "orange" },
+  { x: 3660, y: groundY - 915, width: 40, height: 60, color: "orange" },
+  { x: 3500, y: groundY - 1100, width: 40, height: 60, color: "orange" },
+  { x: 3660, y: groundY - 1285, width: 40, height: 60, color: "orange" },
+  { x: 3500, y: groundY - 1470, width: 40, height: 60, color: "orange" },
+  { x: 3660, y: groundY - 1655, width: 40, height: 60, color: "orange" },
+  { x: 3500, y: groundY - 1840, width: 40, height: 60, color: "orange" },
 ];
 
 //spikes array (gray triangles)
 var spikes = [
-  { x: 1300, y: groundY - 30, width: 30, height: 30, color: "gray" },
-  { x: 1330, y: groundY - 30, width: 30, height: 30, color: "gray" },
-  { x: 1360, y: groundY - 30, width: 30, height: 30, color: "gray" },
+  //spawn spikes
+  { x: -110, y: groundY - 30, width: 30, height: 30, color: "gray" },
+  { x: -80, y: groundY - 30, width: 30, height: 30, color: "gray" },
+  { x: -50, y: groundY - 30, width: 30, height: 30, color: "gray" },
+  { x: -20, y: groundY - 30, width: 30, height: 30, color: "gray" },
+  { x: 10, y: groundY - 30, width: 30, height: 30, color: "gray" },
+  { x: 40, y: groundY - 30, width: 30, height: 30, color: "gray" },
+  { x: 70, y: groundY - 30, width: 30, height: 30, color: "gray" },
+  { x: 132, y: groundY - 30, width: 30, height: 30, color: "gray" },
+  { x: 162, y: groundY - 30, width: 30, height: 30, color: "gray" },
+  { x: 192, y: groundY - 30, width: 30, height: 30, color: "gray" },
+
+  //pillar spikes
+  { x: 300, y: groundY - 120, width: 30, height: 30, color: "gray" },
+  { x: 375, y: groundY - 120, width: 30, height: 30, color: "gray" },
+  { x: 450, y: groundY - 120, width: 30, height: 30, color: "gray" },
+  { x: 525, y: groundY - 120, width: 30, height: 30, color: "gray" },
+  { x: 600, y: groundY - 120, width: 30, height: 30, color: "gray" },
+  { x: 675, y: groundY - 120, width: 30, height: 30, color: "gray" },
+  { x: 750, y: groundY - 120, width: 30, height: 30, color: "gray" },
+  { x: 825, y: groundY - 120, width: 30, height: 30, color: "gray" },
+
+  //SPIKE MOUTAIN
+  //left side
+  { x: 1050, y: groundY - 30, width: 30, height: 30, color: "gray" },
+  { x: 1080, y: groundY - 30, width: 30, height: 30, color: "gray" },
+  { x: 1110, y: groundY - 30, width: 30, height: 30, color: "gray" },
+  { x: 1140, y: groundY - 30, width: 30, height: 30, color: "gray" },
+  { x: 1170, y: groundY - 30, width: 30, height: 30, color: "gray" },
+
+  { x: 1220, y: groundY - 155, width: 30, height: 30, color: "gray" },
+  { x: 1250, y: groundY - 155, width: 30, height: 30, color: "gray" },
+  { x: 1280, y: groundY - 155, width: 30, height: 30, color: "gray" },
+
+  { x: 1330, y: groundY - 280, width: 30, height: 30, color: "gray" },
+  { x: 1360, y: groundY - 280, width: 30, height: 30, color: "gray" },
+  { x: 1390, y: groundY - 280, width: 30, height: 30, color: "gray" },
+
+  { x: 1440, y: groundY - 405, width: 30, height: 30, color: "gray" },
+  { x: 1470, y: groundY - 405, width: 30, height: 30, color: "gray" },
+  { x: 1500, y: groundY - 405, width: 30, height: 30, color: "gray" },
+
+  { x: 1550, y: groundY - 530, width: 30, height: 30, color: "gray" },
+  { x: 1580, y: groundY - 530, width: 30, height: 30, color: "gray" },
+  { x: 1610, y: groundY - 530, width: 30, height: 30, color: "gray" },
+
+  { x: 1660, y: groundY - 655, width: 30, height: 30, color: "gray" },
+  { x: 1690, y: groundY - 655, width: 30, height: 30, color: "gray" },
+  { x: 1720, y: groundY - 655, width: 30, height: 30, color: "gray" },
+
+  { x: 1770, y: groundY - 780, width: 30, height: 30, color: "gray" },
+  { x: 1800, y: groundY - 780, width: 30, height: 30, color: "gray" },
+  { x: 1830, y: groundY - 780, width: 30, height: 30, color: "gray" },
+
+  { x: 1880, y: groundY - 905, width: 30, height: 30, color: "gray" },
+  { x: 1910, y: groundY - 905, width: 30, height: 30, color: "gray" },
+  { x: 1940, y: groundY - 905, width: 30, height: 30, color: "gray" },
+
+  //top
+  { x: 1990, y: groundY - 1030, width: 30, height: 30, color: "gray" },
+  { x: 2020, y: groundY - 1030, width: 30, height: 30, color: "gray" },
+  { x: 2050, y: groundY - 1030, width: 30, height: 30, color: "gray" },
+
+  //right side
+  { x: 2100, y: groundY - 905, width: 30, height: 30, color: "gray" },
+  { x: 2130, y: groundY - 905, width: 30, height: 30, color: "gray" },
+  { x: 2160, y: groundY - 905, width: 30, height: 30, color: "gray" },
+
+  { x: 2210, y: groundY - 780, width: 30, height: 30, color: "gray" },
+  { x: 2240, y: groundY - 780, width: 30, height: 30, color: "gray" },
+  { x: 2270, y: groundY - 780, width: 30, height: 30, color: "gray" },
+
+  { x: 2320, y: groundY - 655, width: 30, height: 30, color: "gray" },
+  { x: 2350, y: groundY - 655, width: 30, height: 30, color: "gray" },
+  { x: 2380, y: groundY - 655, width: 30, height: 30, color: "gray" },
+
+  { x: 2430, y: groundY - 530, width: 30, height: 30, color: "gray" },
+  { x: 2460, y: groundY - 530, width: 30, height: 30, color: "gray" },
+  { x: 2490, y: groundY - 530, width: 30, height: 30, color: "gray" },
+
+  { x: 2540, y: groundY - 405, width: 30, height: 30, color: "gray" },
+  { x: 2570, y: groundY - 405, width: 30, height: 30, color: "gray" },
+  { x: 2600, y: groundY - 405, width: 30, height: 30, color: "gray" },
+
+  { x: 2650, y: groundY - 280, width: 30, height: 30, color: "gray" },
+  { x: 2680, y: groundY - 280, width: 30, height: 30, color: "gray" },
+  { x: 2710, y: groundY - 280, width: 30, height: 30, color: "gray" },
+
+  { x: 2760, y: groundY - 155, width: 30, height: 30, color: "gray" },
+  { x: 2790, y: groundY - 155, width: 30, height: 30, color: "gray" },
+  { x: 2820, y: groundY - 155, width: 30, height: 30, color: "gray" },
+
+  { x: 2870, y: groundY - 30, width: 30, height: 30, color: "gray" },
+  { x: 2900, y: groundY - 30, width: 30, height: 30, color: "gray" },
+  { x: 2930, y: groundY - 30, width: 30, height: 30, color: "gray" },
+  { x: 2960, y: groundY - 30, width: 30, height: 30, color: "gray" },
+  { x: 2990, y: groundY - 30, width: 30, height: 30, color: "gray" },
+  { x: 3020, y: groundY - 30, width: 30, height: 30, color: "gray" },
+  { x: 3050, y: groundY - 30, width: 30, height: 30, color: "gray" },
+  { x: 3080, y: groundY - 30, width: 30, height: 30, color: "gray" },
+  { x: 3110, y: groundY - 30, width: 30, height: 30, color: "gray" },
+
+  //timed jumps spikes (bottom)
+  { x: 3585, y: groundY - 145, width: 30, height: 30, color: "gray" },
+  { x: 3585, y: groundY - 330, width: 30, height: 30, color: "gray" },
+  { x: 3585, y: groundY - 515, width: 30, height: 30, color: "gray" },
+  { x: 3585, y: groundY - 700, width: 30, height: 30, color: "gray" },
+  { x: 3585, y: groundY - 885, width: 30, height: 30, color: "gray" },
+  { x: 3585, y: groundY - 1070, width: 30, height: 30, color: "gray" },
+  { x: 3585, y: groundY - 1255, width: 30, height: 30, color: "gray" },
+  { x: 3585, y: groundY - 1440, width: 30, height: 30, color: "gray" },
+  { x: 3585, y: groundY - 1625, width: 30, height: 30, color: "gray" },
+  { x: 3585, y: groundY - 1810, width: 30, height: 30, color: "gray" },
+
+  //top
+  { x: 3585, y: groundY - 225, width: 30, height: 30, color: "gray" },
+  { x: 3585, y: groundY - 410, width: 30, height: 30, color: "gray" },
+  { x: 3585, y: groundY - 595, width: 30, height: 30, color: "gray" },
+  { x: 3585, y: groundY - 780, width: 30, height: 30, color: "gray" },
+  { x: 3585, y: groundY - 965, width: 30, height: 30, color: "gray" },
+  { x: 3585, y: groundY - 1150, width: 30, height: 30, color: "gray" },
+  { x: 3585, y: groundY - 1335, width: 30, height: 30, color: "gray" },
+  { x: 3585, y: groundY - 1520, width: 30, height: 30, color: "gray" },
+  { x: 3585, y: groundY - 1705, width: 30, height: 30, color: "gray" },
+  { x: 3585, y: groundY - 1890, width: 30, height: 30, color: "gray" },
 ];
 
 //signs array (cosmetic objects)
 var signs = [
-  { x: 330, y: groundY - 80, width: 60, height: 80, color: "brown", type: "right" },
-  { x: 2000, y: groundY - 80, width: 60, height: 80, color: "brown", type: "up" },
+  { x: 220, y: groundY - 80, width: 60, height: 80, color: "brown", type: "up" },
+  { x: 3720, y: groundY - 80, width: 60, height: 80, color: "brown", type: "up" },
 ];
 
 var tutorialTexts = [
   { //controls
     x: 120,
     y: 380,
-    text: "This Level Is Under Construction",
+    text: "",
     fontSize: "14px Arial",
     color: "white",
     align: "center",
