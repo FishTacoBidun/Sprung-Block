@@ -75,7 +75,7 @@ if (!window.isAuthenticated) {
 
 //enhanced unlock next level function
 async function unlockNextLevelEnhanced(levelNum) {
-  if (levelNum <= 0 || levelNum >= 3) return;
+  if (levelNum <= 0 || levelNum >= 13) return;
   
   if (window.isAuthenticated) {
     //authenticated: save to user database
@@ -429,4 +429,5 @@ if (window.isAuthenticated) {
   console.log('Guest mode - progress stored in sessionStorage (isolated per session)');
 
 }
+
 
