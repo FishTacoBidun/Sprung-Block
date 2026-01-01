@@ -71,8 +71,8 @@ const HealthSystem = {
 };
 
 //starting position
-const START_X = 2660; //100
-const START_Y = -1850; //400
+const START_X = 100; //100
+const START_Y = 400; //400
 
 //player setup and physics
 const player = 
