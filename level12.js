@@ -1,4 +1,4 @@
-//base canvas dimensions
+//base canvas dimensions 8 + 14 + 40 + 10 + 8 + (10 give more time) + 23
 var BASE_WIDTH = 800;
 var BASE_HEIGHT = 500;
 var groundY = BASE_HEIGHT - 50;
@@ -6,7 +6,8 @@ var groundY = BASE_HEIGHT - 50;
 //surfaces array
 var surfaces = [
   //GROUND
-  { x: -120, y: groundY, width: 3920, height: 1000, color: "green", type: "ground" },
+  { x: -120, y: groundY, width: 3820, height: 1000, color: "green", type: "ground" },
+  { x: 7100, y: groundY, width: 3800, height: 1000, color: "green", type: "ground" },
 
   //PLATFORMS
   //spike pillars
@@ -94,12 +95,63 @@ var surfaces = [
   { x: 3400, y: groundY - 1540, width: 100, height: 15, color: "brown", type: "platform" },
   { x: 3700, y: groundY - 1725, width: 100, height: 15, color: "brown", type: "platform" },
   { x: 3400, y: groundY - 1910, width: 100, height: 15, color: "brown", type: "platform" },
+
+  //random spike jumps
+  { x: 3900, y: groundY - 1965, width: 90, height: 15, color: "brown", type: "platform" },
+  { x: 4100, y: groundY - 2095, width: 90, height: 15, color: "brown", type: "platform" },
+  { x: 4450, y: groundY - 2030, width: 90, height: 15, color: "brown", type: "platform" },
+  { x: 4750, y: groundY - 1830, width: 90, height: 15, color: "brown", type: "platform" },
+  { x: 5050, y: groundY - 1860, width: 90, height: 15, color: "brown", type: "platform" },
+  { x: 5200, y: groundY - 1680, width: 90, height: 15, color: "brown", type: "platform" },
+
+  //tiny platform long jumps
+  { x: 7500, y: groundY - 100, width: 5, height: 15, color: "brown", type: "platform" },
+  { x: 7760, y: groundY - 150, width: 5, height: 15, color: "brown", type: "platform" },
+  { x: 8020, y: groundY - 200, width: 5, height: 15, color: "brown", type: "platform" },
+  { x: 8310, y: groundY - 200, width: 5, height: 15, color: "brown", type: "platform" },
+  { x: 8600, y: groundY - 200, width: 5, height: 15, color: "brown", type: "platform" },
+  { x: 8910, y: groundY - 150, width: 5, height: 15, color: "brown", type: "platform" },
+  { x: 9170, y: groundY - 200, width: 100, height: 200, color: "gray", type: "solid" },
+
+  //bottom of ghost expanding gap
+  { x: 9600, y: groundY - 100, width: 600, height: 30, color: "gray", type: "solid" },
+  { x: 10300, y: groundY - 100, width: 600, height: 30, color: "gray", type: "solid" },
+  { x: 10199, y: groundY - 100, width: 31, height: 20, color: "gray", type: "solid" },
+  { x: 10270, y: groundY - 100, width: 31, height: 20, color: "gray", type: "solid" },
+  { x: 10230, y: groundY - 100, width: 40, height: 15, color: "brown", type: "platform" },
 ];
+
+//make spikes for staircase (x: +140, y: -150)
+for (let i = 0; i <= 11; i++) {
+  //do math once
+  let xIncrease = (i * 144);
+  let yIncrease = (i * 150);
+  
+  //bottom platforms
+  surfaces.push({
+    x: 5447 + xIncrease,
+    y: groundY - 1700 + yIncrease,
+    width: 90,
+    height: 15,
+    color: "brown",
+    type: "platform",
+  });
+  
+  //top platforms
+  surfaces.push({
+    x: 5447 + xIncrease,
+    y: groundY - 1810 + yIncrease,
+    width: 90,
+    height: 15,
+    color: "brown",
+    type: "platform",
+  });
+}
 
 //goal object
 var goal = {
-  x: 10000,
-  y: groundY - 60,
+  x: 10225,
+  y: groundY - 4260,
   width: 50,
   height: 50,
   color: "yellow"
@@ -119,6 +171,42 @@ var enemies = [
   { x: 3660, y: groundY - 1655, width: 40, height: 60, color: "orange" },
   { x: 3500, y: groundY - 1840, width: 40, height: 60, color: "orange" },
 ];
+
+//make ghosts for staircase with spikes (x: +144, y: -150)
+for (let i = 0; i <= 11; i++) {
+  enemies.push({
+    x: 5400 + (i * 144),
+    y: groundY - 1680 + (i * 150),
+    width: 40,
+    height: 60,
+    color: "orange",
+  });
+}
+
+//make ghosts for expanding gap (gap (x) increase by 4 (2+2), y: +200 (100 between each ghost))
+for (let i = 0; i <= 19; i++) {
+  //do math once
+  let xIncrease = (i * 2);
+  let yIncrease = (i * 200);
+
+  //left side
+  enemies.push({
+    x: 10160 - xIncrease,
+    y: groundY - 200 - yIncrease,
+    width: 40,
+    height: 60,
+    color: "orange",
+  });
+  
+  //right side
+  enemies.push({
+    x: 10300 + xIncrease,
+    y: groundY - 300 - yIncrease,
+    width: 40,
+    height: 60,
+    color: "orange",
+  });
+}
 
 //spikes array (gray triangles)
 var spikes = [
@@ -247,16 +335,99 @@ var spikes = [
   { x: 3585, y: groundY - 1520, width: 30, height: 30, color: "gray" },
   { x: 3585, y: groundY - 1705, width: 30, height: 30, color: "gray" },
   { x: 3585, y: groundY - 1890, width: 30, height: 30, color: "gray" },
+
+  //random spike jumps
+  { x: 3930, y: groundY - 1995, width: 30, height: 30, color: "gray" },
+  { x: 4130, y: groundY - 2125, width: 30, height: 30, color: "gray" },
+  { x: 4480, y: groundY - 2060, width: 30, height: 30, color: "gray" },
+  { x: 4780, y: groundY - 1860, width: 30, height: 30, color: "gray" },
+  { x: 5080, y: groundY - 1890, width: 30, height: 30, color: "gray" },
+  { x: 5230, y: groundY - 1710, width: 30, height: 30, color: "gray" },
 ];
+
+//make spikes for staircase (x: +144, y: -150)
+for (let i = 0; i <= 11; i++) {
+  //do math once
+  let xIncrease = (i * 144);
+  let yIncrease = (i * 150);
+  
+  //bottom spikes
+  spikes.push({
+    x: 5447 + xIncrease,
+    y: groundY - 1730 + yIncrease,
+    width: 30,
+    height: 30,
+    color: "gray",
+  });
+  spikes.push({
+    x: 5477 + xIncrease,
+    y: groundY - 1730 + yIncrease,
+    width: 30,
+    height: 30,
+    color: "gray",
+  });
+  spikes.push({
+    x: 5507 + xIncrease,
+    y: groundY - 1730 + yIncrease,
+    width: 30,
+    height: 30,
+    color: "gray",
+  });
+  
+  //top spikes
+  spikes.push({
+    x: 5447 + xIncrease,
+    y: groundY - 1840 + yIncrease,
+    width: 30,
+    height: 30,
+    color: "gray",
+  });
+  spikes.push({
+    x: 5477 + xIncrease,
+    y: groundY - 1840 + yIncrease,
+    width: 30,
+    height: 30,
+    color: "gray",
+  });
+  spikes.push({
+    x: 5507 + xIncrease,
+    y: groundY - 1840 + yIncrease,
+    width: 30,
+    height: 30,
+    color: "gray",
+  });
+}
+
+//ghost increasing gap floor
+for (let i = 0; i <= 20; i++) {
+  spikes.push({
+    x: 9600 + (i * 30),
+    y: groundY - 130,
+    width: 30,
+    height: 30,
+    color: "gray",
+  });
+
+  spikes.push({
+    x: 10270 + (i * 30),
+    y: groundY - 130,
+    width: 30,
+    height: 30,
+    color: "gray",
+  });
+}
 
 //signs array (cosmetic objects)
 var signs = [
   { x: 220, y: groundY - 80, width: 60, height: 80, color: "brown", type: "up" },
-  { x: 3720, y: groundY - 80, width: 60, height: 80, color: "brown", type: "up" },
+  { x: 3420, y: groundY - 80, width: 60, height: 80, color: "brown", type: "up" },
+  { x: 7250, y: groundY - 80, width: 60, height: 80, color: "brown", type: "right" },
+  { x: 9190, y: groundY - 280, width: 60, height: 80, color: "brown", type: "right" },
+  { x: 10220, y: groundY - 80, width: 60, height: 80, color: "brown", type: "up" },
 ];
 
 var tutorialTexts = [
-  { //controls
+  { //clear text
     x: 120,
     y: 380,
     text: "",

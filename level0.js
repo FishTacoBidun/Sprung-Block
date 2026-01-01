@@ -46,7 +46,17 @@ var tutorialTexts = [
   { //controls
     x: 120,
     y: 380,
-    text: "Use A, D, and W or SPACE to move and jump",
+    text: "Use A, D, and W / SPACE to move and jump",
+    fontSize: "14px Arial",
+    color: "white",
+    align: "center",
+    strokeColor: "orange",
+    strokeWidth: 1
+  },
+  { //controls
+    x: 120,
+    y: 400,
+    text: "Pressing R will restart the level",
     fontSize: "14px Arial",
     color: "white",
     align: "center",

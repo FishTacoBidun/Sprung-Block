@@ -32,7 +32,10 @@ let isLevelComplete = false; //prevent multiple level complete triggers
 let lastCompletionData = null; //store last level completion data for sharing
 let isDying = false; //track if death animation is playing
 let deathAnimationStart = null; //track when death animation started
+let pausedDeathAnimationStart = null; //track how long death animation was playing before pause
 let defeatedEnemies = new Map(); //track defeated enemies and their respawn timers {enemyIndex: respawnTime}
+let pausedInvulnerableUntil = null; //track remaining invulnerability time when paused
+let pausedEnemyRespawnTimes = new Map(); //track paused enemy respawn times
 
 //delta time tracking for frame-rate independent movement
 let lastFrameTime = performance.now();
@@ -68,8 +71,8 @@ const HealthSystem = {
 };
 
 //starting position
-const START_X = 100; //100
-const START_Y = 400; //400
+const START_X = 2660; //100
+const START_Y = -1850; //400
 
 //player setup and physics
 const player = 
@@ -154,22 +157,39 @@ function playerIntersectsSpikeHitboxes(player, hitboxes) {
 
 //controls
 const keys = { a: false, d: false, space: false, w: false };
+let lastHorizontalKey = null; //track last horizontal key pressed (a or d) for priority
 
 //left, right, and jump
 document.addEventListener("keydown", (e) => 
 {
-  if (e.code === "KeyA") keys.a = true;
-  if (e.code === "KeyD") keys.d = true;
+  if (e.code === "KeyA") {
+    keys.a = true;
+    lastHorizontalKey = "a";
+  }
+  if (e.code === "KeyD") {
+    keys.d = true;
+    lastHorizontalKey = "d";
+  }
   if (e.code === "Space") keys.space = true;
   if (e.code === "KeyW") keys.w = true;
+
+  if (e.code === "KeyR") keys.r = true;
 });
 
 document.addEventListener("keyup", (e) => 
 {
-  if (e.code === "KeyA") keys.a = false;
-  if (e.code === "KeyD") keys.d = false;
+  if (e.code === "KeyA") {
+    keys.a = false;
+    if (lastHorizontalKey === "a") lastHorizontalKey = null;
+  }
+  if (e.code === "KeyD") {
+    keys.d = false;
+    if (lastHorizontalKey === "d") lastHorizontalKey = null;
+  }
   if (e.code === "Space") keys.space = false;
   if (e.code === "KeyW") keys.w = false;
+
+  if (e.code === "KeyR") keys.r = false;
 });
 
 //handle window resizing
@@ -327,6 +347,23 @@ function pauseGame() {
     lastPauseTime = Date.now();
     //reset frame time to prevent large delta when unpausing
     lastFrameTime = performance.now();
+    
+    //pause death animation
+    if (isDying && deathAnimationStart !== null) {
+      const elapsed = Date.now() - deathAnimationStart;
+      pausedDeathAnimationStart = elapsed;
+    }
+    
+    //pause invulnerability timer
+    if (Date.now() < invulnerableUntil) {
+      pausedInvulnerableUntil = invulnerableUntil - Date.now(); //store remaining time
+    } else {
+      pausedInvulnerableUntil = null;
+    }
+    
+    //pause enemy respawn timers - we'll adjust them on resume using lastPauseTime
+    //no need to store separately, we'll shift all timestamps forward by pause duration
+    
     playGameSound('pause');
   }
 }
@@ -336,12 +373,42 @@ function resumeGame() {
   if (isPaused) {
     isPaused = false;
     pauseOverlay.style.display = "none";
+    //calculate paused duration before clearing lastPauseTime (needed for all timer adjustments)
+    const pausedDuration = lastPauseTime !== null ? Date.now() - lastPauseTime : 0;
+    
     //adjust levelStartTime to account for paused time
     if (lastPauseTime !== null && levelStartTime !== null) {
-      const pausedDuration = Date.now() - lastPauseTime;
       levelStartTime += pausedDuration; //shift start time forward by paused duration
-      lastPauseTime = null;
     }
+    
+    //resume death animation
+    if (isDying && pausedDeathAnimationStart !== null) {
+      deathAnimationStart = Date.now() - pausedDeathAnimationStart;
+      pausedDeathAnimationStart = null;
+    }
+    
+    //resume invulnerability timer
+    if (pausedInvulnerableUntil !== null) {
+      invulnerableUntil = Date.now() + pausedInvulnerableUntil;
+      pausedInvulnerableUntil = null;
+    }
+    
+    //resume enemy respawn timers - shift all times forward by paused duration
+    //this ensures the timer doesn't advance during pause
+    if (pausedDuration > 0) {
+      for (const [enemyKey, data] of defeatedEnemies.entries()) {
+        data.respawnStartTime += pausedDuration;
+        data.respawnTime += pausedDuration;
+        if (data.killableAfter) {
+          data.killableAfter += pausedDuration;
+        }
+      }
+    }
+    
+    //clear pause time tracking
+    lastPauseTime = null;
+    pausedEnemyRespawnTimes.clear();
+    
     //reset frame time to prevent large delta when resuming
     lastFrameTime = performance.now();
   }
@@ -527,8 +594,21 @@ function returnToMenu() {
 //game logic
 function update(dt = 1.0) 
 {
+  //quick restart
+  if (keys.r) {
+    restartLevel()
+  }
+
   //handle death animation - check this first to prevent any movement/damage
   if (isDying) {
+    //if paused during death, stop all movement and skip all update logic
+    if (isPaused) {
+      player.velocityX = 0;
+      player.velocityY = 0;
+      return;
+    }
+    
+    //not paused, process death animation
     const currentTime = Date.now();
     const elapsed = currentTime - deathAnimationStart;
     
@@ -639,10 +719,23 @@ function update(dt = 1.0)
     lastHealthCheckTime = currentTime;
   }
 
-  //horizontal movement
-  if (keys.a) player.velocityX = -player.speed;
-  else if (keys.d) player.velocityX = player.speed;
-  else player.velocityX = 0;
+  //horizontal movement - most recently pressed key takes priority
+  if (keys.a && keys.d) {
+    //both keys pressed - use most recent
+    if (lastHorizontalKey === "a") {
+      player.velocityX = -player.speed;
+    } else if (lastHorizontalKey === "d") {
+      player.velocityX = player.speed;
+    } else {
+      player.velocityX = 0;
+    }
+  } else if (keys.a) {
+    player.velocityX = -player.speed;
+  } else if (keys.d) {
+    player.velocityX = player.speed;
+  } else {
+    player.velocityX = 0;
+  }
 
   //jumping - only play sound if player was on a surface (successful jump)
   //allow both space and w key for jumping
@@ -666,17 +759,23 @@ function update(dt = 1.0)
     for (let i = enemies.length - 1; i >= 0; i--) {
       const enemy = enemies[i];
       
-      //skip collision if enemy is still respawning (no hitbox until respawnTime)
+      //skip collision if enemy is still respawning or in invulnerability period after respawn
       let isRespawning = false;
       if (initialEnemies && typeof defeatedEnemies !== 'undefined') {
         for (const [enemyKey, data] of defeatedEnemies.entries()) {
           if (Math.abs(data.enemy.x - enemy.x) < 1 &&
               Math.abs(data.enemy.y - enemy.y) < 1 &&
               data.enemy.width === enemy.width &&
-              data.enemy.height === enemy.height &&
-              currentTime < data.respawnTime) {
-            isRespawning = true;
-            break;
+              data.enemy.height === enemy.height) {
+            //check if enemy is still respawning (before respawnTime)
+            //account for pause time by using adjusted time
+            const adjustedTime = isPaused && lastPauseTime !== null 
+              ? lastPauseTime 
+              : currentTime;
+            if (adjustedTime < data.respawnTime) {
+              isRespawning = true;
+              break;
+            }
           }
         }
       }
@@ -752,33 +851,15 @@ function update(dt = 1.0)
   }
   
   //check for enemy respawns (enemies are already in array for fade-in, just remove from tracking when fully respawned)
-  if (typeof enemies !== 'undefined' && initialEnemies) {
+  //skip respawn checking if paused (timer doesn't advance when paused)
+  if (typeof enemies !== 'undefined' && initialEnemies && !isPaused) {
     const currentTime = Date.now();
     for (const [enemyKey, data] of defeatedEnemies.entries()) {
+      //check if respawn time has been reached (only when not paused)
       if (currentTime >= data.respawnTime) {
         //enemy is fully respawned (hitbox active), remove from tracking
         defeatedEnemies.delete(enemyKey);
         console.log("Enemy fully respawned!");
-      }
-    }
-  }
-  
-  //check spike collisions (before surface collisions) - skip if dying
-  if (typeof spikes !== 'undefined' && spikes && !isDying) {
-    for (const spike of spikes) {
-      //Generate the 10 composite hitbox rectangles for this spike
-      const spikeHitboxes = generateSpikeHitboxes(spike);
-      
-      //Check if player intersects with any of the spike's hitbox rectangles
-      if (playerIntersectsSpikeHitboxes(
-        { x: player.x, y: player.y, width: player.width, height: player.height },
-        spikeHitboxes
-      )) {
-        //Player hit spike - take damage (respect invulnerability period)
-        const currentTime = Date.now();
-        if (currentTime >= invulnerableUntil) {
-          HealthSystem.writeDamage(1);
-        }
       }
     }
   }
@@ -862,6 +943,26 @@ function update(dt = 1.0)
         }
       }
     }
+
+  //check spike collisions (after surface collisions) - skip if dying
+  if (typeof spikes !== 'undefined' && spikes && !isDying) {
+    for (const spike of spikes) {
+      //Generate the 10 composite hitbox rectangles for this spike
+      const spikeHitboxes = generateSpikeHitboxes(spike);
+      
+      //Check if player intersects with any of the spike's hitbox rectangles
+      if (playerIntersectsSpikeHitboxes(
+        { x: player.x, y: player.y, width: player.width, height: player.height },
+        spikeHitboxes
+      )) {
+        //Player hit spike - take damage (respect invulnerability period)
+        const currentTime = Date.now();
+        if (currentTime >= invulnerableUntil) {
+          HealthSystem.writeDamage(1);
+        }
+      }
+    }
+  }
   }
 
   //track if player was on surface for jump sound detection
@@ -1057,20 +1158,23 @@ function draw() {
   //draw enemies with texture
   if (typeof enemies !== 'undefined' && enemies) {
     for (const enemy of enemies) {
-      // Check if this enemy is respawning (in defeatedEnemies map but before respawnTime)
+      //check if this enemy is respawning (in defeatedEnemies map but before respawnTime)
       let enemyAlpha = 1.0;
       let isRespawning = false;
       if (initialEnemies && typeof defeatedEnemies !== 'undefined') {
         const currentTime = Date.now();
         for (const [enemyKey, data] of defeatedEnemies.entries()) {
-          // Check if this is the same enemy by position
+          //check if this is the same enemy by position
           if (Math.abs(data.enemy.x - enemy.x) < 1 &&
               Math.abs(data.enemy.y - enemy.y) < 1 &&
               data.enemy.width === enemy.width &&
               data.enemy.height === enemy.height &&
               currentTime < data.respawnTime) {
-            // This enemy is respawning, calculate fade-in opacity (0% to 100% over 6 seconds)
-            const elapsed = currentTime - data.respawnStartTime;
+            //this enemy is respawning, calculate fade-in opacity (0% to 100% over 6 seconds)
+            //use paused time if paused
+            const elapsed = isPaused && lastPauseTime !== null
+              ? (lastPauseTime - data.respawnStartTime)
+              : (currentTime - data.respawnStartTime);
             const totalTime = data.respawnTime - data.respawnStartTime; // 6000ms
             const progress = Math.min(elapsed / totalTime, 1.0); // 0.0 to 1.0
             enemyAlpha = progress; // 0.0 (0%) to 1.0 (100%)
@@ -1160,13 +1264,17 @@ function draw() {
   const currentTime = Date.now();
   let playerAlpha = 1.0;
   
-  //death animation: fade from 100% to 0% over 1 second
+  //death animation: fade from 100% to 0% over 1 second (pause-aware)
   if (isDying && deathAnimationStart !== null) {
-    const elapsed = currentTime - deathAnimationStart;
+    const elapsed = isPaused && pausedDeathAnimationStart !== null 
+      ? pausedDeathAnimationStart 
+      : currentTime - deathAnimationStart;
     playerAlpha = Math.max(0, 1.0 - (elapsed / 1000));
   } else if (currentTime < invulnerableUntil) {
-    //invulnerability flash
-    const timeSinceHit = currentTime - (invulnerableUntil - 1000);
+    //invulnerability flash (pause-aware)
+    const timeSinceHit = isPaused && pausedInvulnerableUntil !== null
+      ? (1200 - pausedInvulnerableUntil)
+      : (currentTime - (invulnerableUntil - 1200));
     const flashCycle = Math.floor(timeSinceHit / 100);
     playerAlpha = (flashCycle % 2 === 0) ? 0.3 : 1.0;
   }
@@ -1250,10 +1358,7 @@ function gameLoop() {
   //clamp delta time to prevent large jumps (e.g., when tab regains focus)
   const dt = Math.min(deltaTime, 2.0); //cap at 2x speed to prevent huge jumps
   
-  if (!isPaused && !isDying) {
-    update(dt);
-  } else if (isDying) {
-    //only update death animation, don't update game logic
+  if (!isPaused) {
     update(dt);
   }
   draw();
@@ -1348,9 +1453,9 @@ function loadLevel(levelNumber) {
   document.body.appendChild(script);
 }
 
-const LEVELS_PER_PAGE = 6;
+const LEVELS_PER_PAGE = 6; //6
 const TOTAL_LEVELS = 13; //change this to add more levels (must match highest level{number}.js file)
-let currentLevelPage = 0;
+let currentLevelPage = 2; //0
 const levelButtonContainer = document.getElementById("levelButtonContainer");
 const levelNavLeft = document.getElementById("levelNavLeft");
 const levelNavRight = document.getElementById("levelNavRight");
@@ -1935,7 +2040,7 @@ const BADGE_CONFIG = {
   32: { emoji: "🕔", description: "Complete Level 11 In Under 1:30" },
   33: { emoji: "❤️‍🔥", description: "Complete Level 11 With 3/3 Health" },
   34: { emoji: "🥇", description: "Complete Level 12" },
-  35: { emoji: "🕔", description: "Complete Level 12 In Under " },
+  35: { emoji: "🕔", description: "Complete Level 12 In Under 2:10" },
   36: { emoji: "❤️‍🔥", description: "Complete Level 12 With 3/3 Health" },
   37: { emoji: "🏅", description: "Complete All Levels" }, //completion badges
   38: { emoji: "🕰️", description: "Complete All Level Time Challenges" },
@@ -2232,7 +2337,7 @@ async function checkAndUnlockBadges(levelNum, completionTime, completionHealth) 
   } else if (levelNum === 12) {
     await unlockBadge(34);
     
-    if (timeInSeconds < 10000) {
+    if (timeInSeconds < 130) {
       await unlockBadge(35);
     }
     
