@@ -8,6 +8,7 @@ var surfaces = [
   //GROUND
   { x: -850, y: groundY, width: 980, height: 1000, color: "green", type: "ground" },
   { x: 2645, y: groundY, width: 80, height: 1000, color: "green", type: "ground" },
+  { x: 8040, y: groundY, width: 460, height: 1000, color: "green", type: "ground" },
 
   //PLATFORMS
   //bottom of expanding ghost jumps
@@ -15,7 +16,72 @@ var surfaces = [
 
   //center spike jumps
   { x: 2683, y: groundY - 2250, width: 100, height: 15, color: "brown", type: "platform" },
+  { x: 2983, y: groundY - 2250, width: 100, height: 15, color: "brown", type: "platform" },
+  { x: 3283, y: groundY - 2250, width: 100, height: 15, color: "brown", type: "platform" },
+  { x: 3583, y: groundY - 2250, width: 100, height: 15, color: "brown", type: "platform" },
+  { x: 3883, y: groundY - 2250, width: 100, height: 15, color: "brown", type: "platform" },
+  { x: 4183, y: groundY - 2250, width: 100, height: 15, color: "brown", type: "platform" },
+  { x: 4483, y: groundY - 2250, width: 100, height: 15, color: "brown", type: "platform" },
+  { x: 4783, y: groundY - 2250, width: 100, height: 15, color: "brown", type: "platform" },
+
+  //end of center spike jumps
+  { x: 5083, y: groundY - 2250, width: 275, height: 15, color: "brown", type: "platform" },
+
+  //end of chomp jumps
+  { x: 7900, y: groundY - 2250, width: 140, height: 15, color: "brown", type: "platform" },
+  { x: 8070, y: groundY - 2250, width: 240, height: 15, color: "brown", type: "platform" },
+
+  //drop downs with spikes (right spikes)
+  { x: 8190, y: groundY - 2100, width: 240, height: 15, color: "brown", type: "platform" },
+  { x: 8190, y: groundY - 1800, width: 240, height: 15, color: "brown", type: "platform" },
+  { x: 8190, y: groundY - 1500, width: 240, height: 15, color: "brown", type: "platform" },
+  { x: 8190, y: groundY - 1200, width: 240, height: 15, color: "brown", type: "platform" },
+  { x: 8190, y: groundY - 900, width: 240, height: 15, color: "brown", type: "platform" },
+  { x: 8190, y: groundY - 600, width: 240, height: 15, color: "brown", type: "platform" },
+  { x: 8190, y: groundY - 300, width: 240, height: 15, color: "brown", type: "platform" },
+
+  //(left spikes)
+  { x: 8070, y: groundY - 1950, width: 240, height: 15, color: "brown", type: "platform" },
+  { x: 8070, y: groundY - 1650, width: 240, height: 15, color: "brown", type: "platform" },
+  { x: 8070, y: groundY - 1350, width: 240, height: 15, color: "brown", type: "platform" },
+  { x: 8070, y: groundY - 1050, width: 240, height: 15, color: "brown", type: "platform" },
+  { x: 8070, y: groundY - 750, width: 240, height: 15, color: "brown", type: "platform" },
+  { x: 8070, y: groundY - 450, width: 240, height: 15, color: "brown", type: "platform" },
+  { x: 8070, y: groundY - 150, width: 240, height: 15, color: "brown", type: "platform" },
+
+  //drop downs walls
+  { x: 8040, y: groundY - 2250, width: 30, height: 2250, color: "gray", type: "solid" },
+  { x: 8430, y: groundY - 2250, width: 30, height: 2115, color: "gray", type: "solid" },
+
+  //spike pit ground
+  { x: 8460, y: groundY - 150, width: 1000, height: 15, color: "brown", type: "platform" },
 ];
+
+//make platforms for chomp jump (x: +140)
+for (let i = 0; i <= 16; i++) {
+  //do math once
+  let xIncrease = (i * 144);
+  
+  //bottom platforms
+  surfaces.push({
+    x: 5447 + xIncrease,
+    y: groundY - 2300,
+    width: 90,
+    height: 15,
+    color: "brown",
+    type: "platform",
+  });
+  
+  //top platforms
+  surfaces.push({
+    x: 5447 + xIncrease,
+    y: groundY - 2410,
+    width: 90,
+    height: 15,
+    color: "brown",
+    type: "platform",
+  });
+}
 
 //goal object
 var goal = {
@@ -41,7 +107,7 @@ var enemies = [
   { x: 2390, y: groundY, width: 40, height: 60, color: "orange" }, //up
 ];
 
-//make ghosts for expanding gap (gap (x) increase by 6 (3+3), y: +200 (100 between each ghost))
+//make ghosts for expanding gap (x: gap increase by 6 (3+3), y: +200 (100 between each ghost))
 for (let i = 0; i <= 9; i++) {
   //do math once
   let xIncrease = (i * 3);
@@ -66,6 +132,17 @@ for (let i = 0; i <= 9; i++) {
   });
 }
 
+//make ghost for chomp jumps (x: +144)
+for (let i = 0; i <= 16; i++) {
+  enemies.push({
+    x: 5400 + (i * 144),
+    y: groundY - 2285,
+    width: 40,
+    height: 60,
+    color: "orange",
+  });
+}
+
 //spikes array (gray triangles)
 var spikes = [
   //after varying jump type jumps
@@ -73,7 +150,166 @@ var spikes = [
 
   //center spike jumps
   { x: 2718, y: groundY - 2280, width: 30, height: 30, color: "gray" },
+  { x: 3018, y: groundY - 2280, width: 30, height: 30, color: "gray" },
+  { x: 3318, y: groundY - 2280, width: 30, height: 30, color: "gray" },
+  { x: 3618, y: groundY - 2280, width: 30, height: 30, color: "gray" },
+  { x: 3918, y: groundY - 2280, width: 30, height: 30, color: "gray" },
+  { x: 4218, y: groundY - 2280, width: 30, height: 30, color: "gray" },
+  { x: 4518, y: groundY - 2280, width: 30, height: 30, color: "gray" },
+  { x: 4818, y: groundY - 2280, width: 30, height: 30, color: "gray" },
+
+  //drop downs (right side)
+  { x: 8250, y: groundY - 2130, width: 30, height: 30, color: "gray" },
+  { x: 8280, y: groundY - 2130, width: 30, height: 30, color: "gray" },
+  { x: 8310, y: groundY - 2130, width: 30, height: 30, color: "gray" },
+  { x: 8340, y: groundY - 2130, width: 30, height: 30, color: "gray" },
+  { x: 8370, y: groundY - 2130, width: 30, height: 30, color: "gray" },
+  { x: 8400, y: groundY - 2130, width: 30, height: 30, color: "gray" },
+
+  { x: 8250, y: groundY - 1830, width: 30, height: 30, color: "gray" },
+  { x: 8280, y: groundY - 1830, width: 30, height: 30, color: "gray" },
+  { x: 8310, y: groundY - 1830, width: 30, height: 30, color: "gray" },
+  { x: 8340, y: groundY - 1830, width: 30, height: 30, color: "gray" },
+  { x: 8370, y: groundY - 1830, width: 30, height: 30, color: "gray" },
+  { x: 8400, y: groundY - 1830, width: 30, height: 30, color: "gray" },
+
+  { x: 8250, y: groundY - 1530, width: 30, height: 30, color: "gray" },
+  { x: 8280, y: groundY - 1530, width: 30, height: 30, color: "gray" },
+  { x: 8310, y: groundY - 1530, width: 30, height: 30, color: "gray" },
+  { x: 8340, y: groundY - 1530, width: 30, height: 30, color: "gray" },
+  { x: 8370, y: groundY - 1530, width: 30, height: 30, color: "gray" },
+  { x: 8400, y: groundY - 1530, width: 30, height: 30, color: "gray" },
+
+  { x: 8250, y: groundY - 1230, width: 30, height: 30, color: "gray" },
+  { x: 8280, y: groundY - 1230, width: 30, height: 30, color: "gray" },
+  { x: 8310, y: groundY - 1230, width: 30, height: 30, color: "gray" },
+  { x: 8340, y: groundY - 1230, width: 30, height: 30, color: "gray" },
+  { x: 8370, y: groundY - 1230, width: 30, height: 30, color: "gray" },
+  { x: 8400, y: groundY - 1230, width: 30, height: 30, color: "gray" },
+
+  { x: 8250, y: groundY - 930, width: 30, height: 30, color: "gray" },
+  { x: 8280, y: groundY - 930, width: 30, height: 30, color: "gray" },
+  { x: 8310, y: groundY - 930, width: 30, height: 30, color: "gray" },
+  { x: 8340, y: groundY - 930, width: 30, height: 30, color: "gray" },
+  { x: 8370, y: groundY - 930, width: 30, height: 30, color: "gray" },
+  { x: 8400, y: groundY - 930, width: 30, height: 30, color: "gray" },
+
+  { x: 8250, y: groundY - 630, width: 30, height: 30, color: "gray" },
+  { x: 8280, y: groundY - 630, width: 30, height: 30, color: "gray" },
+  { x: 8310, y: groundY - 630, width: 30, height: 30, color: "gray" },
+  { x: 8340, y: groundY - 630, width: 30, height: 30, color: "gray" },
+  { x: 8370, y: groundY - 630, width: 30, height: 30, color: "gray" },
+  { x: 8400, y: groundY - 630, width: 30, height: 30, color: "gray" },
+
+  { x: 8250, y: groundY - 330, width: 30, height: 30, color: "gray" },
+  { x: 8280, y: groundY - 330, width: 30, height: 30, color: "gray" },
+  { x: 8310, y: groundY - 330, width: 30, height: 30, color: "gray" },
+  { x: 8340, y: groundY - 330, width: 30, height: 30, color: "gray" },
+  { x: 8370, y: groundY - 330, width: 30, height: 30, color: "gray" },
+  { x: 8400, y: groundY - 330, width: 30, height: 30, color: "gray" },
+
+  //(left side)
+  { x: 8070, y: groundY - 1980, width: 30, height: 30, color: "gray" },
+  { x: 8100, y: groundY - 1980, width: 30, height: 30, color: "gray" },
+  { x: 8130, y: groundY - 1980, width: 30, height: 30, color: "gray" },
+  { x: 8160, y: groundY - 1980, width: 30, height: 30, color: "gray" },
+  { x: 8190, y: groundY - 1980, width: 30, height: 30, color: "gray" },
+  { x: 8220, y: groundY - 1980, width: 30, height: 30, color: "gray" },
+
+  { x: 8070, y: groundY - 1680, width: 30, height: 30, color: "gray" },
+  { x: 8100, y: groundY - 1680, width: 30, height: 30, color: "gray" },
+  { x: 8130, y: groundY - 1680, width: 30, height: 30, color: "gray" },
+  { x: 8160, y: groundY - 1680, width: 30, height: 30, color: "gray" },
+  { x: 8190, y: groundY - 1680, width: 30, height: 30, color: "gray" },
+  { x: 8220, y: groundY - 1680, width: 30, height: 30, color: "gray" },
+
+  { x: 8070, y: groundY - 1380, width: 30, height: 30, color: "gray" },
+  { x: 8100, y: groundY - 1380, width: 30, height: 30, color: "gray" },
+  { x: 8130, y: groundY - 1380, width: 30, height: 30, color: "gray" },
+  { x: 8160, y: groundY - 1380, width: 30, height: 30, color: "gray" },
+  { x: 8190, y: groundY - 1380, width: 30, height: 30, color: "gray" },
+  { x: 8220, y: groundY - 1380, width: 30, height: 30, color: "gray" },
+  
+  { x: 8070, y: groundY - 1080, width: 30, height: 30, color: "gray" },
+  { x: 8100, y: groundY - 1080, width: 30, height: 30, color: "gray" },
+  { x: 8130, y: groundY - 1080, width: 30, height: 30, color: "gray" },
+  { x: 8160, y: groundY - 1080, width: 30, height: 30, color: "gray" },
+  { x: 8190, y: groundY - 1080, width: 30, height: 30, color: "gray" },
+  { x: 8220, y: groundY - 1080, width: 30, height: 30, color: "gray" },
+
+  { x: 8070, y: groundY - 780, width: 30, height: 30, color: "gray" },
+  { x: 8100, y: groundY - 780, width: 30, height: 30, color: "gray" },
+  { x: 8130, y: groundY - 780, width: 30, height: 30, color: "gray" },
+  { x: 8160, y: groundY - 780, width: 30, height: 30, color: "gray" },
+  { x: 8190, y: groundY - 780, width: 30, height: 30, color: "gray" },
+  { x: 8220, y: groundY - 780, width: 30, height: 30, color: "gray" },
+
+  { x: 8070, y: groundY - 480, width: 30, height: 30, color: "gray" },
+  { x: 8100, y: groundY - 480, width: 30, height: 30, color: "gray" },
+  { x: 8130, y: groundY - 480, width: 30, height: 30, color: "gray" },
+  { x: 8160, y: groundY - 480, width: 30, height: 30, color: "gray" },
+  { x: 8190, y: groundY - 480, width: 30, height: 30, color: "gray" },
+  { x: 8220, y: groundY - 480, width: 30, height: 30, color: "gray" },
+
+  { x: 8070, y: groundY - 180, width: 30, height: 30, color: "gray" },
+  { x: 8100, y: groundY - 180, width: 30, height: 30, color: "gray" },
+  { x: 8130, y: groundY - 180, width: 30, height: 30, color: "gray" },
+  { x: 8160, y: groundY - 180, width: 30, height: 30, color: "gray" },
+  { x: 8190, y: groundY - 180, width: 30, height: 30, color: "gray" },
+  { x: 8220, y: groundY - 180, width: 30, height: 30, color: "gray" },
 ];
+
+//make spikes for chomp jumps (x: +144)
+for (let i = 0; i <= 16; i++) {
+  //do math once
+  let xIncrease = (i * 144);
+  
+  //bottom spikes
+  spikes.push({
+    x: 5447 + xIncrease,
+    y: groundY - 2330,
+    width: 30,
+    height: 30,
+    color: "gray",
+  });
+  spikes.push({
+    x: 5477 + xIncrease,
+    y: groundY - 2330,
+    width: 30,
+    height: 30,
+    color: "gray",
+  });
+  spikes.push({
+    x: 5507 + xIncrease,
+    y: groundY - 2330,
+    width: 30,
+    height: 30,
+    color: "gray",
+  });
+  
+  //top spikes
+  spikes.push({
+    x: 5447 + xIncrease,
+    y: groundY - 2440,
+    width: 30,
+    height: 30,
+    color: "gray",
+  });
+  spikes.push({
+    x: 5477 + xIncrease,
+    y: groundY - 2440,
+    width: 30,
+    height: 30,
+    color: "gray",
+  });
+  spikes.push({
+    x: 5507 + xIncrease,
+    y: groundY - 2440,
+    width: 30,
+    height: 30,
+    color: "gray",
+  });
+}
 
 //signs array (cosmetic objects)
 var signs = [
@@ -94,6 +330,12 @@ var signs = [
 
   //second directional sign
   { x: 2635, y: groundY - 80, width: 60, height: 80, color: "brown", type: "right" },
+
+  //third directional sign
+  { x: 2703, y: groundY - 2330, width: 60, height: 80, color: "brown", type: "right" },
+
+  //fourth directional sign
+  { x: 8220, y: groundY - 2330, width: 60, height: 80, color: "brown", type: "down" },
 ];
 
 var tutorialTexts = [
