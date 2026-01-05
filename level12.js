@@ -19,6 +19,7 @@ var surfaces = [
   { x: 675, y: groundY - 90, width: 30, height: 90, color: "gray", type: "solid" },
   { x: 750, y: groundY - 90, width: 30, height: 90, color: "gray", type: "solid" },
   { x: 825, y: groundY - 90, width: 30, height: 90, color: "gray", type: "solid" },
+  { x: 900, y: groundY - 90, width: 30, height: 90, color: "gray", type: "solid" },
 
   //SPIKE MOUNTAIN
   { x: 1200, y: groundY - 125, width: 1670, height: 125, color: "gray", type: "solid" },
@@ -231,6 +232,7 @@ var spikes = [
   { x: 675, y: groundY - 120, width: 30, height: 30, color: "gray" },
   { x: 750, y: groundY - 120, width: 30, height: 30, color: "gray" },
   { x: 825, y: groundY - 120, width: 30, height: 30, color: "gray" },
+  { x: 900, y: groundY - 120, width: 30, height: 90, color: "gray" },
 
   //SPIKE MOUTAIN
   //left side
@@ -240,33 +242,33 @@ var spikes = [
   { x: 1140, y: groundY - 30, width: 30, height: 30, color: "gray" },
   { x: 1170, y: groundY - 30, width: 30, height: 30, color: "gray" },
 
-  { x: 1220, y: groundY - 155, width: 30, height: 30, color: "gray" },
-  { x: 1250, y: groundY - 155, width: 30, height: 30, color: "gray" },
-  { x: 1280, y: groundY - 155, width: 30, height: 30, color: "gray" },
+  { x: 1225, y: groundY - 155, width: 30, height: 30, color: "gray" },
+  { x: 1255, y: groundY - 155, width: 30, height: 30, color: "gray" },
+  //{ x: 1280, y: groundY - 155, width: 30, height: 30, color: "gray" },
 
-  { x: 1330, y: groundY - 280, width: 30, height: 30, color: "gray" },
-  { x: 1360, y: groundY - 280, width: 30, height: 30, color: "gray" },
-  { x: 1390, y: groundY - 280, width: 30, height: 30, color: "gray" },
+  { x: 1335, y: groundY - 280, width: 30, height: 30, color: "gray" },
+  { x: 1365, y: groundY - 280, width: 30, height: 30, color: "gray" },
+  //{ x: 1390, y: groundY - 280, width: 30, height: 30, color: "gray" },
 
-  { x: 1440, y: groundY - 405, width: 30, height: 30, color: "gray" },
-  { x: 1470, y: groundY - 405, width: 30, height: 30, color: "gray" },
-  { x: 1500, y: groundY - 405, width: 30, height: 30, color: "gray" },
+  { x: 1445, y: groundY - 405, width: 30, height: 30, color: "gray" },
+  { x: 1475, y: groundY - 405, width: 30, height: 30, color: "gray" },
+  //{ x: 1500, y: groundY - 405, width: 30, height: 30, color: "gray" },
 
-  { x: 1550, y: groundY - 530, width: 30, height: 30, color: "gray" },
-  { x: 1580, y: groundY - 530, width: 30, height: 30, color: "gray" },
-  { x: 1610, y: groundY - 530, width: 30, height: 30, color: "gray" },
+  { x: 1555, y: groundY - 530, width: 30, height: 30, color: "gray" },
+  { x: 1585, y: groundY - 530, width: 30, height: 30, color: "gray" },
+  //{ x: 1610, y: groundY - 530, width: 30, height: 30, color: "gray" },
 
-  { x: 1660, y: groundY - 655, width: 30, height: 30, color: "gray" },
-  { x: 1690, y: groundY - 655, width: 30, height: 30, color: "gray" },
-  { x: 1720, y: groundY - 655, width: 30, height: 30, color: "gray" },
+  { x: 1665, y: groundY - 655, width: 30, height: 30, color: "gray" },
+  { x: 1695, y: groundY - 655, width: 30, height: 30, color: "gray" },
+  //{ x: 1720, y: groundY - 655, width: 30, height: 30, color: "gray" },
 
-  { x: 1770, y: groundY - 780, width: 30, height: 30, color: "gray" },
-  { x: 1800, y: groundY - 780, width: 30, height: 30, color: "gray" },
-  { x: 1830, y: groundY - 780, width: 30, height: 30, color: "gray" },
+  { x: 1775, y: groundY - 780, width: 30, height: 30, color: "gray" },
+  { x: 1805, y: groundY - 780, width: 30, height: 30, color: "gray" },
+  //{ x: 1830, y: groundY - 780, width: 30, height: 30, color: "gray" },
 
-  { x: 1880, y: groundY - 905, width: 30, height: 30, color: "gray" },
-  { x: 1910, y: groundY - 905, width: 30, height: 30, color: "gray" },
-  { x: 1940, y: groundY - 905, width: 30, height: 30, color: "gray" },
+  { x: 1885, y: groundY - 905, width: 30, height: 30, color: "gray" },
+  { x: 1915, y: groundY - 905, width: 30, height: 30, color: "gray" },
+  //{ x: 1940, y: groundY - 905, width: 30, height: 30, color: "gray" },
 
   //top
   { x: 1990, y: groundY - 1030, width: 30, height: 30, color: "gray" },
@@ -274,33 +276,33 @@ var spikes = [
   { x: 2050, y: groundY - 1030, width: 30, height: 30, color: "gray" },
 
   //right side
-  { x: 2100, y: groundY - 905, width: 30, height: 30, color: "gray" },
-  { x: 2130, y: groundY - 905, width: 30, height: 30, color: "gray" },
-  { x: 2160, y: groundY - 905, width: 30, height: 30, color: "gray" },
+  //{ x: 2100, y: groundY - 905, width: 30, height: 30, color: "gray" },
+  { x: 2125, y: groundY - 905, width: 30, height: 30, color: "gray" },
+  { x: 2155, y: groundY - 905, width: 30, height: 30, color: "gray" },
 
-  { x: 2210, y: groundY - 780, width: 30, height: 30, color: "gray" },
-  { x: 2240, y: groundY - 780, width: 30, height: 30, color: "gray" },
-  { x: 2270, y: groundY - 780, width: 30, height: 30, color: "gray" },
+  //{ x: 2210, y: groundY - 780, width: 30, height: 30, color: "gray" },
+  { x: 2235, y: groundY - 780, width: 30, height: 30, color: "gray" },
+  { x: 2265, y: groundY - 780, width: 30, height: 30, color: "gray" },
 
-  { x: 2320, y: groundY - 655, width: 30, height: 30, color: "gray" },
-  { x: 2350, y: groundY - 655, width: 30, height: 30, color: "gray" },
-  { x: 2380, y: groundY - 655, width: 30, height: 30, color: "gray" },
+  //{ x: 2320, y: groundY - 655, width: 30, height: 30, color: "gray" },
+  { x: 2345, y: groundY - 655, width: 30, height: 30, color: "gray" },
+  { x: 2375, y: groundY - 655, width: 30, height: 30, color: "gray" },
 
-  { x: 2430, y: groundY - 530, width: 30, height: 30, color: "gray" },
-  { x: 2460, y: groundY - 530, width: 30, height: 30, color: "gray" },
-  { x: 2490, y: groundY - 530, width: 30, height: 30, color: "gray" },
+  //{ x: 2430, y: groundY - 530, width: 30, height: 30, color: "gray" },
+  { x: 2455, y: groundY - 530, width: 30, height: 30, color: "gray" },
+  { x: 2485, y: groundY - 530, width: 30, height: 30, color: "gray" },
 
-  { x: 2540, y: groundY - 405, width: 30, height: 30, color: "gray" },
-  { x: 2570, y: groundY - 405, width: 30, height: 30, color: "gray" },
-  { x: 2600, y: groundY - 405, width: 30, height: 30, color: "gray" },
+  //{ x: 2540, y: groundY - 405, width: 30, height: 30, color: "gray" },
+  { x: 2565, y: groundY - 405, width: 30, height: 30, color: "gray" },
+  { x: 2595, y: groundY - 405, width: 30, height: 30, color: "gray" },
 
-  { x: 2650, y: groundY - 280, width: 30, height: 30, color: "gray" },
-  { x: 2680, y: groundY - 280, width: 30, height: 30, color: "gray" },
-  { x: 2710, y: groundY - 280, width: 30, height: 30, color: "gray" },
+  //{ x: 2650, y: groundY - 280, width: 30, height: 30, color: "gray" },
+  { x: 2675, y: groundY - 280, width: 30, height: 30, color: "gray" },
+  { x: 2705, y: groundY - 280, width: 30, height: 30, color: "gray" },
 
-  { x: 2760, y: groundY - 155, width: 30, height: 30, color: "gray" },
-  { x: 2790, y: groundY - 155, width: 30, height: 30, color: "gray" },
-  { x: 2820, y: groundY - 155, width: 30, height: 30, color: "gray" },
+  //{ x: 2760, y: groundY - 155, width: 30, height: 30, color: "gray" },
+  { x: 2785, y: groundY - 155, width: 30, height: 30, color: "gray" },
+  { x: 2815, y: groundY - 155, width: 30, height: 30, color: "gray" },
 
   { x: 2870, y: groundY - 30, width: 30, height: 30, color: "gray" },
   { x: 2900, y: groundY - 30, width: 30, height: 30, color: "gray" },
