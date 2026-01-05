@@ -203,12 +203,12 @@ var enemies = [
   { x: 6175, y: groundY - 970, width: 40, height: 60, color: "orange" },
 
   //trust fall staircase
-  { x: 10880, y: groundY - 2120, width: 40, height: 60, color: "orange" },
-  { x: 11165, y: groundY - 1920, width: 40, height: 60, color: "orange" },
-  { x: 11450, y: groundY - 1720, width: 40, height: 60, color: "orange" },
-  { x: 11735, y: groundY - 1520, width: 40, height: 60, color: "orange" },
-  { x: 12020, y: groundY - 1320, width: 40, height: 60, color: "orange" },
-  { x: 12305, y: groundY - 1120, width: 40, height: 60, color: "orange" },
+  { x: 10880, y: groundY - 2420, width: 40, height: 60, color: "orange" },
+  { x: 11165, y: groundY - 2270, width: 40, height: 60, color: "orange" },
+  { x: 11450, y: groundY - 2120, width: 40, height: 60, color: "orange" },
+  { x: 11735, y: groundY - 1970, width: 40, height: 60, color: "orange" },
+  { x: 12020, y: groundY - 1820, width: 40, height: 60, color: "orange" },
+  { x: 12305, y: groundY - 1670, width: 40, height: 60, color: "orange" },
 
   //in between decreasing size platforms
   { x: 13335, y: groundY, width: 40, height: 60, color: "orange" }, //50
