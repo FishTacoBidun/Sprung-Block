@@ -232,7 +232,7 @@ var spikes = [
   { x: 675, y: groundY - 120, width: 30, height: 30, color: "gray" },
   { x: 750, y: groundY - 120, width: 30, height: 30, color: "gray" },
   { x: 825, y: groundY - 120, width: 30, height: 30, color: "gray" },
-  { x: 900, y: groundY - 120, width: 30, height: 90, color: "gray" },
+  { x: 900, y: groundY - 120, width: 30, height: 30, color: "gray" },
 
   //SPIKE MOUTAIN
   //left side
