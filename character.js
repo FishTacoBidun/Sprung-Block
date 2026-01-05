@@ -1097,6 +1097,36 @@ function draw() {
     }
   }
 
+  //draw spikes with texture
+  if (typeof spikes !== 'undefined' && spikes) {
+    for (const spike of spikes) {
+      if (texturesLoaded && textures.spike) {
+        ctx.drawImage(textures.spike, spike.x, spike.y, spike.width, spike.height);
+      } else {
+        ctx.fillStyle = spike.color || "gray";
+        ctx.beginPath();
+        ctx.moveTo(spike.x + spike.width / 2, spike.y);
+        ctx.lineTo(spike.x, spike.y + spike.height);
+        ctx.lineTo(spike.x + spike.width, spike.y + spike.height);
+        ctx.closePath();
+        ctx.fill();
+      }
+      
+      //spike hitbox visualization (for testing)
+      /*
+      const spikeHitboxes = generateSpikeHitboxes(spike);
+      ctx.save();
+      ctx.fillStyle = "rgb(255, 0, 0)"; //semi-transparent red fill
+      for (const hitbox of spikeHitboxes) {
+        ctx.fillRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
+        ctx.fillRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
+      }
+      ctx.restore();
+      */
+      
+    }
+  }
+
   //draw surfaces with textures
   if (texturesLoaded) {
     for (const s of surfaces) {
@@ -1193,36 +1223,6 @@ function draw() {
         ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
       }
       ctx.restore();
-    }
-  }
-
-  //draw spikes with texture
-  if (typeof spikes !== 'undefined' && spikes) {
-    for (const spike of spikes) {
-      if (texturesLoaded && textures.spike) {
-        ctx.drawImage(textures.spike, spike.x, spike.y, spike.width, spike.height);
-      } else {
-        ctx.fillStyle = spike.color || "gray";
-        ctx.beginPath();
-        ctx.moveTo(spike.x + spike.width / 2, spike.y);
-        ctx.lineTo(spike.x, spike.y + spike.height);
-        ctx.lineTo(spike.x + spike.width, spike.y + spike.height);
-        ctx.closePath();
-        ctx.fill();
-      }
-      
-      //spike hitbox visualization (for testing)
-      /*
-      const spikeHitboxes = generateSpikeHitboxes(spike);
-      ctx.save();
-      ctx.fillStyle = "rgb(255, 0, 0)"; //semi-transparent red fill
-      for (const hitbox of spikeHitboxes) {
-        ctx.fillRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
-        ctx.fillRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
-      }
-      ctx.restore();
-      */
-      
     }
   }
 

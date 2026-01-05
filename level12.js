@@ -244,31 +244,31 @@ var spikes = [
 
   { x: 1225, y: groundY - 155, width: 30, height: 30, color: "gray" },
   { x: 1255, y: groundY - 155, width: 30, height: 30, color: "gray" },
-  //{ x: 1280, y: groundY - 155, width: 30, height: 30, color: "gray" },
+  { x: 1285, y: groundY - 155, width: 30, height: 30, color: "gray" },
 
   { x: 1335, y: groundY - 280, width: 30, height: 30, color: "gray" },
   { x: 1365, y: groundY - 280, width: 30, height: 30, color: "gray" },
-  //{ x: 1390, y: groundY - 280, width: 30, height: 30, color: "gray" },
+  { x: 1395, y: groundY - 280, width: 30, height: 30, color: "gray" },
 
   { x: 1445, y: groundY - 405, width: 30, height: 30, color: "gray" },
   { x: 1475, y: groundY - 405, width: 30, height: 30, color: "gray" },
-  //{ x: 1500, y: groundY - 405, width: 30, height: 30, color: "gray" },
+  { x: 1505, y: groundY - 405, width: 30, height: 30, color: "gray" },
 
   { x: 1555, y: groundY - 530, width: 30, height: 30, color: "gray" },
   { x: 1585, y: groundY - 530, width: 30, height: 30, color: "gray" },
-  //{ x: 1610, y: groundY - 530, width: 30, height: 30, color: "gray" },
+  { x: 1615, y: groundY - 530, width: 30, height: 30, color: "gray" },
 
   { x: 1665, y: groundY - 655, width: 30, height: 30, color: "gray" },
   { x: 1695, y: groundY - 655, width: 30, height: 30, color: "gray" },
-  //{ x: 1720, y: groundY - 655, width: 30, height: 30, color: "gray" },
+  { x: 1725, y: groundY - 655, width: 30, height: 30, color: "gray" },
 
   { x: 1775, y: groundY - 780, width: 30, height: 30, color: "gray" },
   { x: 1805, y: groundY - 780, width: 30, height: 30, color: "gray" },
-  //{ x: 1830, y: groundY - 780, width: 30, height: 30, color: "gray" },
+  { x: 1835, y: groundY - 780, width: 30, height: 30, color: "gray" },
 
   { x: 1885, y: groundY - 905, width: 30, height: 30, color: "gray" },
   { x: 1915, y: groundY - 905, width: 30, height: 30, color: "gray" },
-  //{ x: 1940, y: groundY - 905, width: 30, height: 30, color: "gray" },
+  { x: 1945, y: groundY - 905, width: 30, height: 30, color: "gray" },
 
   //top
   { x: 1990, y: groundY - 1030, width: 30, height: 30, color: "gray" },
@@ -276,31 +276,31 @@ var spikes = [
   { x: 2050, y: groundY - 1030, width: 30, height: 30, color: "gray" },
 
   //right side
-  //{ x: 2100, y: groundY - 905, width: 30, height: 30, color: "gray" },
+  { x: 2095, y: groundY - 905, width: 30, height: 30, color: "gray" },
   { x: 2125, y: groundY - 905, width: 30, height: 30, color: "gray" },
   { x: 2155, y: groundY - 905, width: 30, height: 30, color: "gray" },
 
-  //{ x: 2210, y: groundY - 780, width: 30, height: 30, color: "gray" },
+  { x: 2205, y: groundY - 780, width: 30, height: 30, color: "gray" },
   { x: 2235, y: groundY - 780, width: 30, height: 30, color: "gray" },
   { x: 2265, y: groundY - 780, width: 30, height: 30, color: "gray" },
 
-  //{ x: 2320, y: groundY - 655, width: 30, height: 30, color: "gray" },
+  { x: 2315, y: groundY - 655, width: 30, height: 30, color: "gray" },
   { x: 2345, y: groundY - 655, width: 30, height: 30, color: "gray" },
   { x: 2375, y: groundY - 655, width: 30, height: 30, color: "gray" },
 
-  //{ x: 2430, y: groundY - 530, width: 30, height: 30, color: "gray" },
+  { x: 2425, y: groundY - 530, width: 30, height: 30, color: "gray" },
   { x: 2455, y: groundY - 530, width: 30, height: 30, color: "gray" },
   { x: 2485, y: groundY - 530, width: 30, height: 30, color: "gray" },
 
-  //{ x: 2540, y: groundY - 405, width: 30, height: 30, color: "gray" },
+  { x: 2535, y: groundY - 405, width: 30, height: 30, color: "gray" },
   { x: 2565, y: groundY - 405, width: 30, height: 30, color: "gray" },
   { x: 2595, y: groundY - 405, width: 30, height: 30, color: "gray" },
 
-  //{ x: 2650, y: groundY - 280, width: 30, height: 30, color: "gray" },
+  { x: 2645, y: groundY - 280, width: 30, height: 30, color: "gray" },
   { x: 2675, y: groundY - 280, width: 30, height: 30, color: "gray" },
   { x: 2705, y: groundY - 280, width: 30, height: 30, color: "gray" },
 
-  //{ x: 2760, y: groundY - 155, width: 30, height: 30, color: "gray" },
+  { x: 2755, y: groundY - 155, width: 30, height: 30, color: "gray" },
   { x: 2785, y: groundY - 155, width: 30, height: 30, color: "gray" },
   { x: 2815, y: groundY - 155, width: 30, height: 30, color: "gray" },
 
