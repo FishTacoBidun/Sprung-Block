@@ -261,48 +261,48 @@ async function refreshLevelButtonsEnhanced() {
 async function fetchBadgesEnhanced() {
   //wait for BADGE_CONFIG to be available (defined in character.js)
   //if it's not available yet, we'll create a minimal version
-const BADGE_CONFIG = {
-  1: { emoji: "🥉", description: "Complete Level 1" },  //easy badges
-  2: { emoji: "⏱️", description: "Complete Level 1 In Under 0:06" },
-  3: { emoji: "❤️", description: "Complete Level 1 With 3/3 Health" }, 
-  4: { emoji: "🥉", description: "Complete Level 2" }, 
-  5: { emoji: "⏱️", description: "Complete Level 2 In Under 0:11" },
-  6: { emoji: "❤️", description: "Complete Level 2 With 3/3 Health" },
-  7: { emoji: "🥉", description: "Complete Level 3" },
-  8: { emoji: "⏱️", description: "Complete Level 3 In Under 0:10" }, 
-  9: { emoji: "❤️", description: "Complete Level 3 With 3/3 Health" },
-  10: { emoji: "🥉", description: "Complete Level 4" },
-  11: { emoji: "⏱️", description: "Complete Level 4 In Under 0:20" },
-  12: { emoji: "❤️", description: "Complete Level 4 With 3/3 Health" },
-  13: { emoji: "🥈", description: "Complete Level 5" },  //medium badges
-  14: { emoji: "⌛", description: "Complete Level 5 In Under 0:30" },
-  15: { emoji: "💖", description: "Complete Level 5 With 3/3 Health" },
-  16: { emoji: "🥈", description: "Complete Level 6" },
-  17: { emoji: "⌛", description: "Complete Level 6 In Under 0:30" },
-  18: { emoji: "💖", description: "Complete Level 6 With 3/3 Health" },
-  19: { emoji: "🥈", description: "Complete Level 7" },
-  20: { emoji: "⌛", description: "Complete Level 7 In Under 0:40" },
-  21: { emoji: "💖", description: "Complete Level 7 With 3/3 Health" },
-  22: { emoji: "🥈", description: "Complete Level 8" },
-  23: { emoji: "⌛", description: "Complete Level 8 In Under 0:45" },
-  24: { emoji: "💖", description: "Complete Level 8 With 3/3 Health" },
-  25: { emoji: "🥇", description: "Complete Level 9" }, //hard badges
-  26: { emoji: "🕔", description: "Complete Level 9 In Under 1:15" },
-  27: { emoji: "❤️‍🔥", description: "Complete Level 9 With 3/3 Health" },
-  28: { emoji: "🥇", description: "Complete Level 10" },
-  29: { emoji: "🕔", description: "Complete Level 10 In Under 1:50" },
-  30: { emoji: "❤️‍🔥", description: "Complete Level 10 With 3/3 Health" },
-  31: { emoji: "🥇", description: "Complete Level 11" }, 
-  32: { emoji: "🕔", description: "Complete Level 11 In Under 1:30" },
-  33: { emoji: "❤️‍🔥", description: "Complete Level 11 With 3/3 Health" },
-  34: { emoji: "🥇", description: "Complete Level 12" },
-  35: { emoji: "🕔", description: "Complete Level 12 In Under " },
-  36: { emoji: "❤️‍🔥", description: "Complete Level 12 With 3/3 Health" },
-  37: { emoji: "🏅", description: "Complete All Levels" }, //completion badges
-  38: { emoji: "🕰️", description: "Complete All Level Time Challenges" },
-  39: { emoji: "💛", description: "Complete All Level Health Challenges" },
-  40: { emoji: "💀", description: "Beat Level 13" },  //impossible badge
-};
+  const BADGE_CONFIG = {
+    1: { emoji: "🥉", description: "Complete Level 1" },  //easy badges
+    2: { emoji: "⏱️", description: "Complete Level 1 In Under 0:06" },
+    3: { emoji: "❤️", description: "Complete Level 1 With 3/3 Health" }, 
+    4: { emoji: "🥉", description: "Complete Level 2" }, 
+    5: { emoji: "⏱️", description: "Complete Level 2 In Under 0:11" },
+    6: { emoji: "❤️", description: "Complete Level 2 With 3/3 Health" },
+    7: { emoji: "🥉", description: "Complete Level 3" },
+    8: { emoji: "⏱️", description: "Complete Level 3 In Under 0:08" }, 
+    9: { emoji: "❤️", description: "Complete Level 3 With 3/3 Health" },
+    10: { emoji: "🥉", description: "Complete Level 4" },
+    11: { emoji: "⏱️", description: "Complete Level 4 In Under 0:20" },
+    12: { emoji: "❤️", description: "Complete Level 4 With 3/3 Health" },
+    13: { emoji: "🥈", description: "Complete Level 5" },  //medium badges
+    14: { emoji: "⌛", description: "Complete Level 5 In Under 0:30" },
+    15: { emoji: "💖", description: "Complete Level 5 With 3/3 Health" },
+    16: { emoji: "🥈", description: "Complete Level 6" },
+    17: { emoji: "⌛", description: "Complete Level 6 In Under 0:30" },
+    18: { emoji: "💖", description: "Complete Level 6 With 3/3 Health" },
+    19: { emoji: "🥈", description: "Complete Level 7" },
+    20: { emoji: "⌛", description: "Complete Level 7 In Under 0:40" },
+    21: { emoji: "💖", description: "Complete Level 7 With 3/3 Health" },
+    22: { emoji: "🥈", description: "Complete Level 8" },
+    23: { emoji: "⌛", description: "Complete Level 8 In Under 0:45" },
+    24: { emoji: "💖", description: "Complete Level 8 With 3/3 Health" },
+    25: { emoji: "🥇", description: "Complete Level 9" }, //hard badges
+    26: { emoji: "🕔", description: "Complete Level 9 In Under 1:15" },
+    27: { emoji: "❤️‍🔥", description: "Complete Level 9 With 3/3 Health" },
+    28: { emoji: "🥇", description: "Complete Level 10" },
+    29: { emoji: "🕔", description: "Complete Level 10 In Under 1:50" },
+    30: { emoji: "❤️‍🔥", description: "Complete Level 10 With 3/3 Health" },
+    31: { emoji: "🥇", description: "Complete Level 11" }, 
+    32: { emoji: "🕔", description: "Complete Level 11 In Under 1:30" },
+    33: { emoji: "❤️‍🔥", description: "Complete Level 11 With 3/3 Health" },
+    34: { emoji: "🥇", description: "Complete Level 12" },
+    35: { emoji: "🕔", description: "Complete Level 12 In Under 2:10" },
+    36: { emoji: "❤️‍🔥", description: "Complete Level 12 With 3/3 Health" },
+    37: { emoji: "🏅", description: "Complete All Levels" }, //completion badges
+    38: { emoji: "🕰️", description: "Complete All Level Time Challenges" },
+    39: { emoji: "💛", description: "Complete All Level Health Challenges" },
+    40: { emoji: "💀", description: "Beat Level 13" },  //impossible badge
+  };  
   
   if (window.isAuthenticated) {
     //authenticated: get badges from user database
@@ -427,7 +427,4 @@ if (window.isAuthenticated) {
   console.log(`Logged in as: ${username}`);
 } else {
   console.log('Guest mode - progress stored in sessionStorage (isolated per session)');
-
 }
-
-

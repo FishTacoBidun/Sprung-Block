@@ -132,27 +132,27 @@ function generateSpikeHitboxes(spike) {
   return hitboxes;
 }
 
-//Check if player rectangle intersects with any of the spike's hitbox rectangles
-//Parameters: player object and array of hitbox rectangles
-//Returns: true if collision detected, false otherwise
+//check if player rectangle intersects with any of the spike's hitbox rectangles
+//parameters: player object and array of hitbox rectangles
+//returns: true if collision detected, false otherwise
 function playerIntersectsSpikeHitboxes(player, hitboxes) {
-  //Quick AABB check first - check if player overlaps spike's bounding box
-  //This is a fast rejection test
+  //quick AABB check first - check if player overlaps spike's bounding box
+  //this is a fast rejection test
   const playerRight = player.x + player.width;
   const playerBottom = player.y + player.height;
   
-  //Check each hitbox rectangle
+  //check each hitbox rectangle
   for (const hitbox of hitboxes) {
-    //Standard AABB collision check
+    //standard AABB collision check
     if (player.x < hitbox.x + hitbox.width &&
         playerRight > hitbox.x &&
         player.y < hitbox.y + hitbox.height &&
         playerBottom > hitbox.y) {
-      return true; //Collision detected
+      return true; //nollision detected
     }
   }
   
-  return false; //No collision
+  return false; //no collision
 }
 
 //controls
@@ -1078,6 +1078,25 @@ function draw() {
   //apply camera offset
   ctx.translate(-camera.x, -camera.y);
 
+  //draw signs (cosmetic objects)
+  if (texturesLoaded && typeof signs !== 'undefined' && signs) {
+    for (const sign of signs) {
+      let texture = null;
+      if (sign.type === "right" && textures.signRight) texture = textures.signRight;
+      else if (sign.type === "left" && textures.signLeft) texture = textures.signLeft;
+      else if (sign.type === "up" && textures.signUp) texture = textures.signUp;
+      else if (sign.type === "down" && textures.signDown) texture = textures.signDown;
+      
+      if (texture) {
+        ctx.drawImage(texture, sign.x, sign.y, sign.width, sign.height);
+      } else {
+        //fallback to color
+        ctx.fillStyle = sign.color || "brown";
+        ctx.fillRect(sign.x, sign.y, sign.width, sign.height);
+      }
+    }
+  }
+
   //draw surfaces with textures
   if (texturesLoaded) {
     for (const s of surfaces) {
@@ -1135,25 +1154,6 @@ function draw() {
         ctx.fillText(text, x, y);
       }
     }
-
-  //draw signs (cosmetic objects)
-  if (texturesLoaded && typeof signs !== 'undefined' && signs) {
-    for (const sign of signs) {
-      let texture = null;
-      if (sign.type === "right" && textures.signRight) texture = textures.signRight;
-      else if (sign.type === "left" && textures.signLeft) texture = textures.signLeft;
-      else if (sign.type === "up" && textures.signUp) texture = textures.signUp;
-      else if (sign.type === "down" && textures.signDown) texture = textures.signDown;
-      
-      if (texture) {
-        ctx.drawImage(texture, sign.x, sign.y, sign.width, sign.height);
-      } else {
-        //fallback to color
-        ctx.fillStyle = sign.color || "brown";
-        ctx.fillRect(sign.x, sign.y, sign.width, sign.height);
-      }
-    }
-  }
 
   //draw enemies with texture
   if (typeof enemies !== 'undefined' && enemies) {
@@ -1254,7 +1254,7 @@ function draw() {
     ? textures.darkGlow 
     : textures.glow;
   if (texturesLoaded && glowTexture) {
-    const glowSize = 1200;
+    const glowSize = 1200; //1200
     const glowX = player.x + player.width / 2 - glowSize / 2;
     const glowY = player.y + player.height / 2 - glowSize / 2;
     ctx.drawImage(glowTexture, glowX, glowY, glowSize, glowSize);
@@ -2013,7 +2013,7 @@ const BADGE_CONFIG = {
   5: { emoji: "⏱️", description: "Complete Level 2 In Under 0:11" },
   6: { emoji: "❤️", description: "Complete Level 2 With 3/3 Health" },
   7: { emoji: "🥉", description: "Complete Level 3" },
-  8: { emoji: "⏱️", description: "Complete Level 3 In Under 0:10" }, 
+  8: { emoji: "⏱️", description: "Complete Level 3 In Under 0:08" }, 
   9: { emoji: "❤️", description: "Complete Level 3 With 3/3 Health" },
   10: { emoji: "🥉", description: "Complete Level 4" },
   11: { emoji: "⏱️", description: "Complete Level 4 In Under 0:20" },
@@ -2247,7 +2247,7 @@ async function checkAndUnlockBadges(levelNum, completionTime, completionHealth) 
   } else if (levelNum === 3) {
     await unlockBadge(7);
     
-    if (timeInSeconds < 10) {
+    if (timeInSeconds < 8) {
       await unlockBadge(8);
     }
     

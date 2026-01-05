@@ -50,7 +50,7 @@ var signs = [
 ];
 
 var tutorialTexts = [
-  { //controls
+  { //clear text
     x: 120,
     y: 380,
     text: "",

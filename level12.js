@@ -121,7 +121,7 @@ var surfaces = [
   { x: 10230, y: groundY - 100, width: 40, height: 15, color: "brown", type: "platform" },
 ];
 
-//make spikes for staircase (x: +140, y: -150)
+//make platforms for spike staircase (x: +140, y: -150)
 for (let i = 0; i <= 11; i++) {
   //do math once
   let xIncrease = (i * 144);
