@@ -60,7 +60,6 @@ if (!window.isAuthenticated) {
 
 // ============================================================================
 // TESTING MODE: UNLOCK ALL LEVELS IN GUEST MODE
-/*
 if (!window.isAuthenticated) {
   //unlock all levels (1 through 13, or update to match your TOTAL_LEVELS)
   const allLevels = [];
@@ -70,7 +69,6 @@ if (!window.isAuthenticated) {
   setGuestLevels(allLevels);
   console.log('TESTING MODE: All levels unlocked in guest mode');
 }
-*/
 // ============================================================================
 
 //enhanced unlock next level function
@@ -266,7 +264,7 @@ async function fetchBadgesEnhanced() {
     2: { emoji: "⏱️", description: "Complete Level 1 In Under 0:06" },
     3: { emoji: "❤️", description: "Complete Level 1 With 3/3 Health" }, 
     4: { emoji: "🥉", description: "Complete Level 2" }, 
-    5: { emoji: "⏱️", description: "Complete Level 2 In Under 0:11" },
+    5: { emoji: "⏱️", description: "Complete Level 2 In Under 0:12" },
     6: { emoji: "❤️", description: "Complete Level 2 With 3/3 Health" },
     7: { emoji: "🥉", description: "Complete Level 3" },
     8: { emoji: "⏱️", description: "Complete Level 3 In Under 0:08" }, 
