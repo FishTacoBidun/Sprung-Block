@@ -404,8 +404,8 @@ body {
   background-repeat: no-repeat;
   background-position: center;
   background-color: transparent;
-  width: 600px;
-  min-height: 600px;
+  width: 800px;
+  min-height: 800px;
   padding: 130px 40px 40px;
   display: flex;
   flex-direction: column;
@@ -516,6 +516,50 @@ body {
 .settings-option:hover {
   background-color: #777;
   transform: scale(1.05);
+}
+
+.practice-mode-control {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.practice-mode-control label {
+  color: white;
+  font-family: "Cabin Sketch", sans-serif;
+  font-size: 32px;
+  font-weight: 700;
+}
+
+.practice-mode-button {
+  padding: 15px 40px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  font-family: "Cabin Sketch", sans-serif;
+  font-size: 40px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.1s;
+  width: 100%;
+  max-width: 400px;
+}
+
+.practice-mode-button:hover {
+  background-color: #ff4555;
+  transform: scale(1.05);
+}
+
+.practice-mode-button[data-active="true"] {
+  background-color: #28a745;
+}
+
+.practice-mode-button[data-active="true"]:hover {
+  background-color: #34ce57;
 }
 
 .badge-button {
@@ -1105,14 +1149,14 @@ body {
   }
 
   #settingsMenu {
-    width: 500px;
-    min-height: 500px;
+    width: 650px;
+    min-height: 700px;
     padding: 130px 40px 40px;
     gap: 30px;
   }
   
   .settings-close-button {
-    top: 65px;
+    top: 90px;
     left: 20px;
   }
   
@@ -1137,8 +1181,18 @@ body {
   }
   
   .settings-option {
-    padding: 10px 30px;
+    padding: 6px 30px;
     font-size: 30px;
+    max-width: 400px;
+  }
+  
+  .practice-mode-control label {
+    font-size: 28px;
+  }
+  
+  .practice-mode-button {
+    padding: 6px 30px;
+    font-size: 32px;
     max-width: 400px;
   }
 

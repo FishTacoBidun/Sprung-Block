@@ -192,6 +192,36 @@ var tutorialTexts = [
     align: "center",
     strokeColor: "blue",
     strokeWidth: 1
+  },
+  { //tutorial mode
+    x: 2750,
+    y: groundY - 210,
+    text: "You can turn on practice mode in the main menu settings",
+    fontSize: "14px Arial",
+    color: "white",
+    align: "center",
+    strokeColor: "yellow",
+    strokeWidth: 1
+  },
+  {
+    x: 2750,
+    y: groundY - 190,
+    text: "This will allow you to place checkpoints with C and delete your most recent checkpoint with X",
+    fontSize: "14px Arial",
+    color: "white",
+    align: "center",
+    strokeColor: "yellow",
+    strokeWidth: 1
+  },
+  {
+    x: 2750,
+    y: groundY - 170,
+    text: "You will not unlock levels or badges when beating levels in practice mode",
+    fontSize: "14px Arial",
+    color: "white",
+    align: "center",
+    strokeColor: "yellow",
+    strokeWidth: 1
   }
 ];
 

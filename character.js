@@ -41,6 +41,10 @@ let pausedEnemyRespawnTimes = new Map(); //track paused enemy respawn times
 let pendingUpdateRequest = null; //promise for current background update
 let isPendingUpdate = false; //flag to indicate if update is in progress
 
+//practice mode
+let isPracticeMode = false; //track if practice mode is enabled
+let checkpoint = null; //track current checkpoint {x, y}
+
 //delta time tracking for frame-rate independent movement
 let lastFrameTime = performance.now();
 const TARGET_FPS = 60;
@@ -77,6 +81,14 @@ const HealthSystem = {
 //starting position
 const START_X = 100; //100
 const START_Y = 400; //400
+
+//helper function to get respawn position (uses checkpoint if in practice mode and checkpoint exists)
+function getRespawnPosition() {
+  if (isPracticeMode && checkpoint) {
+    return { x: checkpoint.x, y: checkpoint.y };
+  }
+  return { x: START_X, y: START_Y };
+}
 
 //player setup and physics
 const player = 
@@ -178,6 +190,21 @@ document.addEventListener("keydown", (e) =>
   if (e.code === "KeyW") keys.w = true;
 
   if (e.code === "KeyR") keys.r = true;
+  
+  //practice mode checkpoint controls (only when in game)
+  if (isPracticeMode && isGameRunning && !isPaused) {
+    if (e.code === "KeyC") {
+      //place or update checkpoint at player position
+      checkpoint = { x: player.x, y: player.y };
+      console.log(`Checkpoint placed at (${checkpoint.x}, ${checkpoint.y})`);
+    }
+    
+    if (e.code === "KeyX") {
+      //remove checkpoint and reset respawn to default
+      checkpoint = null;
+      console.log("Checkpoint removed and respawn reset to default");
+    }
+  }
 });
 
 document.addEventListener("keyup", (e) => 
@@ -259,6 +286,7 @@ async function loadAllTextures() {
     textures.signLeft = await loadTexture('signLeft', 'textures/left_sign_text.png');
     textures.signUp = await loadTexture('signUp', 'textures/up_sign_text.png');
     textures.signDown = await loadTexture('signDown', 'textures/down_sign_text.png');
+    textures.checkpoint = await loadTexture('checkpoint', 'textures/checkpoint_text.png');
     
     //create and cache patterns for repeating textures
     //solid and ground: 320px texture -> 64px repeat
@@ -483,6 +511,9 @@ function showLevelComplete() {
 function goToNextLevel() {
   if (currentLevelNum === null) return;
   
+  //clear checkpoint when leaving level
+  checkpoint = null;
+  
   //hide level complete overlay
   levelCompleteOverlay.style.display = "none";
   
@@ -508,8 +539,9 @@ function restartLevel() {
   //reset level complete flag
   isLevelComplete = false;
   //reset player position and state
-  player.x = START_X;
-  player.y = START_Y;
+  const respawnPos = getRespawnPosition();
+  player.x = respawnPos.x;
+  player.y = respawnPos.y;
   player.velocityX = 0;
   player.velocityY = 0;
   player.jumping = false;
@@ -538,6 +570,9 @@ function restartLevel() {
 
 //return to main menu
 async function returnToMenu() {
+  //clear checkpoint when leaving level
+  checkpoint = null;
+  
   //check if there's a pending update request
   if (isPendingUpdate && pendingUpdateRequest) {
     //show loading overlay
@@ -633,8 +668,9 @@ function update(dt = 1.0)
       isDying = false;
       deathAnimationStart = null;
       playerHealth = 3;
-      player.x = START_X;
-      player.y = START_Y;
+      const respawnPos = getRespawnPosition();
+      player.x = respawnPos.x;
+      player.y = respawnPos.y;
       player.velocityX = 0;
       player.velocityY = 0;
       player.jumping = false;
@@ -674,8 +710,8 @@ function update(dt = 1.0)
     //show level complete immediately
     showLevelComplete();
     
-    //start level unlock and badge updates in the background (only if not tutorial level 0)
-    if (currentLevelNum > 0) {
+    //start level unlock and badge updates in the background (only if not tutorial level 0 and not practice mode)
+    if (currentLevelNum > 0 && !isPracticeMode) {
       isPendingUpdate = true;
       const completionTime = Date.now() - levelStartTime;
       const completionHealth = playerHealth;
@@ -702,6 +738,8 @@ function update(dt = 1.0)
           pendingUpdateRequest = null;
         }
       })();
+    } else if (isPracticeMode) {
+      console.log('Practice mode: level and badges NOT unlocked');
     }
     return;
   }
@@ -1279,6 +1317,12 @@ function draw() {
     }
   }
   
+  //draw checkpoint (if exists and practice mode is on)
+  if (isPracticeMode && checkpoint && texturesLoaded && textures.checkpoint) {
+    const checkpointSize = 40;
+    ctx.drawImage(textures.checkpoint, checkpoint.x, checkpoint.y, checkpointSize, checkpointSize);
+  }
+  
   //draw player glow first (behind player but above other objects)
   //use dark glow on level 13, regular glow otherwise
   const glowTexture = (currentLevelNum === 13 && texturesLoaded && textures.darkGlow) 
@@ -1407,6 +1451,9 @@ function stopGameLoop() {
 
 //level loading function
 async function loadLevel(levelNumber) {
+  //clear checkpoint when loading new level
+  checkpoint = null;
+  
   //check if there's a pending update request from a previous level
   //if user is going to next level, we check if they're leaving while updates are pending
   //this happens when they start playing next level then leave before updates finish
@@ -1700,6 +1747,23 @@ if (creditSettings) {
   creditSettings.addEventListener("click", () => {
     //redirect to credits.html
     window.location.href = 'credits.html';
+  });
+}
+
+//practice mode toggle
+const practiceModeToggle = document.getElementById("practiceModeToggle");
+if (practiceModeToggle) {
+  addButtonSounds(practiceModeToggle);
+  practiceModeToggle.addEventListener("click", () => {
+    isPracticeMode = !isPracticeMode;
+    practiceModeToggle.setAttribute('data-active', isPracticeMode.toString());
+    practiceModeToggle.textContent = isPracticeMode ? 'On' : 'Off';
+    console.log(`Practice mode ${isPracticeMode ? 'enabled' : 'disabled'}`);
+    
+    //clear checkpoint when toggling off
+    if (!isPracticeMode) {
+      checkpoint = null;
+    }
   });
 }
 
