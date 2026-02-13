@@ -1230,3 +1230,43 @@ body {
     padding: 15px 30px;
   }
 }
+
+/*loading overlay for level/badge updates*/
+#updateLoadingOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#updateLoadingBox {
+  background-color: #666;
+  border-radius: 20px;
+  padding: 40px 60px;
+  text-align: center;
+}
+
+#updateLoadingText {
+  color: white;
+  font-family: "Cabin Sketch", sans-serif;
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+/*responsive loading overlay for smaller screens*/
+@media (max-width: 1199px) or (max-height: 799px) {
+  #updateLoadingBox {
+    padding: 30px 50px;
+  }
+  
+  #updateLoadingText {
+    font-size: 30px;
+  }
+}

@@ -37,6 +37,10 @@ let defeatedEnemies = new Map(); //track defeated enemies and their respawn time
 let pausedInvulnerableUntil = null; //track remaining invulnerability time when paused
 let pausedEnemyRespawnTimes = new Map(); //track paused enemy respawn times
 
+//track background update requests for level unlock and badges
+let pendingUpdateRequest = null; //promise for current background update
+let isPendingUpdate = false; //flag to indicate if update is in progress
+
 //delta time tracking for frame-rate independent movement
 let lastFrameTime = performance.now();
 const TARGET_FPS = 60;
@@ -423,7 +427,7 @@ function formatTime(milliseconds) {
 }
 
 //show level complete screen
-async function showLevelComplete() {
+function showLevelComplete() {
   //ensure overlay is hidden first to prevent duplicate displays
   levelCompleteOverlay.style.display = "none";
   
@@ -449,14 +453,14 @@ async function showLevelComplete() {
   const formattedTime = formatTime(finalTime);
   levelCompleteTime.textContent = `Time: ${formattedTime}`;
   
-  //store completion data for sharing (only for levels 1-3, not tutorial level 0)
+  //store completion data for sharing (only for levels 1-13, not tutorial level 0)
   if (currentLevelNum >= 0 && currentLevelNum <= 13) {
     lastCompletionData = {
       levelNum: currentLevelNum,
       time: formattedTime,
       health: playerHealth
     };
-    //show share button for levels 1-3
+    //show share button for levels 1-13
     if (shareResultsOption) {
       shareResultsOption.style.display = "block";
     }
@@ -470,23 +474,6 @@ async function showLevelComplete() {
   
   //stop the game loop first to prevent lag
   stopGameLoop();
-  
-  //check and unlock badges (only for levels 1-3, not tutorial level 0)
-  //do this asynchronously after stopping the game loop to reduce lag
-  //add a small delay to ensure level unlock has completed
-  if (currentLevelNum > 0 && currentLevelNum <= 13) {
-    //wait a bit for level unlock to complete, then unlock badges
-    setTimeout(() => {
-      checkAndUnlockBadges(currentLevelNum, finalTime, playerHealth).then(() => {
-        //refresh badge display after unlocking badges
-        if (typeof displayBadges === 'function') {
-          displayBadges();
-        }
-      }).catch(err => {
-        console.error('Error unlocking badges:', err);
-      });
-    }, 200); //200ms delay to avoid race conditions
-  }
   
   //show overlay after stopping game loop
   levelCompleteOverlay.style.display = "flex";
@@ -550,7 +537,32 @@ function restartLevel() {
 }
 
 //return to main menu
-function returnToMenu() {
+async function returnToMenu() {
+  //check if there's a pending update request
+  if (isPendingUpdate && pendingUpdateRequest) {
+    //show loading overlay
+    const updateLoadingOverlay = document.getElementById('updateLoadingOverlay');
+    if (updateLoadingOverlay) {
+      updateLoadingOverlay.style.display = 'flex';
+    }
+    
+    //hide level complete overlay if it's showing
+    levelCompleteOverlay.style.display = "none";
+    
+    //wait for update to complete
+    try {
+      await pendingUpdateRequest;
+      console.log('Background update completed before returning to menu');
+    } catch (err) {
+      console.error('Error waiting for background update:', err);
+    }
+    
+    //hide loading overlay
+    if (updateLoadingOverlay) {
+      updateLoadingOverlay.style.display = 'none';
+    }
+  }
+  
   //stop the game loop
   stopGameLoop();
   
@@ -658,19 +670,38 @@ function update(dt = 1.0)
   if (checkGoalCollision(player) && !isLevelComplete) {
     isLevelComplete = true; //prevent multiple triggers
     console.log(`Level ${currentLevelNum} completed!`);
-    //only unlock next level if not tutorial (level 0)
+    
+    //show level complete immediately
+    showLevelComplete();
+    
+    //start level unlock and badge updates in the background (only if not tutorial level 0)
     if (currentLevelNum > 0) {
-      // Unlock next level and wait for it to complete before showing level complete
-      // This ensures level unlock finishes before badge unlocks start
-      unlockNextLevel(currentLevelNum).then(() => {
-        showLevelComplete();
-      }).catch(err => {
-        console.error('Error unlocking next level:', err);
-        // Still show level complete even if unlock fails
-        showLevelComplete();
-      });
-    } else {
-      showLevelComplete();
+      isPendingUpdate = true;
+      const completionTime = Date.now() - levelStartTime;
+      const completionHealth = playerHealth;
+      
+      //create promise for background update
+      pendingUpdateRequest = (async () => {
+        try {
+          //unlock next level first
+          await unlockNextLevel(currentLevelNum);
+          console.log('Level unlock complete');
+          
+          //then unlock badges
+          await checkAndUnlockBadges(currentLevelNum, completionTime, completionHealth);
+          console.log('Badge unlocks complete');
+          
+          //refresh badge display
+          if (typeof displayBadges === 'function') {
+            displayBadges();
+          }
+        } catch (err) {
+          console.error('Error during background update:', err);
+        } finally {
+          isPendingUpdate = false;
+          pendingUpdateRequest = null;
+        }
+      })();
     }
     return;
   }
@@ -1375,7 +1406,13 @@ function stopGameLoop() {
 }
 
 //level loading function
-function loadLevel(levelNumber) {
+async function loadLevel(levelNumber) {
+  //check if there's a pending update request from a previous level
+  //if user is going to next level, we check if they're leaving while updates are pending
+  //this happens when they start playing next level then leave before updates finish
+  //note: we don't wait here since we want to allow starting next level immediately
+  //the wait happens in returnToMenu if they try to go back to menu
+  
   //stop any running game loop
   stopGameLoop();
   

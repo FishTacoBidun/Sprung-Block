@@ -391,6 +391,35 @@ body {
   display: block;
 }
 
+/*loading overlay for auth*/
+#authLoadingOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#authLoadingBox {
+  background-color: #666;
+  border-radius: 20px;
+  padding: 40px 60px;
+  text-align: center;
+}
+
+#authLoadingText {
+  color: white;
+  font-family: "Cabin Sketch", sans-serif;
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
 /*small PC viewport*/
 @media (max-width: 1549px) or (max-height: 899px) {
   #gameLogo {
@@ -678,5 +707,13 @@ body {
     left: 0;
     right: 0;
     min-height: 20px;
+  }
+  
+  #authLoadingBox {
+    padding: 30px 50px;
+  }
+  
+  #authLoadingText {
+    font-size: 30px;
   }
 }

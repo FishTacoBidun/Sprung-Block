@@ -143,6 +143,12 @@ signInFormElement.addEventListener('submit', async (e) => {
   const username = document.getElementById('signInUsername').value;
   const password = document.getElementById('signInPassword').value;
   
+  //show loading overlay
+  const authLoadingOverlay = document.getElementById('authLoadingOverlay');
+  if (authLoadingOverlay) {
+    authLoadingOverlay.style.display = 'flex';
+  }
+  
   try {
     const response = await fetch(`${API_BASE_URL}/users/login`, {
       method: 'POST',
@@ -160,15 +166,22 @@ signInFormElement.addEventListener('submit', async (e) => {
       sessionStorage.setItem('userMode', 'authenticated');
       sessionStorage.setItem('userId', data.userId);
       sessionStorage.setItem('username', data.username);
-      //redirect to game
+      //redirect to game (loading overlay will disappear on redirect)
       window.location.href = 'game.html';
     } else {
-      //show error
+      //hide loading overlay and show error
+      if (authLoadingOverlay) {
+        authLoadingOverlay.style.display = 'none';
+      }
       signInError.textContent = data.message || 'Sign in failed';
       signInError.classList.add('show');
     }
   } catch (error) {
     console.error('Sign in error:', error);
+    //hide loading overlay and show error
+    if (authLoadingOverlay) {
+      authLoadingOverlay.style.display = 'none';
+    }
     signInError.textContent = 'Connection error, please try again.';
     signInError.classList.add('show');
   }
@@ -201,6 +214,12 @@ createAccountFormElement.addEventListener('submit', async (e) => {
     return;
   }
   
+  //show loading overlay
+  const authLoadingOverlay = document.getElementById('authLoadingOverlay');
+  if (authLoadingOverlay) {
+    authLoadingOverlay.style.display = 'flex';
+  }
+  
   try {
     const response = await fetch(`${API_BASE_URL}/users/register`, {
       method: 'POST',
@@ -218,15 +237,22 @@ createAccountFormElement.addEventListener('submit', async (e) => {
       sessionStorage.setItem('userMode', 'authenticated');
       sessionStorage.setItem('userId', data.userId);
       sessionStorage.setItem('username', data.username);
-      //redirect to game
+      //redirect to game (loading overlay will disappear on redirect)
       window.location.href = 'game.html';
     } else {
-      //show error
+      //hide loading overlay and show error
+      if (authLoadingOverlay) {
+        authLoadingOverlay.style.display = 'none';
+      }
       createAccountError.textContent = data.message || 'Account creation failed';
       createAccountError.classList.add('show');
     }
   } catch (error) {
     console.error('Create account error:', error);
+    //hide loading overlay and show error
+    if (authLoadingOverlay) {
+      authLoadingOverlay.style.display = 'none';
+    }
     createAccountError.textContent = 'Connection error, please try again.';
     createAccountError.classList.add('show');
   }
